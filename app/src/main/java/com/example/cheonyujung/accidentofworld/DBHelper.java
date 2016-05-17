@@ -88,6 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     "contents TEXT NOT NULL, " +
                     "user_id TEXT NOT NULL, " +
                     "num_like INTEGER NOT NULL, " +
+                    "count_num INTEGER NOT NULL, "+
                     "num_dislike INTEGER NOT NULL, " +
                     "FOREIGN KEY(board_id) REFERENCES "+
                     "'"+BOARD_TABLE_NAME+"'(_id)"+
