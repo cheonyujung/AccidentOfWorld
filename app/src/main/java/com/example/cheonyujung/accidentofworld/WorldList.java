@@ -2,17 +2,14 @@ package com.example.cheonyujung.accidentofworld;
 
 import android.os.Bundle;
 
-public class MainActivity extends Base {
+/**
+ * Created by cheonyujung on 2016. 5. 19..
+ */
+public class WorldList extends Base {
 
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.country_list);
         setCustomActionbar();
-
     }
-
-
 }
