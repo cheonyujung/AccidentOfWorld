@@ -25,7 +25,7 @@ public class Base extends AppCompatActivity {
     public Button drawerBoard_btn;
     public Button drawerBookmark_btn;
 
-    public RelativeLayout actionbar = (RelativeLayout) findViewById(R.id.actionbar);
+    public RelativeLayout actionbar;
 
     protected void addViewAtActionBar(View view, ViewGroup.LayoutParams params) {
         view.setLayoutParams(params);
