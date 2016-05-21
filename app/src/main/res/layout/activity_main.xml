@@ -4,10 +4,15 @@
     android:layout_height="match_parent"
     android:id = "@+id/main_activity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/toolbar"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -18,81 +23,9 @@
                 android:text="Hello World!" />
         </RelativeLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="160dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FF3E454C"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="#2F8F8C" />
-
-            <Button
-                android:id="@+id/worldMapButton"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="#3E454C"
-                android:text="세계 지도"
-                android:textColor="#ffffff"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffffff" />
-
-            <Button
-                android:id="@+id/CountryListButton"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="#3E454C"
-                android:text="나라 목록"
-                android:textColor="#ffffff"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffffff" />
-
-            <Button
-                android:id="@+id/BoardButton"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="#3E454C"
-                android:text="게시판"
-                android:textColor="#ffffff"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffffff" />
-
-            <Button
-                android:id="@+id/BookmarkButton"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="#3E454C"
-                android:text="즐겨찾기"
-                android:textColor="#ffffff"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffffff" />
-        </LinearLayout>
-    </RelativeLayout>
+    <include layout="@layout/drawer" />
 
 
 </android.support.v4.widget.DrawerLayout>

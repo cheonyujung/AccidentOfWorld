@@ -2,7 +2,6 @@ package com.example.cheonyujung.accidentofworld;
 
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -16,16 +15,14 @@ import android.widget.RelativeLayout;
 /**
  * Created by cheonyujung on 2016. 5. 19..
  */
-public class Base extends AppCompatActivity {
-
+public abstract class Base extends AppCompatActivity {
 
     public DrawerLayout drawer;
     public Button drawerWorldMap_btn;
     public Button drawerWorldList_btn;
     public Button drawerBoard_btn;
     public Button drawerBookmark_btn;
-
-    public RelativeLayout actionbar = (RelativeLayout) findViewById(R.id.actionbar);
+    public RelativeLayout actionbar;
 
     protected void addViewAtActionBar(View view, ViewGroup.LayoutParams params) {
         view.setLayoutParams(params);
@@ -37,14 +34,15 @@ public class Base extends AppCompatActivity {
 //    }
 
     public void setCustomActionbar() {
-        ActionBar actionBar = getSupportActionBar();
 
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+
+        toolbar.setLogo(null);
+        toolbar.setTitle(null);
 
         View myactionbar = LayoutInflater.from(this).inflate(R.layout.action_bar, null);
-        actionBar.setCustomView(myactionbar);
+        toolbar.addView(myactionbar);
+        setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.main_activity);
         ImageButton drawerButton = (ImageButton) myactionbar.findViewById(R.id.open_rightDrawerBtn);
@@ -74,8 +72,6 @@ public class Base extends AppCompatActivity {
         Toolbar parent = (Toolbar) myactionbar.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
-        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT);
-        actionBar.setCustomView(myactionbar, params);
 
     }
 
@@ -90,15 +86,12 @@ public class Base extends AppCompatActivity {
                     break;
                 case R.id.CountryListButton:
                     startActivity(new Intent(Base.this, WorldList.class));
-                    finish();
                     break;
                 case R.id.BoardButton:
                     startActivity(new Intent(Base.this, Board.class));
-                    finish();
                     break;
                 case R.id.BookmarkButton:
                     startActivity(new Intent(Base.this, BookMark.class));
-                    finish();
                     break;
             }
         }

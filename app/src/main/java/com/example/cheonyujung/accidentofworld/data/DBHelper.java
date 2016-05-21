@@ -1,4 +1,4 @@
-package com.example.cheonyujung.accidentofworld;
+package com.example.cheonyujung.accidentofworld.data;
 
 /**
  * Created by cheonyujung on 2016. 5. 17..
@@ -13,7 +13,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "accidentOfWorld.db";
     private static final String DANGER_TABLE_NAME = "danger";
     private static final String COUNTRY_TABLE_NAME = "country";
-    private static final String POSITION_TABLE_NAME = "position";
     private static final String ACCIDENT_TABLE_NAME = "accident";
     private static final String CONTRACT_TABLE_NAME = "contract";
     private static final String DANGER_AREA_TABLE_NAME = "dangerArea";
@@ -34,7 +33,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     "country_id INTEGER PRIMARY KEY NOT NULL, " +
                     "name_kor TEXT NOT NULL," +
                     "name_eng TEXT NOT NULL," +
-                    "continent TEXT NOT NULL" +
+                    "continent TEXT NOT NULL," +
+                    "latitude NUMBERIC(3,2) NOT NULL," +
+                    "longitude NUMBERIC(3,2) NOT NULL" +
                     ");";
 
     private static final String CREATE_DANGER_AREA_TABLE =
@@ -42,15 +43,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     "country_id INTEGER PRIMARY KEY NOT NULL, " +
                     "degree TEXT," +
                     "contents TEXT," +
-                    "FOREIGN KEY(country_id) REFERENCES "+
-                    "'"+COUNTRY_TABLE_NAME+"'(country_id)"+
-                    ");";
-
-    private static final String CREATE_POSITION_TABLE =
-            "CREATE TABLE `" + POSITION_TABLE_NAME + "`(" +
-                    "country_id INTEGER PRIMARY KEY NOT NULL, " +
-                    "position_x NUMBERIC(3,2), " +
-                    "position y NUMBERIC(3,2), " +
                     "FOREIGN KEY(country_id) REFERENCES "+
                     "'"+COUNTRY_TABLE_NAME+"'(country_id)"+
                     ");";
@@ -115,7 +107,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DANGER_TABLE);
         db.execSQL(CREATE_COUNTRY_TABLE);
         db.execSQL(CREATE_DANGER_AREA_TABLE);
-        db.execSQL(CREATE_POSITION_TABLE);
         db.execSQL(CREATE_ACCIDENT_TABLE);
         db.execSQL(CREATE_CONTRACT_TABLE);
         db.execSQL(CREATE_BOARD_TABLE);

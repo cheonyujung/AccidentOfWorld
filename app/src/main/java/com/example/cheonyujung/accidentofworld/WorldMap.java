@@ -10,7 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class WorldMap extends Activity implements OnMapReadyCallback {
+public class WorldMap extends Base implements OnMapReadyCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
