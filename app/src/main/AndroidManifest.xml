@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".WorldList"/>
-        <activity android:name=".WorldMap"/>
+        <activity android:name=".WorldMap">
+
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAsxByWSpI8bwTR6xP2Lq9G5LdiKBkTWR8"/>

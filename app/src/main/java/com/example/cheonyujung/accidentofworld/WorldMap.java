@@ -1,6 +1,5 @@
 package com.example.cheonyujung.accidentofworld;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,6 +19,7 @@ public class WorldMap extends Base implements OnMapReadyCallback {
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        setCustomActionbar();
     }
 
     @Override

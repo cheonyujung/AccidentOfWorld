@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 /**
  * Created by cheonyujung on 2016. 5. 19..
  */
-public abstract class Base extends AppCompatActivity {
+public abstract class Base extends AppCompatActivity{
 
     public DrawerLayout drawer;
     public Button drawerWorldMap_btn;
@@ -79,6 +79,7 @@ public abstract class Base extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            finish();
             drawer.closeDrawer(Gravity.RIGHT);
             switch(view.getId()) {
                 case R.id.worldMapButton:
