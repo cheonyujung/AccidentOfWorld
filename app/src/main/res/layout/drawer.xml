@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FF3E454C"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="#2F8F8C" />
+
+            <Button
+                android:id="@+id/worldMapButton"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="#3E454C"
+                android:text="세계 지도"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffffff" />
+
+            <Button
+                android:id="@+id/CountryListButton"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="#3E454C"
+                android:text="나라 목록"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffffff" />
+
+            <Button
+                android:id="@+id/BoardButton"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="#3E454C"
+                android:text="게시판"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffffff" />
+
+            <Button
+                android:id="@+id/BookmarkButton"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="#3E454C"
+                android:text="즐겨찾기"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffffff" />
+        </LinearLayout>
+    </RelativeLayout>
