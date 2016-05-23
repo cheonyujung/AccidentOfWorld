@@ -43,6 +43,9 @@ public class Adapter extends BaseAdapter {
 
         return convertView;
     }
+    public void removeAll() {
+        list.clear();
+    }
 
     public void addCountry(String name){
         list.add(name);

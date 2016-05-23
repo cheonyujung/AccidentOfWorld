@@ -31,11 +31,15 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CREATE_COUNTRY_TABLE =
             "CREATE TABLE `" + COUNTRY_TABLE_NAME + "`(" +
                     "country_id INTEGER PRIMARY KEY NOT NULL, " +
-                    "name_kor TEXT NOT NULL," +
-                    "name_eng TEXT NOT NULL," +
+                    "name_ko TEXT NOT NULL," +
+                    "name_en TEXT NOT NULL," +
                     "continent TEXT NOT NULL," +
+                    "iso_code TEXT NOT NULL," +
                     "latitude NUMBERIC(3,2) NOT NULL," +
-                    "longitude NUMBERIC(3,2) NOT NULL" +
+                    "longitude NUMBERIC(3,2) NOT NULL," +
+                    "capital TEXT NOT NULL," +
+                    "currency TEXT NOT NULL," +
+                    "language TEXT NOT NULL" +
                     ");";
 
     private static final String CREATE_DANGER_AREA_TABLE =
@@ -116,6 +120,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL("drop table if exists " + DANGER_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + COUNTRY_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + DANGER_AREA_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + ACCIDENT_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + CONTRACT_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + BOARD_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + POST_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + COMMENT_TABLE_NAME + ";");
+        onCreate(sqLiteDatabase);
 
     }
 }
