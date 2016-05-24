@@ -1,5 +1,6 @@
 package com.example.cheonyujung.accidentofworld;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
@@ -35,6 +37,7 @@ import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 /**
  * Created by cheonyujung on 2016. 5. 19..
  */
@@ -72,11 +75,19 @@ public class WorldList extends Base {
                 getCountryList();
             }
         });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GetDangerAboutCountry task = new GetDangerAboutCountry();
                 task.execute();
+                Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(WorldList.this, Country_info.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("countryName", adapter.getItem(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         getCountryList();
