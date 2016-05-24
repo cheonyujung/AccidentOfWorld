@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.TextView;
 
 import com.desmond.parallaxviewpager.ParallaxFragmentPagerAdapter;
 import com.desmond.parallaxviewpager.ParallaxViewPagerBaseActivity;
@@ -20,6 +21,11 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
 
     private View mTopView;
     private SlidingTabLayout mNavigBar;
+    private TextView engName;
+    private TextView language_text;
+    private TextView capital_text;
+    private TextView continent_text;
+    private TextView currency_text;
 
     // Tab titles
     ArrayList<String> tabs = new ArrayList<String>();
@@ -35,6 +41,12 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mNavigBar = (SlidingTabLayout) findViewById(R.id.navig_tab);
         mHeader = findViewById(R.id.Country_info_basic);
+
+        engName = (TextView) findViewById(R.id.enname_text);
+        language_text = (TextView) findViewById(R.id.language_text);
+        capital_text = (TextView) findViewById(R.id.capital_text);
+        continent_text = (TextView) findViewById(R.id.continent_text);
+        currency_text = (TextView) findViewById(R.id.continent_text);
 
         if (savedInstanceState != null) {
             mTopView.setTranslationY(savedInstanceState.getFloat(IMAGE_TRANSLATION_Y));
@@ -125,93 +137,13 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
             }
         }
     }
-        //        //setCustomActionbar();
-//        tabs.add("Tab1");
-//        tabs.add("Tab2");
-//        tabs.add("Tab3");
-//
-//        button1 = (Button) findViewById(R.id.danger_type_button);
-//        button2 = (Button) findViewById(R.id.accident_button);
-//        button3 = (Button) findViewById(R.id.contact_button);
-//
-//
-//        // Initilization
-//        viewPager = (ViewPager) findViewById(R.id.pager);
-//
-//        mAdapter = new TabsPagerAdapter(getSupportFragmentManager() , tabs);
-//
-//        viewPager.setAdapter(mAdapter);
-//
-//        button1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                viewPager.setCurrentItem(0);
-//            }
-//        });
-//
-//        button2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                viewPager.setCurrentItem(1);
-//            }
-//        });
-//
-//        button3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                viewPager.setCurrentItem(2);
-//            }
-//        });
-//        // Adding Tabs
-//        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageSelected(int arg0) {
-//                // TODO Auto-generated method stub
-//                //Page Position
-//                int pagePosition=   viewPager.getCurrentItem();
-//                //  Toast.makeText(getApplicationContext(),""+pagePosition,1000).show();
-//                if(pagePosition==0){
-//                    ClickButtonColor(0);
-//                }
-//                if(pagePosition==1){
-//                    ClickButtonColor(1);
-//                }
-//                if(pagePosition==2){
-//                    ClickButtonColor(2);
-//                }
-//            }
-//            @Override
-//            public void onPageScrolled(int arg0, float arg1, int arg2) {
-//                // TODO Auto-generated method stub
-//            }
-//            @Override
-//            public void onPageScrollStateChanged(int arg0) {
-//                // TODO Auto-generated method stub
-//            }
-//        });
-//    }
-//    public void ClickButtonColor(int index){
-//        button1.setBackgroundColor(Color.parseColor("#ffffff"));
-//        button2.setBackgroundColor(Color.parseColor("#ffffff"));
-//        button3.setBackgroundColor(Color.parseColor("#ffffff"));
-//        button1.setTextColor(Color.parseColor("#000000"));
-//        button2.setTextColor(Color.parseColor("#000000"));
-//        button3.setTextColor(Color.parseColor("#000000"));
-//        if(index == 0){
-//            button1.setBackgroundColor(Color.parseColor("#40C2BE"));
-//            button1.setTextColor(Color.parseColor("#ffffff"));
-//        }else if(index == 1){
-//            button2.setBackgroundColor(Color.parseColor("#40C2BE"));
-//            button2.setTextColor(Color.parseColor("#ffffff"));
-//        }else if(index == 2){
-//            button3.setBackgroundColor(Color.parseColor("#40C2BE"));
-//            button3.setTextColor(Color.parseColor("#ffffff"));
-//        }
-//    }
+
     public void setText(){
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String country_name = bundle.getString("CountryName");
+
+
     }
 
 

@@ -49,7 +49,7 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/country_name"
+                        android:id="@+id/enname_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Korea"
@@ -69,7 +69,7 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/country_language"
+                        android:id="@+id/language_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="한국어"
@@ -89,7 +89,7 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/country_capital"
+                        android:id="@+id/capital_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="서울"
@@ -105,11 +105,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="종교    : "
+                        android:text="대륙    : "
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/country_religion"
+                        android:id="@+id/continent_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="불교"
@@ -128,7 +128,7 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/country_money"
+                        android:id="@+id/currency_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="원"
