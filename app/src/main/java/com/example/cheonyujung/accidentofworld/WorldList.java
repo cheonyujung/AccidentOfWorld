@@ -80,8 +80,8 @@ public class WorldList extends Base {
             @Override
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GetDangerAboutCountry task = new GetDangerAboutCountry();
-                task.execute();
+                //GetDangerAboutCountry task = new GetDangerAboutCountry();
+                //task.execute();
                 Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(WorldList.this, Country_info.class);
                 Bundle bundle = new Bundle();
