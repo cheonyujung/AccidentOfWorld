@@ -1,6 +1,6 @@
 package com.example.cheonyujung.accidentofworld;
 
-import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -26,15 +25,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParser;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -82,11 +75,19 @@ public class WorldList extends Base {
                 getCountryList();
             }
         });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GetDangerAboutCountry task = new GetDangerAboutCountry();
-                task.execute();
+                //GetDangerAboutCountry task = new GetDangerAboutCountry();
+                //task.execute();
+                Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(WorldList.this, Country_info.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("countryName", adapter.getItem(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         getCountryList();
@@ -109,6 +110,7 @@ public class WorldList extends Base {
 
         @Override
         protected Void doInBackground(Void... params) {
+
 
             String url = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningList?ServiceKey=FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D&numOfRows=999&pageSize=999&pageNo=1&startPage=1";
             request(url);
@@ -216,6 +218,7 @@ public class WorldList extends Base {
         String url = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningInfo?ServiceKey=FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D";
         @Override
         protected void onPostExecute(Document document) {
+
             super.onPostExecute(document);
         }
 
@@ -297,3 +300,4 @@ public class WorldList extends Base {
 
 
 }
+

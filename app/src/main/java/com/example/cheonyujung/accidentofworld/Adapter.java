@@ -50,4 +50,5 @@ public class Adapter extends BaseAdapter {
     public void addCountry(String name){
         list.add(name);
     }
+
 }
