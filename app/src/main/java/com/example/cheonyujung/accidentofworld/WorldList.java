@@ -53,6 +53,7 @@ public class WorldList extends Base {
     ListView listView;
     Adapter adapter;
     Document doc = null;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.country_list);
@@ -84,25 +85,28 @@ public class WorldList extends Base {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                GetInfoForCountry task = new GetInfoForCountry();
-//                task.execute();
+                GetDangerAboutCountry task = new GetDangerAboutCountry();
+                task.execute();
             }
         });
         getCountryList();
     }
-    public void getCountryList(){
+
+    public void getCountryList() {
         adapter.removeAll();
         DBHelper dbHelper = new DBHelper(getApplication());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select name_ko from country order by name_ko;", null);
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             adapter.addCountry(cursor.getString(0));
         }
         adapter.notifyDataSetChanged();
         cursor.close();
     }
+
     class BackgroundTask extends AsyncTask<Void, Void, Void> {
         int count = 0;
+
         @Override
         protected Void doInBackground(Void... params) {
 
@@ -133,7 +137,7 @@ public class WorldList extends Base {
                 country.setContinent(continentName);
                 Locale obj = null;
                 boolean check = false;
-                for(String countryCode : locales) {
+                for (String countryCode : locales) {
                     obj = new Locale("", countryCode);
                     if (obj.getDisplayCountry().equals(tag)) {
                         country.setIso_code(obj.getCountry());
@@ -146,7 +150,13 @@ public class WorldList extends Base {
                     org.jsoup.nodes.Document document = null;
                     try {
                         addresses = gc.getFromLocationName(obj.getDisplayCountry(), 1);
-                        document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + name).get();
+                        if (name.equals("중국")) {
+                            document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + "중화인민공화국").get();
+                        } else if (name.equals("조지아")) {
+                            document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + "조지아_(국가)").get();
+                        } else {
+                            document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + name).get();
+                        }
                         Elements tags = document.select("table.infobox tbody tr");
 
                         // A list to save the coordinates if they are available
@@ -160,7 +170,7 @@ public class WorldList extends Base {
                             org.jsoup.nodes.Element a = tags.get(j);
                             if (a.child(0).text().equals("수도")) {
                                 country.setCapital(a.child(1).text().split(" ")[0]);
-                                Log.d("test",a.child(1).text().split(" ")[0]);
+                                Log.d("test", a.child(1).text().split(" ")[0]);
                             } else if (a.child(0).text().equals("공용어")) {
                                 country.setLanguage(a.child(1).text());
                             } else if (a.child(0).text().equals("통화")) {
@@ -170,10 +180,10 @@ public class WorldList extends Base {
                             countryKorList.add(name);
                             countryList.add(tag);
                         }
-                        if((!country.getName_ko().equals("중국")) && (!country.getName_ko().equals("조지아"))) {
-                            country.save();
-                            count++;
-                        }
+                        country.save();
+                        count++;
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -194,17 +204,18 @@ public class WorldList extends Base {
         @Override
         protected void onPostExecute(Void aVoid) {
             getCountryList();
-            Log.d("count", count+"");
+            Log.d("count", count + "");
             super.onPostExecute(null);
         }
     }
 
 
-    class GetInfoForCountry extends AsyncTask<String, Void, Document> {
+    class GetDangerAboutCountry extends AsyncTask<String, Void, Document> {
 
+
+        String url = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningInfo?ServiceKey=FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D";
         @Override
         protected void onPostExecute(Document document) {
-            Log.d("test", "end");
             super.onPostExecute(document);
         }
 
@@ -216,13 +227,50 @@ public class WorldList extends Base {
         @Override
         protected Document doInBackground(String... params) {
 
-            DBHelper dbHelper = new DBHelper(getApplication());
+            DBHelper dbHelper = new DBHelper(WorldList.this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery("select * from country;", null);
+            Cursor cursor = db.rawQuery("select country_id from country", null);
             while(cursor.moveToNext()) {
-                Log.d(cursor.getString(0),cursor.getString(1)+" " + cursor.getString(2) + " " + cursor.getString(3) + " " + cursor.getString(4) + " " + cursor.getString(5) + " " + cursor.getString(6) + " " + cursor.getString(7) + " " + cursor.getString(8) + " ");
+                String reqeust = url + "?" +cursor.getInt(0);
+                try {
+                    URL reqUrl = new URL(reqeust);
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = dbf.newDocumentBuilder();
+                    InputStream inputStream = reqUrl.openStream();
+                    Document document = builder.parse(new InputSource(inputStream));
+                    document.getDocumentElement().normalize();
+                    NodeList nodeList = doc.getElementsByTagName("body");
+                    NodeList items = ((Element) nodeList.item(0)).getElementsByTagName("items");
+                    NodeList itemList = ((Element) items.item(0)).getElementsByTagName("item");
+                    for (int i = 0; i < itemList.getLength(); i++) {
+                        Node node = itemList.item(i);
+                        Node attentionPartial = ((Element) node).getElementsByTagName("attentionPartial").item(0);
+                        if(attentionPartial != null) {
+                            Node attentionNote = ((Element) node).getElementsByTagName("attentionNote").item(0);
+                            Log.d(((Element) node).getElementsByTagName("countryName").item(0).getNodeValue(),attentionPartial.getNodeValue()+" : "+attentionNote.getNodeValue());
+                        }
+                        Node controlPartial = ((Element) node).getElementsByTagName("controlPartial").item(0);
+                        if(controlPartial != null) {
+                            Node controlNote = ((Element) node).getElementsByTagName("controlNote").item(0);
+                            Log.d(((Element) node).getElementsByTagName("countryName").item(0).getNodeValue(),controlPartial.getNodeValue()+" : "+controlNote.getNodeValue());
+                        }
+                        Node limitaPartial = ((Element) node).getElementsByTagName("limitaPartial").item(0);
+                        if(limitaPartial != null) {
+                            Node limitaNote = ((Element) node).getElementsByTagName("limitaNote").item(0);
+                            Log.d(((Element) node).getElementsByTagName("countryName").item(0).getNodeValue(),limitaPartial.getNodeValue()+" : "+limitaNote.getNodeValue());
+                        }
+
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                }
             }
-            cursor.close();
             return null;
         }
     }

@@ -114,4 +114,8 @@ public class Country {
     public void save(){
         Data.dbcountry.insert(this.country_id,this.name_ko,this.name_en,this.continent,this.iso_code,this.latitude,this.longitude,this.capital,this.currency,this.language);
     }
+
+    public Country getCountry(String name){
+        return Data.dbcountry.getCountry(name);
+    }
 }
