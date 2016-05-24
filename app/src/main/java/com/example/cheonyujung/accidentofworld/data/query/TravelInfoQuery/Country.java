@@ -13,7 +13,7 @@ public class Country extends DBQuery {
         super(context);
     }
 
-    public void insert(int country_id,String name_ko,String name_en,String continent,String ISO_code,double latitude, double longitude){
+    public void insert(int country_id,String name_ko,String name_en,String continent,String ISO_code,double latitude, double longitude,String capital,String currency, String language){
         ContentValues values = new ContentValues();
         values.put("country_id",country_id);
         values.put("name_ko",name_ko);
@@ -22,6 +22,9 @@ public class Country extends DBQuery {
         values.put("iso_code",ISO_code);
         values.put("latitude", latitude);
         values.put("longitude", longitude);
+        values.put("capital", capital);
+        values.put("currency",currency);
+        values.put("language", language);
         writeDB().insert("country", null, values);
     }
 
