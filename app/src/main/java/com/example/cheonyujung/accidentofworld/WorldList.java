@@ -1,8 +1,5 @@
 package com.example.cheonyujung.accidentofworld;
 
-import android.widget.ListView;
-
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
@@ -13,13 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -32,7 +26,6 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -214,11 +207,7 @@ public class WorldList extends Base {
         String url = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningInfo?ServiceKey=FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D";
         @Override
         protected void onPostExecute(Document document) {
-<<<<<<< HEAD
-=======
-            Log.d("test", "end");
 
->>>>>>> c2ad4e9... no message
             super.onPostExecute(document);
         }
 
