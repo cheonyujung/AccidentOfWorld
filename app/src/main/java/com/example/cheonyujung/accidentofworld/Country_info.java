@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.desmond.parallaxviewpager.ParallaxFragmentPagerAdapter;
 import com.desmond.parallaxviewpager.ParallaxViewPagerBaseActivity;
+import com.example.cheonyujung.accidentofworld.data.struct.Country;
 import com.example.cheonyujung.accidentofworld.slidingTab.SlidingTabLayout;
 
 import java.util.ArrayList;
@@ -46,7 +48,9 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
         language_text = (TextView) findViewById(R.id.language_text);
         capital_text = (TextView) findViewById(R.id.capital_text);
         continent_text = (TextView) findViewById(R.id.continent_text);
-        currency_text = (TextView) findViewById(R.id.continent_text);
+        currency_text = (TextView) findViewById(R.id.currency_money);
+
+        setText();
 
         if (savedInstanceState != null) {
             mTopView.setTranslationY(savedInstanceState.getFloat(IMAGE_TRANSLATION_Y));
@@ -142,8 +146,14 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String country_name = bundle.getString("CountryName");
-
-
+        System.out.println(country_name);
+        Log.d("a", country_name+"*");
+        Country country = Country.getCountry(country_name);
+        engName.setText(country.getName_en());
+        language_text.setText(country.getLanguage());
+        capital_text.setText(country.getCapital());
+        continent_text.setText(country.getContinent());
+        currency_text.setText(country.getCurrency());
     }
 
 

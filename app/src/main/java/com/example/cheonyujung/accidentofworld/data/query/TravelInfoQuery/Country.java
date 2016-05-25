@@ -43,7 +43,8 @@ public class Country extends DBQuery {
     }
 
     public com.example.cheonyujung.accidentofworld.data.struct.Country getCountry(String name) {
-        Cursor cursor =readDB().rawQuery("select * from country where name_ko =" + name + " ;", null);
+        String[] whereArgs = new String[] {name};
+        Cursor cursor =readDB().rawQuery("select * from country where name_ko = ?;", whereArgs);
         cursor.moveToFirst();
         com.example.cheonyujung.accidentofworld.data.struct.Country country = new com.example.cheonyujung.accidentofworld.data.struct.Country(cursor.getInt(0),cursor.getString(1)
         ,cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getDouble(5),cursor.getDouble(6),cursor.getString(7),cursor.getString(8),cursor.getString(9));
