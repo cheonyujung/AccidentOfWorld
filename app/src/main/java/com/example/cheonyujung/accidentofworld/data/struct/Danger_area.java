@@ -31,4 +31,8 @@ public class Danger_area {
     public void setDegree(String degree) {
         this.degree = degree;
     }
+
+    public void save(){
+
+    }
 }

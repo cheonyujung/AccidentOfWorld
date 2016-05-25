@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.desmond.parallaxviewpager.NotifyingScrollView
+<com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:scrollbars="none">
+    android:scrollbars="none"
     tools:context="com.example.cheonyujung.accidentofworld.Tab3">
 
     <LinearLayout
@@ -58,4 +58,4 @@
 
     </LinearLayout>
 
-</com.desmond.parallaxviewpager.NotifyingScrollView>
+</com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView>

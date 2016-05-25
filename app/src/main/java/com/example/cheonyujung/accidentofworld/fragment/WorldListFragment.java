@@ -4,10 +4,13 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +26,12 @@ import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.Country_info;
 import com.example.cheonyujung.accidentofworld.R;
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
+import com.example.cheonyujung.accidentofworld.data.DangerType;
+import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
+import com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap;
+import com.example.cheonyujung.accidentofworld.data.struct.Danger;
+import com.example.cheonyujung.accidentofworld.data.struct.Danger_area;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -34,11 +42,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -94,14 +106,9 @@ public class WorldListFragment extends Fragment {
             @Override
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //GetDangerAboutCountry task = new GetDangerAboutCountry();
-                //task.execute();
-                Toast.makeText(getActivity(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(),Country_info.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("countryName", adapter.getItem(position));
-                intent.putExtras(bundle);
-                startActivity(intent);
+
+                GetDangerAboutCountry task = new GetDangerAboutCountry(position);
+                task.execute(adapter.getItem(position));
             }
         });
         getCountryList();
@@ -277,14 +284,26 @@ public class WorldListFragment extends Fragment {
     }
 
 
-    class GetDangerAboutCountry extends AsyncTask<String, Void, Document> {
+    class GetDangerAboutCountry extends AsyncTask<String, Void, HashMap<String,Object>> {
 
+        String url = Data.CountryDangerInfoURL;
+        int position = 0;
 
-        String url = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningInfo?ServiceKey=FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D";
+        GetDangerAboutCountry(int position) {
+            this.position = position;
+        }
+
         @Override
-        protected void onPostExecute(Document document) {
-
-            super.onPostExecute(document);
+        protected void onPostExecute(HashMap<String,Object> hashMap) {
+            GetImageAsyncTask getImageAsyncTask = new GetImageAsyncTask();
+            getImageAsyncTask.execute(hashMap);
+            Intent intent = new Intent(getActivity(), Country_info.class);
+            Bundle bundle = new Bundle();
+            Log.d("test2",adapter.getItem(position)+"!!");
+            bundle.putString("CountryName", adapter.getItem(position));
+            intent.putExtras(bundle);
+            startActivity(intent);
+            super.onPostExecute(hashMap);
         }
 
         @Override
@@ -293,53 +312,83 @@ public class WorldListFragment extends Fragment {
         }
 
         @Override
-        protected Document doInBackground(String... params) {
+        protected HashMap<String,Object> doInBackground(String... params) {
 
-            DBHelper dbHelper = new DBHelper(getActivity());
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery("select country_id from country", null);
-            while(cursor.moveToNext()) {
-                String reqeust = url + "?" +cursor.getInt(0);
-                try {
-                    URL reqUrl = new URL(reqeust);
-                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder builder = dbf.newDocumentBuilder();
-                    InputStream inputStream = reqUrl.openStream();
-                    Document document = builder.parse(new InputSource(inputStream));
-                    document.getDocumentElement().normalize();
-                    NodeList nodeList = doc.getElementsByTagName("body");
-                    NodeList items = ((Element) nodeList.item(0)).getElementsByTagName("items");
-                    NodeList itemList = ((Element) items.item(0)).getElementsByTagName("item");
-                    for (int i = 0; i < itemList.getLength(); i++) {
-                        Node node = itemList.item(i);
-                        Node attentionPartial = ((Element) node).getElementsByTagName("attentionPartial").item(0);
-                        if(attentionPartial != null) {
-                            Node attentionNote = ((Element) node).getElementsByTagName("attentionNote").item(0);
-                            Log.d(((Element) node).getElementsByTagName("countryName").item(0).getNodeValue(),attentionPartial.getNodeValue()+" : "+attentionNote.getNodeValue());
-                        }
-                        Node controlPartial = ((Element) node).getElementsByTagName("controlPartial").item(0);
-                        if(controlPartial != null) {
-                            Node controlNote = ((Element) node).getElementsByTagName("controlNote").item(0);
-                            Log.d(((Element) node).getElementsByTagName("countryName").item(0).getNodeValue(),controlPartial.getNodeValue()+" : "+controlNote.getNodeValue());
-                        }
-                        Node limitaPartial = ((Element) node).getElementsByTagName("limitaPartial").item(0);
-                        if(limitaPartial != null) {
-                            Node limitaNote = ((Element) node).getElementsByTagName("limitaNote").item(0);
-                            Log.d(((Element) node).getElementsByTagName("countryName").item(0).getNodeValue(),limitaPartial.getNodeValue()+" : "+limitaNote.getNodeValue());
-                        }
-
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (ParserConfigurationException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    e.printStackTrace();
+            Country country = Country.getCountry(params[0]);
+            String reqeust = url + "&" + "id=" + country.getCountry_id();
+            HashMap<String, Object> hashMap = new HashMap<>();
+            Log.d("test", reqeust);
+            try {
+                URL reqUrl = new URL(reqeust);
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = dbf.newDocumentBuilder();
+                InputStream inputStream = reqUrl.openStream();
+                Document document = builder.parse(new InputSource(inputStream));
+                document.getDocumentElement().normalize();
+                NodeList body = document.getElementsByTagName("body");
+                NodeList itemList = ((Element) body.item(0)).getElementsByTagName("item");
+                Node dangerNode = itemList.item(0);
+                Node attentionPartial = ((Element) dangerNode).getElementsByTagName("attentionPartial").item(0);
+                if (attentionPartial != null) {
+                    Node attentionNote = ((Element) dangerNode).getElementsByTagName("attentionNote").item(0);
+                    Danger danger = new Danger();
+                    danger.setCountry(country);
+                    danger.setDanger_type(DangerType.low);
+                    danger.save();
+                    Danger_area danger_area = new Danger_area();
+                    danger_area.setCountry(country);
+                    danger_area.setContents(attentionNote.getTextContent());
+                    danger_area.setDegree(attentionPartial.getTextContent());
+                    danger_area.save();
+                    Log.d(attentionPartial.getTextContent(), attentionNote.getTextContent());
                 }
+                Node controlPartial = ((Element) dangerNode).getElementsByTagName("controlPartial").item(0);
+                if (controlPartial != null) {
+                    Node controlNote = ((Element) dangerNode).getElementsByTagName("controlNote").item(0);
+                    Danger danger = new Danger();
+                    danger.setCountry(country);
+                    danger.setDanger_type(DangerType.middle);
+                    danger.save();
+                    Danger_area danger_area = new Danger_area();
+                    danger_area.setCountry(country);
+                    danger_area.setContents(controlNote.getTextContent());
+                    danger_area.setDegree(controlPartial.getTextContent());
+                    danger_area.save();
+                    Log.d(controlPartial.getTextContent(), controlNote.getTextContent());
+                }
+                Node limitaPartial = ((Element) dangerNode).getElementsByTagName("limitaPartial").item(0);
+                if (limitaPartial != null) {
+                    Node limitaNote = ((Element) dangerNode).getElementsByTagName("limitaNote").item(0);
+                    Danger danger = new Danger();
+                    danger.setCountry(country);
+                    danger.setDanger_type(DangerType.high);
+                    danger.save();
+                    Danger_area danger_area = new Danger_area();
+                    danger_area.setCountry(country);
+                    danger_area.setContents(limitaNote.getTextContent());
+                    danger_area.setDegree(limitaPartial.getTextContent());
+                    danger_area.save();
+                    Log.d(limitaPartial.getTextContent(), limitaNote.getTextContent());
+                }
+                Node danger_image = ((Element) dangerNode).getElementsByTagName("imgUrl2").item(0);
+                if (danger_image != null) {
+                    CountryDangerMap dangerMap = new CountryDangerMap();
+                    dangerMap.setCountry(country);
+                    hashMap.put(danger_image.getTextContent(),dangerMap);
+                }
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
             }
-            return null;
+
+            return hashMap;
         }
     }
 
@@ -363,6 +412,72 @@ public class WorldListFragment extends Fragment {
         return doc;
     }
 
+    private void getDangerMapImage(String url, CountryDangerMap dangerMap) {
+        String filepath = "";
+        try {
+            URL reqUrl = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection) reqUrl.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+            String sdCard = Environment.getExternalStorageDirectory().toString();
+            File myDir = new File(sdCard,
+                    "Android/data/com.example.cheonyujung.AccidentOfWorld");
+            if (!myDir.exists()) {
+                myDir.mkdir();
+            }
+            String filename = dangerMap.getCountry().getName_en()+"_danger.png";
+            Log.i("Local filename:", "" + filename);
+            File file = new File(myDir, filename);
+            if (file.createNewFile()) {
+                file.createNewFile();
+            }
+            FileOutputStream fileOutput = new FileOutputStream(file);
+            InputStream inputStream = urlConnection.getInputStream();
+            int totalSize = urlConnection.getContentLength();
+            int downloadedSize = 0;
+            byte[] buffer = new byte[1024];
+            int bufferLength = 0;
+            while ((bufferLength = inputStream.read(buffer)) > 0) {
+                fileOutput.write(buffer, 0, bufferLength);
+                downloadedSize += bufferLength;
+                Log.i("Progress:", "downloadedSize:" + downloadedSize + "totalSize:" + totalSize);
+            }
+            fileOutput.close();
+            filepath = file.getPath();
+            Log.d("test",filepath);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            filepath = null;
+            e.printStackTrace();
+        }
+        Log.i("filepath:", " " + filepath);
+        dangerMap.setPath(filepath);
+        dangerMap.setImage(createBitMap(filepath));
+        dangerMap.save();
+    }
 
+    public Bitmap createBitMap(String path) {
+        File file = new File(path);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        return bitmap;
+    }
+
+    private class GetImageAsyncTask extends AsyncTask<Object, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Object... params) {
+            HashMap<String, Object> hashMap = (HashMap<String, Object>) params[0];
+            for (String key : hashMap.keySet())
+                getDangerMapImage(key, (CountryDangerMap) hashMap.get(key));
+            return null;
+        }
+    }
 }
 

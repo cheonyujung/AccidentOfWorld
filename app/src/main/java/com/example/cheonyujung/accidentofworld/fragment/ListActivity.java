@@ -16,7 +16,7 @@ public class ListActivity extends Base {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitle("Country List");
+        super.setTitle("Country List");
 
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction()

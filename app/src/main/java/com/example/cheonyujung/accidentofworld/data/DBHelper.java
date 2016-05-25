@@ -19,6 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String BOARD_TABLE_NAME = "board";
     private static final String POST_TABLE_NAME = "post";
     private static final String COMMENT_TABLE_NAME = "comment";
+    private static final String COUNTRY_DANGER_MAP_TABLE_NAME = "country_danger_map";
 
     private static final String CREATE_DANGER_TABLE =
             "CREATE TABLE `" + DANGER_TABLE_NAME + "`(" +
@@ -102,6 +103,14 @@ public class DBHelper extends SQLiteOpenHelper {
                     "'"+POST_TABLE_NAME+"'(board_id)"+
                     ");";
 
+    private static final String CREATE_COUNTRY_DANGER_MAP_TABLE =
+            "CREATE TABLE `" + COUNTRY_DANGER_MAP_TABLE_NAME + "`(" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "country_id INTEGER NOT NULL, " +
+                    "path TEXT NOT NULL, " +
+                    "FOREIGN KEY(country_id) REFERENCES " +
+                    "'" +COUNTRY_TABLE_NAME +"'(country_id)"+")";
+
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -116,6 +125,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_BOARD_TABLE);
         db.execSQL(CREATE_POST_TABLE);
         db.execSQL(CREATE_COMMENT_TABLE);
+        db.execSQL(CREATE_COUNTRY_DANGER_MAP_TABLE);
     }
 
     @Override
@@ -128,6 +138,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("drop table if exists " + BOARD_TABLE_NAME + ";");
         sqLiteDatabase.execSQL("drop table if exists " + POST_TABLE_NAME + ";");
         sqLiteDatabase.execSQL("drop table if exists " + COMMENT_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + COUNTRY_DANGER_MAP_TABLE_NAME + ";");
         onCreate(sqLiteDatabase);
 
     }

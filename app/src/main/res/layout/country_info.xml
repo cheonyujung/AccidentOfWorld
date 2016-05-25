@@ -6,17 +6,21 @@
     android:background="#ffffff"
     android:fillViewport="false"
     android:orientation="vertical">
-
+    <include layout="@layout/toolbar"
+        android:id="@+id/include" />
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include">
     </android.support.v4.view.ViewPager>
     <LinearLayout
         android:id="@+id/Country_info_basic"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/include">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -151,53 +155,4 @@
             app:tabBackgroundTextViewId="@+id/tab_textview"/>
     </LinearLayout>
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:background="@color/mainColor" />-->
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/buttonlist"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<Button-->
-            <!--android:id="@+id/danger_type_button"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="#ffffff"-->
-            <!--android:text="위험 유형"-->
-            <!--android:textSize="15dp"-->
-            <!--android:textStyle="bold" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/accident_button"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="#ffffff"-->
-            <!--android:text="사건 사고"-->
-            <!--android:textSize="15dp"-->
-            <!--android:textStyle="bold" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/contact_button"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="#ffffff"-->
-            <!--android:text="연락처"-->
-            <!--android:textSize="15dp"-->
-            <!--android:textStyle="bold" />-->
-    <!--</LinearLayout>-->
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:background="@color/mainColor" />-->
-
-
-
-</RelativeLayout><!--<ScrollView--><!--android:id="@+id/country_contents"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent" />-->
+</RelativeLayout>

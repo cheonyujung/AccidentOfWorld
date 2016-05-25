@@ -7,11 +7,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.desmond.parallaxviewpager.ParallaxFragmentPagerAdapter;
-import com.desmond.parallaxviewpager.ParallaxViewPagerBaseActivity;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
+import com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap;
+import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomFragmentPagerAdapter;
+import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomViewPagerBase;
 import com.example.cheonyujung.accidentofworld.slidingTab.SlidingTabLayout;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by cheonyujung on 2016. 5. 21..
  */
-public class Country_info extends ParallaxViewPagerBaseActivity {
+public class Country_info extends CustomViewPagerBase {
 
     private View mTopView;
     private SlidingTabLayout mNavigBar;
@@ -28,9 +30,7 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
     private TextView capital_text;
     private TextView continent_text;
     private TextView currency_text;
-
-    // Tab titles
-    ArrayList<String> tabs = new ArrayList<String>();
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +38,19 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
         setContentView(R.layout.country_info);
 
         initValues();
+        findViewById(R.id.include).bringToFront();
 
         mTopView = (View) findViewById(R.id.upView);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mNavigBar = (SlidingTabLayout) findViewById(R.id.navig_tab);
         mHeader = findViewById(R.id.Country_info_basic);
 
+        imageView = (ImageView) findViewById(R.id.Country_flag);
         engName = (TextView) findViewById(R.id.enname_text);
         language_text = (TextView) findViewById(R.id.language_text);
         capital_text = (TextView) findViewById(R.id.capital_text);
         continent_text = (TextView) findViewById(R.id.continent_text);
         currency_text = (TextView) findViewById(R.id.currency_money);
-
         setText();
 
         if (savedInstanceState != null) {
@@ -63,7 +64,7 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
     @Override
     protected void initValues() {
         int tabHeight = 50;
-        mMinHeaderHeight = 650;  // header의 크
+        mMinHeaderHeight = 650;  // header의 크기
         mHeaderHeight = 250;
         mMinHeaderTranslation = -mMinHeaderHeight + tabHeight;
 
@@ -96,7 +97,7 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
         mTopView.setTranslationY(-translationY / 3);
     }
 
-    private static class ViewPagerAdapter extends ParallaxFragmentPagerAdapter {
+    private static class ViewPagerAdapter extends CustomFragmentPagerAdapter {
 
         public ViewPagerAdapter(FragmentManager fm, int numFragments) {
             super(fm, numFragments);
@@ -146,9 +147,9 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String country_name = bundle.getString("CountryName");
-        System.out.println(country_name);
-        Log.d("a", country_name+"*");
+        Log.d("test",country_name);
         Country country = Country.getCountry(country_name);
+        imageView.setImageBitmap(CountryDangerMap.getDangerMap(country).getImage());
         engName.setText(country.getName_en());
         language_text.setText(country.getLanguage());
         capital_text.setText(country.getCapital());
