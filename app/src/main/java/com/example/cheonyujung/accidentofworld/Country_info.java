@@ -155,6 +155,4 @@ public class Country_info extends ParallaxViewPagerBaseActivity {
         continent_text.setText(country.getContinent());
         currency_text.setText(country.getCurrency());
     }
-
-
 }
