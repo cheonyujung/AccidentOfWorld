@@ -85,7 +85,8 @@ public class WorldList extends Base {
                 Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(WorldList.this, Country_info.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("countryName", adapter.getItem(position));
+                bundle.putString("CountryName", adapter.getItem(position));
+                System.out.println(bundle.getString("CountryName")+"!");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
