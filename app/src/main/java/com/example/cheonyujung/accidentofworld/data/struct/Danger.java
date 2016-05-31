@@ -35,7 +35,7 @@ public class Danger {
     }
 
     public void save() {
-
+        Data.dbdanger.insert(country,danger_type);
     }
 
     public static Danger getDanger(Country country){

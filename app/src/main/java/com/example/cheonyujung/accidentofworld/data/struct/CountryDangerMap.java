@@ -1,8 +1,11 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.example.cheonyujung.accidentofworld.data.Data;
+
+import java.io.File;
 
 /**
  * Created by ohyongtaek on 16. 5. 30..
@@ -38,6 +41,9 @@ public class CountryDangerMap {
     }
 
     public Bitmap getImage() {
+        if(image == null) {
+            image = createBitMap(path);
+        }
         return image;
     }
 
@@ -52,5 +58,9 @@ public class CountryDangerMap {
     public static CountryDangerMap getDangerMap(Country country) {
         return Data.dbCountryDangerMap.getDangerMap(country);
     }
-
+    public Bitmap createBitMap(String path) {
+        File file = new File(path);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        return bitmap;
+    }
 }

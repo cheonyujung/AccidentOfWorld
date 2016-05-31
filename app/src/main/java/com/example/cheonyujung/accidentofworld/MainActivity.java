@@ -8,6 +8,7 @@ import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.CountryDangerMap;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger_area;
 
 public class MainActivity extends Base {
 
@@ -25,6 +26,7 @@ public class MainActivity extends Base {
         Data.dbcountry = new Country(MainActivity.this);
         Data.dbdanger = new Danger(MainActivity.this);
         Data.dbCountryDangerMap = new CountryDangerMap(MainActivity.this);
+        Data.dbDanger_area = new Danger_area(MainActivity.this);
 //        DBHelper dbHelper = new DBHelper(getApplicationContext());
 //        dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
 //        setCustomActionbar();

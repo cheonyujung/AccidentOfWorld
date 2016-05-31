@@ -385,7 +385,7 @@ public class WorldList extends Base {
             e.printStackTrace();
         }
         Log.i("filepath:", " " + filepath);
-
+        dangerMap.setPath(filepath);
         dangerMap.setImage(createBitMap(filepath));
         dangerMap.save();
     }
