@@ -6,14 +6,24 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderViewFragment;
+=======
+import com.desmond.parallaxviewpager.ScrollViewFragment;
+import com.example.cheonyujung.accidentofworld.data.struct.Accident;
+>>>>>>> 4a94910... 게시판 UI
 
 /**
  * Created by cheonyujung on 2016. 5. 21..
  */
 public class Tab2 extends ScrollHolderViewFragment {
+
+    TextView natural_disaster;
+    TextView man_disater;
+    Accident accident = new Accident();
 
     public static final String TAG = Tab2.class.getSimpleName();
 
@@ -33,7 +43,18 @@ public class Tab2 extends ScrollHolderViewFragment {
         mPosition = getArguments().getInt(ARG_POSITION);
 
         View view = inflater.inflate(R.layout.tab2, container, false);
+<<<<<<< HEAD
         mScrollView = (CustomScrollView) view.findViewById(R.id.scrollview);
+=======
+        mScrollView = (com.desmond.parallaxviewpager.NotifyingScrollView) view.findViewById(R.id.scrollview);
+
+        natural_disaster = (TextView) view.findViewById(R.id.natual_disaster);
+        man_disater = (TextView) view.findViewById(R.id.man_disaster);
+
+//        natural_disaster.setText(accident.getNatural_disater());
+//        man_disater.setText(accident.getMan_disater());
+
+>>>>>>> 4a94910... 게시판 UI
         setScrollViewOnScrollListener();
         return view;
     }

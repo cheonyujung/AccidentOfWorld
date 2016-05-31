@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:touchscreenBlocksFocus="false">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/lightMainColor"
+        android:id = "@+id/topBoard"
+        android:padding="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/country_post"
+            android:layout_margin="10dp"
+            android:text = "나라"/>
+        <TextView
+            android:id="@+id/postTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="제목"
+            android:textSize="25dp"
+            android:layout_below="@+id/country_post"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id = "@+id/writer"
+            android:text = "글쓴이"
+            android:layout_below="@+id/postTitle"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/postTime"
+            android:text = "2016.05.28"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignTop="@+id/writer"
+            android:layout_toEndOf="@+id/postTitle" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id = "@+id/commentText"
+            android:layout_below="@+id/writer"
+            android:text = "댓글"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "6"
+            android:id = "@+id/commentCount"
+            android:layout_alignTop="@+id/commentText"
+            android:layout_toEndOf="@+id/commentText" />
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:text = "삭제"
+            android:layout_below="@+id/postTime"
+            android:id = "@+id/postDelete"
+            android:layout_alignParentEnd="true"
+            android:background="@color/lightMainColor"
+            android:stateListAnimator="@null"/>
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:text = "수정"
+            android:background="@color/lightMainColor"
+            android:layout_below="@+id/postTime"
+            android:layout_toStartOf="@+id/postDelete"
+            android:stateListAnimator="@null"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/content"
+        android:text="aaaasbblkajg;awlehf;wlhfsjdhflakfjshdlafkjsdhlfkajshdlfkajsdf"
+        android:layout_below="@+id/topBoard"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightMainColor"
+        android:layout_below="@+id/content"
+        android:id = "@+id/divider1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/divider1"
+        android:id = "@+id/buttonList">
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="댓글"
+            android:background="#ffffff"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text = "댓글쓰기"
+            android:background="#ffffff"
+            android:layout_weight="1"/>
+    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightMainColor"
+            android:layout_below="@+id/buttonList"
+            android:id = "@+id/divider2"/>
+    <ListView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id = "@+id/commentList"
+        android:layout_below="@+id/divider2"/>
+    </RelativeLayout>
+</ScrollView>

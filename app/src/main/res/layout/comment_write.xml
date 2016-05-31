@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/lightMainColor">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id = "@+id/postTitle_write"
+            android:text = "aasdf"
+            android:textSize="30dp"
+            android:layout_margin="15dp"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id = "@+id/postWriter_write"
+            android:text = "chyjis"
+            android:layout_below="@+id/postTitle_write"
+            android:layout_marginLeft="15dp"
+            android:textSize="17dp"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id = "@+id/postDate_write"
+            android:text = "16.05.30"
+            android:layout_toRightOf="@+id/postWriter_write"
+            android:layout_alignBaseline="@+id/postWriter_write"
+            android:layout_marginLeft="10dp"
+            android:textSize="17dp"/>
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/commentWrite"
+        android:layout_gravity="center_horizontal" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightMainColor"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:layout_weight="1"
+            android:id = "@+id/commentCancel"
+            android:background="#ffffff"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:layout_weight="1"
+            android:id = "@+id/commentOK"
+            android:background="#ffffff"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightMainColor"/>
+</LinearLayout>
