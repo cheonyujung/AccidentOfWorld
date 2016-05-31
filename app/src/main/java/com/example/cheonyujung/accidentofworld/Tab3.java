@@ -6,12 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.desmond.parallaxviewpager.ScrollViewFragment;
+import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView;
+import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderViewFragment;
 
 /**
  * Created by cheonyujung on 2016. 5. 21..
  */
-public class Tab3 extends ScrollViewFragment {
+public class Tab3 extends ScrollHolderViewFragment {
 
     public static final String TAG = Tab3.class.getSimpleName();
 
@@ -31,7 +32,7 @@ public class Tab3 extends ScrollViewFragment {
         mPosition = getArguments().getInt(ARG_POSITION);
 
         View view = inflater.inflate(R.layout.tab3, container, false);
-        mScrollView = (com.desmond.parallaxviewpager.NotifyingScrollView) view.findViewById(R.id.scrollview);
+        mScrollView = (CustomScrollView) view.findViewById(R.id.scrollview);
         setScrollViewOnScrollListener();
         return view;
     }

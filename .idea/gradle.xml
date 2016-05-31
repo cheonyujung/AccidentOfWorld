@@ -11,7 +11,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+<<<<<<< HEAD
             <option value="$PROJECT_DIR$/parallaxviewpager" />
+=======
+>>>>>>> 7b246b2... [추가] 여형경보 지도 가져오기 추가
           </set>
         </option>
       </GradleProjectSettings>

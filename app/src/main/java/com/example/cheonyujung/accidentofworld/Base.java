@@ -38,7 +38,6 @@ public class Base extends AppCompatActivity{
     public RelativeLayout actionbar;
     public SearchView searchview;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,11 +107,11 @@ public class Base extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.toolbar_layout,menu);
         return true;
     }
-    void setTitle(String title){
+    public void setTitle(String title){
         TextView Title = (TextView)findViewById(R.id.toolbar_title);
         Title.setText(title);
     }
-    void hiddenItem(){
+    public void hiddenItem(){
         MenuItem search = (MenuItem)findViewById(R.id.search_btn);
         Log.d(search+"","is null?");
 //        search.setVisible(false);

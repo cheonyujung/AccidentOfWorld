@@ -1,1 +1,1 @@
-include ':app', ':parallaxviewpager'
+include ':app'

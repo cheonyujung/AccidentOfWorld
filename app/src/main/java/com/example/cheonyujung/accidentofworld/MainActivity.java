@@ -3,8 +3,11 @@ package com.example.cheonyujung.accidentofworld;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
+import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.CountryDangerMap;
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
 
 public class MainActivity extends Base {
 
@@ -20,6 +23,8 @@ public class MainActivity extends Base {
         setTitle("Main");
 //        setContentView(R.layout.activity_main);
         Data.dbcountry = new Country(MainActivity.this);
+        Data.dbdanger = new Danger(MainActivity.this);
+        Data.dbCountryDangerMap = new CountryDangerMap(MainActivity.this);
 //        DBHelper dbHelper = new DBHelper(getApplicationContext());
 //        dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
 //        setCustomActionbar();
