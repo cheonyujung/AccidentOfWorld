@@ -1,5 +1,6 @@
-package com.example.cheonyujung.accidentofworld;
+package com.example.cheonyujung.accidentofworld.fragment;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,13 +8,20 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.cheonyujung.accidentofworld.Adapter;
+import com.example.cheonyujung.accidentofworld.Base;
+import com.example.cheonyujung.accidentofworld.Country_info;
+import com.example.cheonyujung.accidentofworld.R;
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
 
@@ -41,22 +49,29 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * Created by cheonyujung on 2016. 5. 19..
  */
-public class WorldList extends Base {
+public class WorldListFragment extends Fragment {
 
     ListView listView;
     Adapter adapter;
     Document doc = null;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.country_list);
+    public static WorldListFragment getInstence(){
+        return new WorldListFragment();
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.country_list,container,false);
         adapter = new Adapter();
-        listView = (ListView) findViewById(R.id.country_list);
+        listView = (ListView) view.findViewById(R.id.country_list);
         listView.setAdapter(adapter);
 
         adapter.addCountry("test");
         adapter.notifyDataSetChanged();
-        Button insertAll = (Button) findViewById(R.id.insert);
+
+        Button insertAll = (Button) view.findViewById(R.id.insert);
         insertAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,11 +80,11 @@ public class WorldList extends Base {
                 task.execute();
             }
         });
-        Button reset = (Button) findViewById(R.id.reset);
+        Button reset = (Button) view.findViewById(R.id.reset);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper dbHelper = new DBHelper(WorldList.this);
+                DBHelper dbHelper = new DBHelper(getActivity());
                 dbHelper.onUpgrade(dbHelper.getReadableDatabase(), 0, 1);
                 getCountryList();
             }
@@ -81,8 +96,8 @@ public class WorldList extends Base {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //GetDangerAboutCountry task = new GetDangerAboutCountry();
                 //task.execute();
-                Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WorldList.this, Country_info.class);
+                Toast.makeText(getActivity(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(),Country_info.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("countryName", adapter.getItem(position));
                 intent.putExtras(bundle);
@@ -90,11 +105,62 @@ public class WorldList extends Base {
             }
         });
         getCountryList();
+
+
+        return view;
     }
+
+
+
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.country_list);
+//        adapter = new Adapter();
+//        listView = (ListView) findViewById(R.id.country_list);
+//        listView.setAdapter(adapter);
+//
+//        adapter.addCountry("test");
+//        adapter.notifyDataSetChanged();
+//        setCustomActionbar();
+//        Button insertAll = (Button) findViewById(R.id.insert);
+//        insertAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                BackgroundTask task = new BackgroundTask();
+//                task.execute();
+//            }
+//        });
+//        Button reset = (Button) findViewById(R.id.reset);
+//        reset.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DBHelper dbHelper = new DBHelper(WorldListFragment.this);
+//                dbHelper.onUpgrade(dbHelper.getReadableDatabase(), 0, 1);
+//                getCountryList();
+//            }
+//        });
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //GetDangerAboutCountry task = new GetDangerAboutCountry();
+//                //task.execute();
+//                Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(WorldListFragment.this, Country_info.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("countryName", adapter.getItem(position));
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//            }
+//        });
+//        getCountryList();
+//    }
 
     public void getCountryList() {
         adapter.removeAll();
-        DBHelper dbHelper = new DBHelper(getApplication());
+        DBHelper dbHelper = new DBHelper(getActivity());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select name_ko from country order by name_ko;", null);
         while (cursor.moveToNext()) {
@@ -113,7 +179,7 @@ public class WorldList extends Base {
 
             String url = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningList?ServiceKey=FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D&numOfRows=999&pageSize=999&pageNo=1&startPage=1";
             request(url);
-            Geocoder gc = new Geocoder(getApplicationContext());
+            Geocoder gc = new Geocoder(getActivity());
             NodeList nodeList = doc.getElementsByTagName("body");
             NodeList items = ((Element) nodeList.item(0)).getElementsByTagName("items");
             NodeList itemList = ((Element) items.item(0)).getElementsByTagName("item");
@@ -229,7 +295,7 @@ public class WorldList extends Base {
         @Override
         protected Document doInBackground(String... params) {
 
-            DBHelper dbHelper = new DBHelper(WorldList.this);
+            DBHelper dbHelper = new DBHelper(getActivity());
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery("select country_id from country", null);
             while(cursor.moveToNext()) {

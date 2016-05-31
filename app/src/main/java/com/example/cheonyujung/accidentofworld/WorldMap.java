@@ -1,10 +1,15 @@
 package com.example.cheonyujung.accidentofworld;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class WorldMap extends Base implements OnMapReadyCallback {
 
@@ -16,19 +21,22 @@ public class WorldMap extends Base implements OnMapReadyCallback {
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        setCustomActionbar();
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
-//        LatLng sydney = new LatLng(-33.867, 151.206);
-//
-//        //map.setMyLocationEnabled(true);
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
-//
-//        map.addMarker(new MarkerOptions()
-//                .title("Sydney")
-//                .snippet("The most populous city in Australia.")
-//                .position(sydney));
+
+        addMarker(map);
+
+    }
+
+    public void addMarker(GoogleMap map){
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select name_ko,longitude,latitude from country;", null);
+        while (cursor.moveToNext()) {
+            LatLng position = new LatLng(cursor.getFloat(2),cursor.getFloat(1));
+            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
+        }
     }
 }

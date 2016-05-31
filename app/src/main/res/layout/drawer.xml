@@ -9,13 +9,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingRight="2dp"
             android:background="#FF3E454C"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:background="#2F8F8C" />
+                android:background="#2F8F8C"/>
 
             <Button
                 android:id="@+id/worldMapButton"
@@ -72,5 +73,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#ffffff" />
+
         </LinearLayout>
-    </RelativeLayout>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"/>
+</RelativeLayout>

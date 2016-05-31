@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search_btn"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="검색"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/drawer_btn"
+        android:icon="@drawable/ic_chevron_left_white_36dp"
+        android:title="드로어열기"
+        app:showAsAction="always"/>
+
+    </menu>
