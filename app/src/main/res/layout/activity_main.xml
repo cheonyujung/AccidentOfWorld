@@ -13,16 +13,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/toolbar"/>
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/body"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello World!" />
-        </RelativeLayout>
-
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <include layout="@layout/drawer" />
