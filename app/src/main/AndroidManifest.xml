@@ -20,7 +20,6 @@
         <activity android:name=".WorldList"/>
         <activity android:name=".WorldMap"/>
         <activity android:name=".Country_info"/>
-        <activity android:name=".fragment.singleFragmentActivity"/>
         <activity android:name=".fragment.ListActivity"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
