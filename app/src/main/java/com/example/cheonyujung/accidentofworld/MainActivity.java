@@ -1,13 +1,10 @@
 package com.example.cheonyujung.accidentofworld;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
-import com.example.cheonyujung.accidentofworld.fragment.singleFragmentActivity;
 
 public class MainActivity extends Base {
 
