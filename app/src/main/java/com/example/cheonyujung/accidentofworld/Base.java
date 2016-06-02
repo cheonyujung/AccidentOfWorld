@@ -8,20 +8,14 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cheonyujung.accidentofworld.fragment.ListActivity;
-import com.example.cheonyujung.accidentofworld.fragment.WorldMapFragment;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by cheonyujung on 2016. 5. 19..
@@ -87,7 +81,7 @@ public class Base extends AppCompatActivity{
             drawer.closeDrawer(Gravity.RIGHT);
             switch(view.getId()) {
                 case R.id.worldMapButton:
-                    startActivity(new Intent(Base.this, WorldMap.class));
+                    startActivity(new Intent(Base.this, MainActivity.class));
                     break;
                 case R.id.CountryListButton:
                     startActivity(new Intent(Base.this, ListActivity.class));
