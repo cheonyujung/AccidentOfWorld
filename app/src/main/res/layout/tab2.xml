@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    tools:context="com.example.cheonyujung.accidentofworld.Tab2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:divider="@drawable/horizontal_divider"
+        android:showDividers="middle"
+        android:layout_margin="10dp">
+
+        <include layout="@layout/header_placeholder" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="자연 재해"
+            android:textSize="15dp"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id = "@+id/natual_disaster"
+            android:textSize="15dp"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/black"
+            android:text= "인위 재해"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id = "@+id/man_disaster"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
+
+</com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView>
