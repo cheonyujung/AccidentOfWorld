@@ -4,11 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AccidentOfWorld.iml" filepath="$PROJECT_DIR$/AccidentOfWorld.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-<<<<<<< HEAD
-      <module fileurl="file://$PROJECT_DIR$/parallaxviewpager/parallaxviewpager.iml" filepath="$PROJECT_DIR$/parallaxviewpager/parallaxviewpager.iml" />
-      <module fileurl="file://$PROJECT_DIR$/parallaxviewpager/parallaxviewpager.iml" filepath="$PROJECT_DIR$/parallaxviewpager/parallaxviewpager.iml" />
-=======
->>>>>>> 7b246b2... [추가] 여형경보 지도 가져오기 추가
     </modules>
   </component>
 </project>
