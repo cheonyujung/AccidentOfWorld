@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:text="자연 재해"
-            android:textSize="20dp"/>
+            android:textSize="15dp"/>
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:textColor="@android:color/black"
             android:text= "인위 재해"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

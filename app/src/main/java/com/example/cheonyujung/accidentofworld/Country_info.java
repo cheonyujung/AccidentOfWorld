@@ -16,8 +16,6 @@ import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomFragmentPa
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomViewPagerBase;
 import com.example.cheonyujung.accidentofworld.slidingTab.SlidingTabLayout;
 
-import java.util.ArrayList;
-
 /**
  * Created by cheonyujung on 2016. 5. 21..
  */

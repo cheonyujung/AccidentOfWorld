@@ -58,24 +58,62 @@
             android:id = "@+id/commentCount"
             android:layout_alignTop="@+id/commentText"
             android:layout_toEndOf="@+id/commentText" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="50dp"
-            android:text = "삭제"
-            android:layout_below="@+id/postTime"
-            android:id = "@+id/postDelete"
-            android:layout_alignParentEnd="true"
-            android:background="@color/lightMainColor"
-            android:stateListAnimator="@null"/>
         <Button
             android:layout_height="wrap_content"
             android:layout_width="50dp"
             android:text = "수정"
             android:background="@color/lightMainColor"
-            android:layout_below="@+id/postTime"
-            android:layout_toStartOf="@+id/postDelete"
-            android:stateListAnimator="@null"/>
+            android:stateListAnimator="@null"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/postTitle"
+            android:layout_alignBaseline="@+id/commentCount"
+            android:id="@+id/button" />
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:text = "삭제"
+            android:id = "@+id/postDelete"
+            android:background="@color/lightMainColor"
+            android:layout_alignBaseline="@+id/commentCount"
+            android:stateListAnimator="@null"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/button" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/sad"
+            android:id = "@+id/dislikeBtn"
+            android:background="@color/lightMainColor"
+            android:layout_below="@+id/writer"
+            android:layout_toEndOf="@+id/likeCount" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/happy"
+            android:id = "@+id/likeBtn"
+            android:background="@color/lightMainColor"
+            android:layout_marginStart="49dp"
+            android:layout_alignTop="@+id/dislikeBtn"
+            android:layout_toEndOf="@+id/postDelete" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/likeCount"
+            android:text = "10"
+            android:layout_toRightOf="@+id/likeBtn"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignTop="@+id/commentCount" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/disLikeCount"
+            android:text = "10"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignTop="@+id/likeCount"
+            android:layout_toEndOf="@+id/dislikeBtn" />
 
     </RelativeLayout>
     <TextView
