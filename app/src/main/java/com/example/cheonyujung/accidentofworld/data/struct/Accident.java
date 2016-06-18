@@ -1,12 +1,13 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
+import com.example.cheonyujung.accidentofworld.data.Data;
+
 /**
  * Created by ohyongtaek on 16. 5. 16..
  */
 public class Accident {
     private Country country;
-    private String natural_disater;
-    private String man_disater;
+    private String disater;
 
     public Country getCountry() {
         return country;
@@ -16,19 +17,15 @@ public class Accident {
         this.country = country;
     }
 
-    public String getMan_disater() {
-        return man_disater;
+    public String getDisater() {
+        return disater;
     }
 
-    public void setMan_disater(String man_disater) {
-        this.man_disater = man_disater;
+    public void setDisater(String disater) {
+        this.disater = disater;
     }
 
-    public String getNatural_disater() {
-        return natural_disater;
-    }
-
-    public void setNatural_disater(String natural_disater) {
-        this.natural_disater = natural_disater;
+    public void save() {
+        Data.dbAccident.insert(this.country, this.disater);
     }
 }

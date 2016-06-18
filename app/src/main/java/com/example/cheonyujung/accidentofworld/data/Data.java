@@ -1,5 +1,7 @@
 package com.example.cheonyujung.accidentofworld.data;
 
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Accident;
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Contact;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.CountryDangerMap;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
@@ -13,6 +15,11 @@ public class Data {
     public static Danger dbdanger;
     public static CountryDangerMap dbCountryDangerMap;
     public static Danger_area dbDanger_area;
-    public static String CountryDangerInfoURL = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningInfo?ServiceKey=FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D";
+    public static Contact dbContact;
+    public static Accident dbAccident;
+    private static String serviceKey = "FSXfACOsUM%2Bf4uNB%2F8TPNQcFFKHzJh91ArpRmP%2BrjGs4LIHDiirHcHpuxKqYmJmEf8Ls5YIa1VezmY41uetJ%2BQ%3D%3D";
+    public static String contactUrl = "http://apis.data.go.kr/1262000/ContactService/getContactInfo?ServiceKey=" + serviceKey;
+    public static String countryDangerInfoURL = "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningInfo?ServiceKey=" + serviceKey;
+    public static String accidentUrl = "http://apis.data.go.kr/1262000/AccidentService/getAccidentInfo?ServiceKey=" + serviceKey;
 
 }

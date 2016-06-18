@@ -1,6 +1,7 @@
 package com.example.cheonyujung.accidentofworld;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by ohyongtaek on 16. 5. 21..
  */
-public class Adapter extends BaseAdapter {
+public class CountryListAdapter extends BaseAdapter {
     private ArrayList<String> list = new ArrayList<>();
     @Override
     public int getCount() {
@@ -21,6 +22,7 @@ public class Adapter extends BaseAdapter {
 
     @Override
     public String getItem(int position) {
+        Log.d("testest", list.get(position));
         return list.get(position);
     }
 

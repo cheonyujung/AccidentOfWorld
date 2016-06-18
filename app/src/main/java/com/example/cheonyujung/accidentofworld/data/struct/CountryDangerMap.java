@@ -58,7 +58,11 @@ public class CountryDangerMap {
     public static CountryDangerMap getDangerMap(Country country) {
         return Data.dbCountryDangerMap.getDangerMap(country);
     }
-    public Bitmap createBitMap(String path) {
+    public static CountryDangerMap getDangerMap(String countryName) {
+        Country country = Country.getCountry(countryName);
+        return getDangerMap(country);
+    }
+    private Bitmap createBitMap(String path) {
         File file = new File(path);
         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
         return bitmap;

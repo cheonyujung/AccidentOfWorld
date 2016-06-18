@@ -6,8 +6,6 @@
     android:background="#ffffff"
     android:fillViewport="false"
     android:orientation="vertical">
-    <include layout="@layout/toolbar"
-        android:id="@+id/include" />
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"

@@ -9,13 +9,21 @@ import com.example.cheonyujung.accidentofworld.data.Data;
 public class Danger {
     private Country country;
     private DangerType danger_type;
-
+    private long _id;
     public Danger() {
     }
 
     public Danger(Country country, String danger_type) {
         this.country = country;
         this.danger_type = DangerType.valueOf(danger_type);
+    }
+
+    public long get_id() {
+        return _id;
+    }
+
+    public void set_id(long _id) {
+        this._id = _id;
     }
 
     public Country getCountry() {

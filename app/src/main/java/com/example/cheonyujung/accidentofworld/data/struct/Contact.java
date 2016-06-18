@@ -1,5 +1,7 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
+import com.example.cheonyujung.accidentofworld.data.Data;
+
 /**
  * Created by ohyongtaek on 16. 5. 16..
  */
@@ -22,4 +24,13 @@ public class Contact {
     public void setTel(String tel) {
         this.tel = tel;
     }
+
+    public void save() {
+        Data.dbContact.insert(this.country,tel);
+    }
+
+    public Contact getContact(String countryName) {
+        return Data.dbContact.getContact(countryName);
+    }
+
 }

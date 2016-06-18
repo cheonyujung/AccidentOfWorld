@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.Data;
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Accident;
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Contact;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.CountryDangerMap;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
@@ -29,10 +31,9 @@ public class MainActivity extends Base implements OnMapReadyCallback {
         Data.dbdanger = new Danger(MainActivity.this);
         Data.dbCountryDangerMap = new CountryDangerMap(MainActivity.this);
         Data.dbDanger_area = new Danger_area(MainActivity.this);
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
-        dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
+        Data.dbContact = new Contact(MainActivity.this);
+        Data.dbAccident = new Accident(MainActivity.this);
         setTitle("World Map");
-
         MapFragment mapfm = MapFragment.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.body,mapfm).commit();
@@ -51,5 +52,8 @@ public class MainActivity extends Base implements OnMapReadyCallback {
             LatLng position = new LatLng(cursor.getFloat(2),cursor.getFloat(1));
             map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
         }
+//        DBHelper dbHelper = new DBHelper(getApplicationContext());
+//        dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
+//        setCustomActionbar();
     }
 }

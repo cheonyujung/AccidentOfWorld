@@ -2,6 +2,9 @@ package com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
@@ -28,6 +31,19 @@ public class Contact extends DBQuery {
     }
 
     public void delete(Country country){
-        writeDB().delete("contact","country_id=?",new String[]{String.valueOf(country.getCountry_id())});
+        writeDB().delete("contact", "country_id=?", new String[]{String.valueOf(country.getCountry_id())});
+    }
+
+    public com.example.cheonyujung.accidentofworld.data.struct.Contact getContact(String countryName) {
+        Country country = Country.getCountry(countryName);
+        String[] whereArgs = new String[] {String.valueOf(country.getCountry_id())};
+        Cursor cursor =readDB().rawQuery("select * from contact where country_id = ?;", whereArgs);
+        if(cursor.moveToFirst()) {
+            com.example.cheonyujung.accidentofworld.data.struct.Contact contact = new com.example.cheonyujung.accidentofworld.data.struct.Contact();
+            contact.setCountry(country);
+            contact.setTel(cursor.getString(1));
+            return contact;
+        }
+        return null;
     }
 }

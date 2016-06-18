@@ -18,7 +18,7 @@ import java.io.File;
 /**
  * Created by ohyongtaek on 16. 5. 30..
  */
-public class CountryDangerMap extends DBQuery{
+public class CountryDangerMap extends DBQuery {
 
     public CountryDangerMap(Context context) {
         super(context);
@@ -34,15 +34,17 @@ public class CountryDangerMap extends DBQuery{
     }
 
     public com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap getDangerMap(Country country) {
-        String[] whereArgs = new String[] {String.valueOf(country.getCountry_id())};
+        String[] whereArgs = new String[]{String.valueOf(country.getCountry_id())};
         SQLiteDatabase db = readDB();
         Cursor cursor = db.rawQuery("select country_id, path from country_danger_map where country_id = ?", whereArgs);
-        cursor.moveToFirst();
-        Log.d("test",cursor.getString(1));
-        com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap dangerMap = new com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap(country, createBitMap(cursor.getString(1)),cursor.getString(1));
-        cursor.close();
-        db.close();
-        return dangerMap;
+        if (cursor.moveToFirst()) {
+            Log.d("test", cursor.getString(1));
+            com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap dangerMap = new com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap(country, createBitMap(cursor.getString(1)), cursor.getString(1));
+            cursor.close();
+            db.close();
+            return dangerMap;
+        }
+        return null;
     }
 
     public Bitmap createBitMap(String path) {
