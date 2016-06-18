@@ -20,7 +20,7 @@
             android:layout_marginRight="10dp"/>
         <EditText
             android:layout_column="1"
-            android:text="Write your google Address"
+            android:hint="Write your google Address"
             android:textSize="15dp"/>
 
         <TextView
@@ -31,7 +31,7 @@
             android:textSize="20dp"/>
         <EditText
             android:layout_column="1"
-            android:text="Write your google Password"
+            android:hint="Write your google Password"
             android:textSize="15dp"/>
     </GridLayout>
     <Button

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "아이디"
+        android:id = "@+id/userID"
+        android:textSize = "17dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id = "@+id/commentTime"
+        android:text = "2016/5/30"
+        android:layout_toRightOf="@+id/userID"
+        android:layout_marginLeft="10dp"
+        android:textSize="17dp"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text = "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+        android:id = "@+id/commentContent"
+        android:layout_below="@+id/userID"
+        android:textSize="17dp"/>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:text = "삭제"
+        android:id = "@+id/commentDelete"
+        android:layout_alignParentRight="true"
+        android:background="#ffffff"
+        android:stateListAnimator="@null"/>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:text = "수정"
+        android:id = "@+id/commentModify"
+        android:layout_toLeftOf="@+id/commentDelete"
+        android:background="#ffffff"
+        android:stateListAnimator="@null"/>
+
+</RelativeLayout>

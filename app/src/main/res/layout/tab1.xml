@@ -20,23 +20,32 @@
 
         <include layout="@layout/header_placeholder"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/long_text"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:id = "@+id/dangerTypeText"
+                    android:text="위험 유형 : \t"
+                    android:textSize="15dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/long_text"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/long_text"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_toRightOf="@+id/dangerTypeText"
+                    android:id = "@+id/dangerType"
+                    android:text="위험 경고"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id = "@+id/dangerContents"
+                    android:layout_below="@+id/dangerTypeText"/>
+        </RelativeLayout>
     </LinearLayout>
 
 </com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView>

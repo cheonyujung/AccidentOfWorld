@@ -41,7 +41,7 @@ public class Base extends AppCompatActivity{
 
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.main_activity);
         drawerWorldMap_btn = (Button) findViewById(R.id.worldMapButton);

@@ -2,11 +2,12 @@ package com.example.cheonyujung.accidentofworld;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger_area;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderViewFragment;
 
@@ -15,7 +16,10 @@ import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderView
  */
 public class Tab1 extends ScrollHolderViewFragment {
 
+    public TextView dangerTypeText;
+    public TextView dangerContent;
     public static final String TAG = Tab1.class.getSimpleName();
+    Danger_area danger_area;
 
     public static Tab1 newInstance(int position) {
         Tab1 fragment = new Tab1();
@@ -34,6 +38,7 @@ public class Tab1 extends ScrollHolderViewFragment {
 
         View view = inflater.inflate(R.layout.tab1, container, false);
         mScrollView = (CustomScrollView) view.findViewById(R.id.scrollview);
+
         setScrollViewOnScrollListener();
         return view;
     }

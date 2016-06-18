@@ -16,7 +16,8 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:divider="@drawable/horizontal_divider"
-        android:showDividers="middle">
+        android:showDividers="middle"
+        android:layout_margin="10dp">
 
         <include layout="@layout/header_placeholder" />
 
@@ -24,37 +25,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:text="@string/long_text"/>
-
+            android:text="자연 재해"
+            android:textSize="15dp"/>
         <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/short_text"/>
-
+            android:layout_width="match_parent"
+            android:id = "@+id/natual_disaster"
+            android:textSize="15dp"/>
         <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:textColor="@android:color/black"
-            android:text="@string/long_text"/>
-
+            android:text= "인위 재해"
+            android:textSize="15dp" />
         <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/long_text"/>
-
-        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/long_text"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/short_text"/>
+            android:id = "@+id/man_disaster"
+            android:textSize="15dp"/>
 
     </LinearLayout>
 

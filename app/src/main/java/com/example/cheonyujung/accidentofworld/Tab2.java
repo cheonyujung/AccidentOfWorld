@@ -6,7 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.cheonyujung.accidentofworld.data.struct.Accident;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderViewFragment;
 
@@ -14,6 +16,10 @@ import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderView
  * Created by cheonyujung on 2016. 5. 21..
  */
 public class Tab2 extends ScrollHolderViewFragment {
+
+    TextView natural_disaster;
+    TextView man_disater;
+    Accident accident = new Accident();
 
     public static final String TAG = Tab2.class.getSimpleName();
 
