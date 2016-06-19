@@ -2,8 +2,10 @@ package com.example.cheonyujung.accidentofworld.data.query.BoardQuery;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
+import com.example.cheonyujung.accidentofworld.data.struct.Country;
 
 /**
  * Created by ohyongtaek on 16. 5. 16..
@@ -13,9 +15,22 @@ public class Board extends DBQuery{
         super(context);
     }
 
-    public void insert(com.example.cheonyujung.accidentofworld.data.struct.Country country){
+    public void insert(int country_id){
         ContentValues values = new ContentValues();
-        values.put("country_id",country.getCountry_id());
-        writeDB().insert("board",null,values);
+        values.put("_id", country_id);
+        writeDB().insert("board", null, values);
+    }
+
+    public com.example.cheonyujung.accidentofworld.data.struct.Board getBoard(String countryName) {
+        Country country = Country.getCountry(countryName);
+
+        String[] whereArgs = new String[] {String.valueOf(country.getCountry_id())};
+        Cursor cursor =readDB().rawQuery("select * from board where _id = ?;", whereArgs);
+        if(cursor.moveToFirst()) {
+            com.example.cheonyujung.accidentofworld.data.struct.Board board = new com.example.cheonyujung.accidentofworld.data.struct.Board();
+            board.set_id(cursor.getInt(0));
+            return board;
+        }
+        return null;
     }
 }

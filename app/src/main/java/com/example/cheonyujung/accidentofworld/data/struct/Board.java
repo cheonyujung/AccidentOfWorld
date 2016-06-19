@@ -1,5 +1,7 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
+import com.example.cheonyujung.accidentofworld.data.Data;
+
 import java.util.ArrayList;
 
 /**
@@ -7,9 +9,7 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    private Country country;
     private int _id;
-    private ArrayList<Post> posts;
 
     public int get_id() {
         return _id;
@@ -19,15 +19,12 @@ public class Board {
         this._id = _id;
     }
 
-    public Country getCountry() {
-        return country;
+    public static Board getBoard(String countryName) {
+        return Data.dbBoard.getBoard(countryName);
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void save(){
+        Data.dbBoard.insert(this._id);
     }
 
-    public ArrayList<Post> getPosts(){ return posts;}
-
-    public void setPosts(ArrayList<Post> posts){this.posts = posts;}
 }

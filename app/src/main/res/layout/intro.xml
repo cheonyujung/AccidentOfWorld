@@ -2,17 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout"
     android:background="@color/mainColor">
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textColor="#ffffff"-->
-        <!--android:text = "World Accident\n  Information\n    For Travel"-->
-        <!--android:textSize="30dp"-->
-        <!--android:layout_marginLeft="80dp"-->
-        <!--android:layout_marginTop="60dp"-->
-        <!--android:typeface = "serif"/>-->
-        <!--&lt;!&ndash;android:typeface="monospace"&ndash;&gt;-->
+
     <ImageView
         android:layout_width="180dp"
         android:layout_height="160dp"
@@ -29,5 +21,14 @@
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"/>
-
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="준비중입니다"
+        android:layout_marginTop="38dp"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_below="@+id/progressBar"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
