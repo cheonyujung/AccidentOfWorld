@@ -102,6 +102,9 @@ public class Post {
 
     public void setWrite_user(String write_user){ this.write_user = write_user;}
 
+    public void save() {
+        Data.dbPost.insert(board,title,content,write_user);
+    }
     public static Post getPost(String countryName){
         return Data.dbPost.getPost(countryName);
     }

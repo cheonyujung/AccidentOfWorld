@@ -19,13 +19,13 @@ public class Post extends DBQuery {
     public Post(Context context) {
         super(context);
     }
-    public void insert(com.example.cheonyujung.accidentofworld.data.struct.Board board,String title, String content, com.example.cheonyujung.accidentofworld.data.struct.User user){
+    public void insert(int board,String title, String content, String user){
         SimpleDateFormat date = new SimpleDateFormat("yyyy/mm/dd");
         ContentValues values = new ContentValues();
-        values.put("board",board.get_id());
+        values.put("board",board);
         values.put("title",title);
         values.put("content",content);
-        values.put("user_id",user.getId());
+        values.put("user_id",user);
         values.put("num_like",0);
         values.put("num_dislike",0);
         values.put("post_date", date+"");

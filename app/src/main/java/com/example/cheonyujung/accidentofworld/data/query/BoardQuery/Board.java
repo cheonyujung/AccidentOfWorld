@@ -15,9 +15,9 @@ public class Board extends DBQuery{
         super(context);
     }
 
-    public void insert(com.example.cheonyujung.accidentofworld.data.struct.Country country){
+    public void insert(int country_id){
         ContentValues values = new ContentValues();
-        values.put("_id", country.getCountry_id());
+        values.put("_id", country_id);
         writeDB().insert("board", null, values);
     }
 

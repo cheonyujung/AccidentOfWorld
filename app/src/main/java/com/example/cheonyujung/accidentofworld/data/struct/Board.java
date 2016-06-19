@@ -23,5 +23,8 @@ public class Board {
         return Data.dbBoard.getBoard(countryName);
     }
 
+    public void save(){
+        Data.dbBoard.insert(this._id);
+    }
 
 }

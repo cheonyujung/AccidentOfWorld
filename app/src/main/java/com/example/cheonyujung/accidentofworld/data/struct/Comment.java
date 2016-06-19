@@ -68,11 +68,11 @@ public class Comment {
         this.userID = userID;
     }
 
+    public void save() {
+        Data.dbComment.insert(post,content,userID);
+    }
     public static ArrayList<Comment> getCommentsByPost_id(int post_id) {
         Post post = Post.getPost(post_id);
-
         return Data.dbComment.getCommentByPost_id(post);
-
-
     }
 }
