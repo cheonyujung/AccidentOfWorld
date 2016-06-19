@@ -72,10 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_BOARD_TABLE =
             "CREATE TABLE `" + BOARD_TABLE_NAME + "`(" +
-                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "country_id INTEGER NOT NULL, " +
-                    "FOREIGN KEY(country_id) REFERENCES " +
-                    "'" + COUNTRY_TABLE_NAME + "'(country_id)" +
+                    "_id INTEGER PRIMARY KEY " +
                     ");";
 
     private static final String CREATE_POST_TABLE =
@@ -86,11 +83,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     "contents TEXT NOT NULL, " +
                     "user_id TEXT NOT NULL, " +
                     "num_like INTEGER NOT NULL, " +
-                    "count_num INTEGER NOT NULL, " +
                     "num_dislike INTEGER NOT NULL, " +
-
                     "post_date  TEXT NOT NULL, " +
-                    "post_user  TEXT NOT NULL, " +
                     "FOREIGN KEY(board_id) REFERENCES "+
                     "'"+BOARD_TABLE_NAME+"'(_id)"+
                     ");";
@@ -101,11 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     "post_id INTEGER NOT NULL, " +
                     "contents TEXT NOT NULL, " +
                     "user_id TEXT NOT NULL, " +
-                    "num_like INTEGER NOT NULL, " +
-                    "num_dislike INTEGER NOT NULL, " +
-
                     "comment_date TEXT NOT NULL, " +
-                    "comment_user TEXT NOT NULL, " +
                     "FOREIGN KEY(post_id) REFERENCES "+
                     "'"+POST_TABLE_NAME+"'(board_id)"+
                     ");";

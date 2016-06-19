@@ -1,5 +1,7 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
+import com.example.cheonyujung.accidentofworld.data.Data;
+
 import java.util.ArrayList;
 
 /**
@@ -9,7 +11,7 @@ public class Post {
     private int _id;
     private String title;
     private String content;
-    private Board board;
+    private int board;
     private int like_count;
     private int dislike_count;
     private String post_date;
@@ -20,7 +22,7 @@ public class Post {
         this._id = _id;
         this.title = title;
         this.content = content;
-        this.board = null;
+        this.board = boardID;
         this.like_count = like_count;
         this.dislike_count = dislike_count;
         this.post_date = post_date;
@@ -28,11 +30,27 @@ public class Post {
         this.comments = comments;
     }
 
-    public Board getBoard() {
+    public Post() {
+
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Comment> comments) {
+        if (comments == null) {
+            this.comments = new ArrayList<>();
+        } else {
+            this.comments = comments;
+        }
+    }
+
+    public int getBoard() {
         return board;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(int board) {
         this.board = board;
     }
 
@@ -84,5 +102,11 @@ public class Post {
 
     public void setWrite_user(String write_user){ this.write_user = write_user;}
 
+    public static Post getPost(String countryName){
+        return Data.dbPost.getPost(countryName);
+    }
 
+    public static Post getPost(int post_id) {
+        return Data.dbPost.getPost(post_id);
+    }
 }

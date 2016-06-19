@@ -28,14 +28,9 @@ public class MainActivity extends Base implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Data.dbcountry = new Country(MainActivity.this);
-        Data.dbdanger = new Danger(MainActivity.this);
-        Data.dbCountryDangerMap = new CountryDangerMap(MainActivity.this);
-        Data.dbDanger_area = new Danger_area(MainActivity.this);
-        Data.dbContact = new Contact(MainActivity.this);
-        Data.dbAccident = new Accident(MainActivity.this);
+
         setTitle("World Map");
-        MapFragment mapfm = MapFragment.newInstance();
+        mapfm = MapFragment.newInstance();
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         //dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
         setTitle("World Map");
