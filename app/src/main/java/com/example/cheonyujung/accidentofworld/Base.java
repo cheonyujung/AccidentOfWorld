@@ -44,7 +44,6 @@ import com.google.android.gms.common.api.Status;
 public class Base extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     public DrawerLayout drawer;
-    public Button drawerBookmark_btn;
     public SignInButton drawerLoginBtn;
     public Button drawerLogoutBtn;
     public LinearLayout logoutLayout;
@@ -87,7 +86,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
 
         drawerWorldMap_btn.setOnClickListener(listener);
         drawerWorldList_btn.setOnClickListener(listener);
-        drawerBookmark_btn.setOnClickListener(listener);
+        drawerBoard_btn.setOnClickListener(listener);
         drawerLoginBtn.setOnClickListener(listener);
         drawerLogoutBtn.setOnClickListener(listener);
 
