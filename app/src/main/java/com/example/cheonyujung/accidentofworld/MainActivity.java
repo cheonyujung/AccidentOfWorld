@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
+import com.example.cheonyujung.accidentofworld.data.DangerType;
 import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Accident;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Contact;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -64,17 +66,23 @@ public class MainActivity extends Base implements SearchView.OnQueryTextListener
                 new Country(this).getCountryAll();
 
         for(int i=0;i<countries.size();i++){
-//            LatLng position = new LatLng(countries.get(i).getLatitude());
-//            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
-        }
-//        while (cursor.moveToNext()) {
-//            LatLng position = new LatLng(cursor.getFloat(2),cursor.getFloat(1));
-//            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
-//        }
+            com.example.cheonyujung.accidentofworld.data.struct.Country country = countries.get(i);
+            DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
+            LatLng position = new LatLng(country.getLatitude(),country.getLongitude());
+            if(dangerType == DangerType.high){
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-//        DBHelper dbHelper = new DBHelper(getApplicationContext());
-//        dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
-//        setCustomActionbar();
+            }
+            else if(dangerType == DangerType.middle){
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+            }
+            else{
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            }
+        }
         moveCamera("일본");
     }
 
