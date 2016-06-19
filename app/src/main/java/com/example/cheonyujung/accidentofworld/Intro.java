@@ -203,6 +203,7 @@ public class Intro extends Activity{
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("app_version",1);
             Log.d("test",count+"");
+            editor.commit();
             endReady();
             super.onPostExecute(null);
         }
