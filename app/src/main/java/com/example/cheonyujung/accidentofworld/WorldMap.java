@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 
 public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
+
     MapFragment mapfm;
 
     @Override
@@ -63,7 +64,7 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             LatLng position = new LatLng(country.getLatitude(),country.getLongitude());
             if(danger == null){
                 map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker((float)270.0)));
+                        .icon(BitmapDescriptorFactory.defaultMarker((float)260.0)));
                 continue;
             }
             DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
