@@ -2,7 +2,9 @@ package com.example.cheonyujung.accidentofworld.parallaxviewpage;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ScrollView;
 
 
@@ -19,7 +21,6 @@ public class ScrollHolderViewFragment extends Fragment implements ScrollTabHolde
     public static final String TAG = ScrollHolderViewFragment.class.getSimpleName();
 
     protected static final int NO_SCROLL_X = 0;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

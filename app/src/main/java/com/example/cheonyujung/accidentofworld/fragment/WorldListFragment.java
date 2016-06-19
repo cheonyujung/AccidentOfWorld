@@ -1,17 +1,12 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +14,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.cheonyujung.accidentofworld.Adapter;
-import com.example.cheonyujung.accidentofworld.Base;
-import com.example.cheonyujung.accidentofworld.Country_info;
+import com.example.cheonyujung.accidentofworld.CountryListAdapter;
 import com.example.cheonyujung.accidentofworld.R;
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
-import com.example.cheonyujung.accidentofworld.data.DangerType;
-import com.example.cheonyujung.accidentofworld.data.Data;
+import com.example.cheonyujung.accidentofworld.data.downloadInfo.GetDownloadsCountryInfo;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
-import com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap;
-import com.example.cheonyujung.accidentofworld.data.struct.Danger;
-import com.example.cheonyujung.accidentofworld.data.struct.Danger_area;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -42,15 +30,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,10 +48,10 @@ import javax.xml.parsers.ParserConfigurationException;
 public class WorldListFragment extends Fragment {
 
     ListView listView;
-    Adapter adapter;
+    CountryListAdapter countryListAdapter;
     Document doc = null;
 
-    public static WorldListFragment getInstence(){
+    public static WorldListFragment getInstence() {
         return new WorldListFragment();
     }
 
@@ -75,13 +59,12 @@ public class WorldListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.country_list,container,false);
-        adapter = new Adapter();
+        View view = inflater.inflate(R.layout.country_list, container, false);
+        countryListAdapter = new CountryListAdapter();
         listView = (ListView) view.findViewById(R.id.country_list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(countryListAdapter);
 
-        adapter.addCountry("test");
-        adapter.notifyDataSetChanged();
+        countryListAdapter.notifyDataSetChanged();
 
         Button insertAll = (Button) view.findViewById(R.id.insert);
         insertAll.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +90,10 @@ public class WorldListFragment extends Fragment {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                GetDangerAboutCountry task = new GetDangerAboutCountry(position);
-                task.execute(adapter.getItem(position));
+                Log.d("testest", "success");
+                GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(getActivity(), position, countryListAdapter);
+                countryInfoTask.execute(countryListAdapter.getItem(position));
+
             }
         });
         getCountryList();
@@ -117,63 +102,15 @@ public class WorldListFragment extends Fragment {
         return view;
     }
 
-
-
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.country_list);
-//        adapter = new Adapter();
-//        listView = (ListView) findViewById(R.id.country_list);
-//        listView.setAdapter(adapter);
-//
-//        adapter.addCountry("test");
-//        adapter.notifyDataSetChanged();
-//        setCustomActionbar();
-//        Button insertAll = (Button) findViewById(R.id.insert);
-//        insertAll.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                BackgroundTask task = new BackgroundTask();
-//                task.execute();
-//            }
-//        });
-//        Button reset = (Button) findViewById(R.id.reset);
-//        reset.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DBHelper dbHelper = new DBHelper(WorldListFragment.this);
-//                dbHelper.onUpgrade(dbHelper.getReadableDatabase(), 0, 1);
-//                getCountryList();
-//            }
-//        });
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //GetDangerAboutCountry task = new GetDangerAboutCountry();
-//                //task.execute();
-//                Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(WorldListFragment.this, Country_info.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("countryName", adapter.getItem(position));
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//            }
-//        });
-//        getCountryList();
-//    }
-
     public void getCountryList() {
-        adapter.removeAll();
+        countryListAdapter.removeAll();
         DBHelper dbHelper = new DBHelper(getActivity());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select name_ko from country order by name_ko;", null);
         while (cursor.moveToNext()) {
-            adapter.addCountry(cursor.getString(0));
+            countryListAdapter.addCountry(cursor.getString(0));
         }
-        adapter.notifyDataSetChanged();
+        countryListAdapter.notifyDataSetChanged();
         cursor.close();
     }
 
@@ -284,114 +221,6 @@ public class WorldListFragment extends Fragment {
     }
 
 
-    class GetDangerAboutCountry extends AsyncTask<String, Void, HashMap<String,Object>> {
-
-        String url = Data.CountryDangerInfoURL;
-        int position = 0;
-
-        GetDangerAboutCountry(int position) {
-            this.position = position;
-        }
-
-        @Override
-        protected void onPostExecute(HashMap<String,Object> hashMap) {
-            GetImageAsyncTask getImageAsyncTask = new GetImageAsyncTask();
-            getImageAsyncTask.execute(hashMap);
-            Intent intent = new Intent(getActivity(), Country_info.class);
-            Bundle bundle = new Bundle();
-            Log.d("test2",adapter.getItem(position)+"!!");
-            bundle.putString("CountryName", adapter.getItem(position));
-            intent.putExtras(bundle);
-            startActivity(intent);
-            super.onPostExecute(hashMap);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected HashMap<String,Object> doInBackground(String... params) {
-
-            Country country = Country.getCountry(params[0]);
-            String reqeust = url + "&" + "id=" + country.getCountry_id();
-            HashMap<String, Object> hashMap = new HashMap<>();
-            Log.d("test", reqeust);
-            try {
-                URL reqUrl = new URL(reqeust);
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = dbf.newDocumentBuilder();
-                InputStream inputStream = reqUrl.openStream();
-                Document document = builder.parse(new InputSource(inputStream));
-                document.getDocumentElement().normalize();
-                NodeList body = document.getElementsByTagName("body");
-                NodeList itemList = ((Element) body.item(0)).getElementsByTagName("item");
-                Node dangerNode = itemList.item(0);
-                Node attentionPartial = ((Element) dangerNode).getElementsByTagName("attentionPartial").item(0);
-                if (attentionPartial != null) {
-                    Node attentionNote = ((Element) dangerNode).getElementsByTagName("attentionNote").item(0);
-                    Danger danger = new Danger();
-                    danger.setCountry(country);
-                    danger.setDanger_type(DangerType.low);
-                    danger.save();
-                    Danger_area danger_area = new Danger_area();
-                    danger_area.setCountry(country);
-                    danger_area.setContents(attentionNote.getTextContent());
-                    danger_area.setDegree(attentionPartial.getTextContent());
-                    danger_area.save();
-                    Log.d(attentionPartial.getTextContent(), attentionNote.getTextContent());
-                }
-                Node controlPartial = ((Element) dangerNode).getElementsByTagName("controlPartial").item(0);
-                if (controlPartial != null) {
-                    Node controlNote = ((Element) dangerNode).getElementsByTagName("controlNote").item(0);
-                    Danger danger = new Danger();
-                    danger.setCountry(country);
-                    danger.setDanger_type(DangerType.middle);
-                    danger.save();
-                    Danger_area danger_area = new Danger_area();
-                    danger_area.setCountry(country);
-                    danger_area.setContents(controlNote.getTextContent());
-                    danger_area.setDegree(controlPartial.getTextContent());
-                    danger_area.save();
-                    Log.d(controlPartial.getTextContent(), controlNote.getTextContent());
-                }
-                Node limitaPartial = ((Element) dangerNode).getElementsByTagName("limitaPartial").item(0);
-                if (limitaPartial != null) {
-                    Node limitaNote = ((Element) dangerNode).getElementsByTagName("limitaNote").item(0);
-                    Danger danger = new Danger();
-                    danger.setCountry(country);
-                    danger.setDanger_type(DangerType.high);
-                    danger.save();
-                    Danger_area danger_area = new Danger_area();
-                    danger_area.setCountry(country);
-                    danger_area.setContents(limitaNote.getTextContent());
-                    danger_area.setDegree(limitaPartial.getTextContent());
-                    danger_area.save();
-                    Log.d(limitaPartial.getTextContent(), limitaNote.getTextContent());
-                }
-                Node danger_image = ((Element) dangerNode).getElementsByTagName("imgUrl2").item(0);
-                if (danger_image != null) {
-                    CountryDangerMap dangerMap = new CountryDangerMap();
-                    dangerMap.setCountry(country);
-                    hashMap.put(danger_image.getTextContent(),dangerMap);
-                }
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            }
-
-            return hashMap;
-        }
-    }
-
     private Document request(String url) {
         try {
             URL reqUrl = new URL(url);
@@ -410,74 +239,6 @@ public class WorldListFragment extends Fragment {
             e.printStackTrace();
         }
         return doc;
-    }
-
-    private void getDangerMapImage(String url, CountryDangerMap dangerMap) {
-        String filepath = "";
-        try {
-            URL reqUrl = new URL(url);
-            HttpURLConnection urlConnection = (HttpURLConnection) reqUrl.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setDoOutput(true);
-            urlConnection.connect();
-            String sdCard = Environment.getExternalStorageDirectory().toString();
-            File myDir = new File(sdCard,
-                    "Android/data/com.example.cheonyujung.AccidentOfWorld");
-            if (!myDir.exists()) {
-                myDir.mkdir();
-            }
-            String filename = dangerMap.getCountry().getName_en()+"_danger.png";
-            Log.i("Local filename:", "" + filename);
-            File file = new File(myDir, filename);
-            if (file.createNewFile()) {
-                file.createNewFile();
-            }
-            FileOutputStream fileOutput = new FileOutputStream(file);
-            InputStream inputStream = urlConnection.getInputStream();
-            int totalSize = urlConnection.getContentLength();
-            int downloadedSize = 0;
-            byte[] buffer = new byte[1024];
-            int bufferLength = 0;
-            while ((bufferLength = inputStream.read(buffer)) > 0) {
-                fileOutput.write(buffer, 0, bufferLength);
-                downloadedSize += bufferLength;
-                Log.i("Progress:", "downloadedSize:" + downloadedSize + "totalSize:" + totalSize);
-            }
-            fileOutput.close();
-            filepath = file.getPath();
-            Log.d("test",filepath);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            filepath = null;
-            e.printStackTrace();
-        }
-        Log.i("filepath:", " " + filepath);
-        dangerMap.setPath(filepath);
-        dangerMap.setImage(createBitMap(filepath));
-        dangerMap.save();
-    }
-
-    public Bitmap createBitMap(String path) {
-        File file = new File(path);
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-        return bitmap;
-    }
-
-    private class GetImageAsyncTask extends AsyncTask<Object, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Object... params) {
-            HashMap<String, Object> hashMap = (HashMap<String, Object>) params[0];
-            for (String key : hashMap.keySet())
-                getDangerMapImage(key, (CountryDangerMap) hashMap.get(key));
-            return null;
-        }
     }
 }
 

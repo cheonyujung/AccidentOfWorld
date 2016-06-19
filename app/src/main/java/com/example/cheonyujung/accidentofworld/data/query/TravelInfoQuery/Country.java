@@ -64,7 +64,7 @@ public class Country extends DBQuery {
         return country;
     }
 
-    public ArrayList<String> getCountryAll() {
+    public ArrayList<String> getCountryNameAll() {
         ArrayList<String> countries = new ArrayList<>();
         SQLiteDatabase db = readDB();
         Cursor cursor = db.rawQuery("select * from country", null);
@@ -73,6 +73,21 @@ public class Country extends DBQuery {
         }
         cursor.close();
         db.close();
+        return countries;
+    }
+
+    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Country> getCountryAll() {
+        ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Country> countries = new ArrayList<>();
+        SQLiteDatabase db = readDB();
+        Cursor cursor = db.rawQuery("select * from country", null);
+        while (cursor.moveToNext()) {
+            com.example.cheonyujung.accidentofworld.data.struct.Country country = new com.example.cheonyujung.accidentofworld.data.struct.Country(cursor.getInt(0),cursor.getString(1)
+                    ,cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getDouble(5),cursor.getDouble(6),cursor.getString(7),cursor.getString(8),cursor.getString(9));
+            countries.add(country);
+        }
+        cursor.close();
+        db.close();
+
         return countries;
     }
 
