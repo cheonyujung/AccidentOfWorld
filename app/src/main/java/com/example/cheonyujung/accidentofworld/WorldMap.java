@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,11 +40,6 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("World Map");
-        mapfm = MapFragment.newInstance();
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
-        //dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
-
-
         mapfm = MapFragment.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.body,mapfm).commit();
