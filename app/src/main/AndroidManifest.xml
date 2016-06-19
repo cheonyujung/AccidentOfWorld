@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
+        <provider
+            android:authorities="com.example.cheonyujung.accidentofworld"
+            android:name=".CountryNameProvider"
+            android:enabled="true"
+            android:exported="true"/>
+
         <activity android:name=".fragment.PostActivity">
 
         </activity>
@@ -22,23 +28,28 @@
         <activity android:name=".fragment.ListActivity" />
         <activity android:name=".fragment.CountryInfo" />
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".Intro">
+        <activity android:name=".Intro"/>
+
+        <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+
         </activity>
+
         <activity android:name=".fragment.CommentWriteActivity" />
-
-
-        <!--<activity android:name=".MainActivity">-->
-        <!--<activity android:name=".Intro">-->
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAsxByWSpI8bwTR6xP2Lq9G5LdiKBkTWR8" />
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
