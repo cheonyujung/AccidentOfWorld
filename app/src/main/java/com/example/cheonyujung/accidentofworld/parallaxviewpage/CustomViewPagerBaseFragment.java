@@ -11,8 +11,6 @@ import android.widget.ScrollView;
  */
 public abstract class CustomViewPagerBaseFragment extends Fragment {
 
-    protected static final String IMAGE_TRANSLATION_Y = "image_translation_y";
-    protected static final String HEADER_TRANSLATION_Y = "header_translation_y";
 
     protected View mHeader;
     protected ViewPager mViewPager;

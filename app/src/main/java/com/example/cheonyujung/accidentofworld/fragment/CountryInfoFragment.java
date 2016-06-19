@@ -120,7 +120,6 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
 
         String country_name = bundle.getString("CountryName");
         Country country = Country.getCountry(country_name);
-        Log.d("id",country.getCountry_id() + "");
         imageView.setImageBitmap(CountryDangerMap.getDangerMap(country).getImage());
         engName.setText(country.getName_en());
         language_text.setText(country.getLanguage());
