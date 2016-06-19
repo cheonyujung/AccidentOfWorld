@@ -12,10 +12,13 @@
         android:orientation="vertical"
         android:paddingRight="2dp">
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="46dp"
-            android:background="#2F8F8C" />
+            android:background="#2F8F8C"
+            android:id = "@+id/loginBtn"
+            android:textColor="#ffffff"
+            android:text = "로그인 해주세요"/>
 
         <Button
             android:id="@+id/worldMapButton"

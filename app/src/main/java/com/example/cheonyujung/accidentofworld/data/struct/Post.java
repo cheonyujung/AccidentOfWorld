@@ -12,7 +12,21 @@ public class Post {
     private Board board;
     private int like_count;
     private int dislike_count;
+    private String post_date;
+    private String write_user;
     private ArrayList<Comment> comments;
+
+    public Post(int _id, String title, String content, int boardID, int like_count, int dislike_count, String post_date, String write_user, ArrayList<Comment> comments){
+        this._id = _id;
+        this.title = title;
+        this.content = content;
+        this.board = null;
+        this.like_count = like_count;
+        this.dislike_count = dislike_count;
+        this.post_date = post_date;
+        this.write_user = write_user;
+        this.comments = comments;
+    }
 
     public Board getBoard() {
         return board;
@@ -61,4 +75,14 @@ public class Post {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getPost_date(){ return post_date;}
+
+    public void setPost_date(String date){ this.post_date = date;}
+
+    public String getWrite_user(){ return write_user;}
+
+    public void setWrite_user(String write_user){ this.write_user = write_user;}
+
+
 }

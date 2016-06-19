@@ -88,8 +88,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     "num_like INTEGER NOT NULL, " +
                     "count_num INTEGER NOT NULL, " +
                     "num_dislike INTEGER NOT NULL, " +
-                    "FOREIGN KEY(board_id) REFERENCES " +
-                    "'" + BOARD_TABLE_NAME + "'(_id)" +
+
+                    "post_date  TEXT NOT NULL, " +
+                    "post_user  TEXT NOT NULL, " +
+                    "FOREIGN KEY(board_id) REFERENCES "+
+                    "'"+BOARD_TABLE_NAME+"'(_id)"+
                     ");";
 
     private static final String CREATE_COMMENT_TABLE =
@@ -100,8 +103,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     "user_id TEXT NOT NULL, " +
                     "num_like INTEGER NOT NULL, " +
                     "num_dislike INTEGER NOT NULL, " +
-                    "FOREIGN KEY(post_id) REFERENCES " +
-                    "'" + POST_TABLE_NAME + "'(board_id)" +
+
+                    "comment_date TEXT NOT NULL, " +
+                    "comment_user TEXT NOT NULL, " +
+                    "FOREIGN KEY(post_id) REFERENCES "+
+                    "'"+POST_TABLE_NAME+"'(board_id)"+
                     ");";
 
     private static final String CREATE_COUNTRY_DANGER_MAP_TABLE =
