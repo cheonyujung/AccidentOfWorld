@@ -26,6 +26,7 @@ public class Comment extends DBQuery {
         values.put("post_id", post);
         values.put("contents", content);
         values.put("user_id", user);
+
         values.put("comment_date", date.format(new Date()));
         writeDB().insert("comment", null, values);
     }

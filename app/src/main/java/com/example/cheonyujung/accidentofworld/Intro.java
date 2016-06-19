@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
+import com.example.cheonyujung.accidentofworld.data.DangerType;
 import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.query.BoardQuery.*;
 import com.example.cheonyujung.accidentofworld.data.query.BoardQuery.Board;
@@ -155,7 +156,6 @@ public class Intro extends Activity{
                         }
                         Elements tags = document.select("table.infobox tbody tr");
 
-                        // A list to save the coordinates if they are available
                         for (Address a : addresses) {
                             if (a.hasLatitude() && a.hasLongitude()) {
                                 country.setLatitude(a.getLatitude());
@@ -176,6 +176,7 @@ public class Intro extends Activity{
                             countryList.add(tag);
                         }
                         country.save();
+                        getDangerInfo(country.getName_ko());
                         Log.d("test", country.getName_ko());
                         count++;
 
@@ -243,5 +244,47 @@ public class Intro extends Activity{
             e.printStackTrace();
         }
         return doc;
+    }
+    public boolean getDangerInfo(String countryName) {
+        Country country = Country.getCountry(countryName);
+        String reqeust = Data.countryDangerInfoURL + "&" + "id=" + country.getCountry_id();
+        Log.d("testRequest",reqeust);
+        try {
+            URL reqUrl = new URL(reqeust);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+            InputStream inputStream = reqUrl.openStream();
+            Document document = builder.parse(new InputSource(inputStream));
+            document.getDocumentElement().normalize();
+            NodeList body = document.getElementsByTagName("body");
+            NodeList itemList = ((Element) body.item(0)).getElementsByTagName("item");
+            Node dangerNode = itemList.item(0);
+            Node attentionPartial = ((Element) dangerNode).getElementsByTagName("attentionPartial").item(0);
+            if (attentionPartial != null) {
+                com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new com.example.cheonyujung.accidentofworld.data.struct.Danger();
+                danger.setCountry(country);
+                danger.setDanger_type(DangerType.low);
+                danger.save();
+            }
+            Node controlPartial = ((Element) dangerNode).getElementsByTagName("controlPartial").item(0);
+            if (controlPartial != null) {
+                com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new com.example.cheonyujung.accidentofworld.data.struct.Danger();
+                danger.setCountry(country);
+                danger.setDanger_type(DangerType.middle);
+                danger.save();
+
+            }
+            Node limitaPartial = ((Element) dangerNode).getElementsByTagName("limitaPartial").item(0);
+            if (limitaPartial != null) {
+                com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new com.example.cheonyujung.accidentofworld.data.struct.Danger();
+                danger.setCountry(country);
+                danger.setDanger_type(DangerType.high);
+                danger.save();
+            }
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
