@@ -24,6 +24,7 @@ public class CommentAdapter extends BaseAdapter {
     TextView timeView;
     TextView contentView;
 
+    public void setCommentList(ArrayList<Comment> commentList){ this.commentList = commentList;}
     @Override
     public int getCount() {
         return commentList.size();
@@ -51,19 +52,13 @@ public class CommentAdapter extends BaseAdapter {
         timeView = (TextView) view.findViewById(R.id.commentTime);
         contentView = (TextView) view.findViewById(R.id.commentContent);
 
-        Button modifyComment = (Button) view.findViewById(R.id.commentModify);
         Button deleteComment = (Button) view.findViewById(R.id.commentDelete);
 
         userIdView.setText(commentList.get(i).getUser_ID());
         timeView.setText(commentList.get(i).getComment_date());
         contentView.setText(commentList.get(i).getContent());
 
-        modifyComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
         deleteComment.setOnClickListener(new View.OnClickListener() {
             @Override

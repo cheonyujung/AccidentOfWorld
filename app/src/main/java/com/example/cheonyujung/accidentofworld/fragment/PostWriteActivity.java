@@ -11,19 +11,19 @@ import com.example.cheonyujung.accidentofworld.R;
 /**
  * Created by cheonyujung on 2016. 6. 19..
  */
-public class PostActivity extends Base {
+public class PostWriteActivity extends Base {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        super.setTitle("게시글");
-
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        FragmentManager fm = getFragmentManager();
-        Fragment fragment = PostFragment.getInstence();
+        Fragment fragment = PostWriteFragment.getInstence();
         fragment.setArguments(bundle);
+
+        super.setTitle("글쓰기");
+        FragmentManager fm = getFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.body, fragment)
                 .commit();

@@ -1,7 +1,5 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
-import android.support.v7.transition.ActionBarTransition;
-
 import com.example.cheonyujung.accidentofworld.data.Data;
 
 import java.util.ArrayList;
@@ -77,5 +75,6 @@ public class Comment {
 
     public void delete() {
         Data.dbComment.delete(this._id);
+
     }
 }

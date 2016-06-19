@@ -71,7 +71,7 @@ public class Intro extends Activity{
         findViewById(R.id.layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (textView.getText().equals("    환영합니다\n 탭을 하면 시작됩니다")) {
+                if (textView.getText().equals("환영합니다\n 탭을 하면 시작됩니다")) {
                     Intent intent = new Intent(Intro.this, WorldMap.class);
                     startActivity(intent);
                     finish();
@@ -92,7 +92,7 @@ public class Intro extends Activity{
         return (version == 0 ) ? false : true;
     }
     void endReady(){
-        textView.setText("    환영합니다\n 탭을 하면 시작됩니다");
+        textView.setText("환영합니다\n 탭을 하면 시작됩니다");
         ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(View.INVISIBLE);
     }
 
@@ -203,8 +203,7 @@ public class Intro extends Activity{
             SharedPreferences preferences = getSharedPreferences("pref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("app_version",1);
-            editor.commit();
-            Log.d("test", count + "");
+
             editor.commit();
             endReady();
             super.onPostExecute(null);

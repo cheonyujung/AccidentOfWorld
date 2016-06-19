@@ -2,26 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background = "#ffffff">
+    android:background = "#ffffff"
+    android:padding="10dp">
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:id = "@+id/postName"
         android:text = "ㅁㄴㅇㄹ"
-        android:textSize="25dp"/>
+        android:textSize="18dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id = "@+id/postWriter"
         android:text = "chyjis"
-        android:layout_below="@+id/postName"/>
+        android:layout_below="@id/postName"
+        android:layout_marginTop="5dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id = "@+id/postDate"
-        android:layout_toRightOf="@+id/postWriter"
-        android:layout_alignBaseline="@+id/postWriter"
+        android:layout_toRightOf="@id/postWriter"
+        android:layout_alignBaseline="@id/postWriter"
         android:text = "16.05.30"
         android:layout_marginLeft="15dp" />
     <TextView
@@ -34,14 +35,4 @@
         android:textColor="@color/mainColor"
         android:layout_centerInParent="true"
         android:layout_alignParentEnd="true" />
-    <!--<Button-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:text = "16"-->
-        <!--android:textSize="20dp"-->
-        <!--android:id = "@+id/LargecommentCount"-->
-        <!--android:background="#ffffff"-->
-        <!--android:textColor="@color/mainColor"-->
-        <!--android:stateListAnimator="@null"-->
-        <!--android:layout_alignParentEnd="true"/>-->
 </RelativeLayout>
