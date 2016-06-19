@@ -3,6 +3,8 @@ package com.example.cheonyujung.accidentofworld.fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
+import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.cheonyujung.accidentofworld.Base;
@@ -18,10 +20,12 @@ public class ListActivity extends Base {
 
         super.setTitle("Country List");
 
+
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.body, com.example.cheonyujung.accidentofworld.fragment.WorldListFragment.getInstence())
                 .commit();
 
     }
+
 }

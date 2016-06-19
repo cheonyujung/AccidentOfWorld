@@ -204,6 +204,7 @@ public class Intro extends Activity{
             editor.putInt("app_version",1);
             editor.commit();
             Log.d("test",count+"");
+            editor.commit();
             endReady();
             super.onPostExecute(null);
         }

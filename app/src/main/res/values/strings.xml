@@ -11,4 +11,5 @@
     <string name="largeString">asdfafdadfsasdfasdfafafefjalekjfalksejflak;sjeklfjasklfjakle;fa\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\n\n\n\n\n\n\ndsafgaeagdsgaaefa\n\n\nasdfaewfds</string>
     <string name="large2">adsafdasfas asfasfsda safafda asdfa safd asdf asf asf as fas fds fa sfas fas fasdfasfasfdsfasfasf asdfasdfasfasfadsfafasfasfas asfasdfasfasfasdfasfasdf asdfasfasfsadfas</string>
     <string name="large3">afdadsfafsafs safasfasfadsfadsf asfasdfdsfsafsdfa dsfsadfsafsdfasfsa safasfasfsa</string>
+    <string name="search_hint">나라 이름을 입력해주세요...</string>
 </resources>

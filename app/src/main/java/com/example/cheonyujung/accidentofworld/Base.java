@@ -1,8 +1,12 @@
 package com.example.cheonyujung.accidentofworld;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -32,9 +36,13 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 
+import java.lang.reflect.Field;
+
+
 /**
  * Created by cheonyujung on 2016. 5. 19..
  */
+
 
 
 public class Base extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
@@ -45,17 +53,17 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
     public Button drawerBoard_btn;
     public Button drawerBookmark_btn;
     public RelativeLayout actionbar;
-
     public SearchView searchview;
     public SignInButton loginBtn;
     public GoogleApiClient mGoogleApiClient;
+    public Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -65,6 +73,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
                 .build();
 
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.main_activity);
@@ -145,8 +154,21 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_layout, menu);
+
+        return true;
+    }
+
+    public void setTitle(String title){
+        TextView Title = (TextView)findViewById(R.id.toolbar_title);
+        Title.setText(title);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+
+        switch (item.getItemId()) {
             case R.id.drawer_btn:
                 drawer.openDrawer(Gravity.RIGHT);
                 return true;
@@ -154,7 +176,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+        @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
@@ -187,18 +209,4 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_layout,menu);
-        return true;
-    }
-    public void setTitle(String title){
-        TextView Title = (TextView)findViewById(R.id.toolbar_title);
-        Title.setText(title);
-    }
-    public void hiddenItem(){
-        MenuItem search = (MenuItem)findViewById(R.id.search_btn);
-        Log.d(search+"","is null?");
-//        search.setVisible(false);
-    }
 }
