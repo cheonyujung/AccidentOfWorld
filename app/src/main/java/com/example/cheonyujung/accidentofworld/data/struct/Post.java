@@ -125,4 +125,20 @@ public class Post {
     public static Post getPost(int post_id) {
         return Data.dbPost.getPost(post_id);
     }
+
+    public void updateLikeCount() {
+        Data.dbPost.update(this._id,this.like_count,this.dislike_count);
+    }
+
+    public static ArrayList<Post> getPostAllByBoard_id(int board_id) {
+        return Data.dbPost.getPostAllByBoard_id(board_id);
+    }
+
+    public void update(){
+        Data.dbPost.update(this._id,this.title,this.content);
+    }
+
+    public void delete() {
+        Data.dbPost.delete(this._id);
+    }
 }

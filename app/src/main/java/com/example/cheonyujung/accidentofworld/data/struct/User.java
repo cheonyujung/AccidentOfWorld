@@ -1,5 +1,6 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
+import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.UserAuthority;
 
 /**
@@ -9,10 +10,19 @@ public class User {
 
     private int _id;
     private String id;
+    private String email;
     private UserAuthority authority;
 
     public int get_id() {
         return _id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void set_id(int _id) {
@@ -33,5 +43,9 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public static User getUser(String email) {
+        return Data.dbUser.getUser(email);
     }
 }

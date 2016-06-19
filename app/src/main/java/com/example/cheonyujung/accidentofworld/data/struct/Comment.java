@@ -14,9 +14,9 @@ public class Comment {
     private String content;
     private String comment_date;
     private String userID;
-    private Post post;
+    private int post;
 
-    public Comment(int id, String content, String comment_date, String userID, Post post) {
+    public Comment(int id, String content, String comment_date, String userID, int post) {
         this._id = id;
         this.content = content;
         this.comment_date = comment_date;
@@ -36,11 +36,11 @@ public class Comment {
     }
 
 
-    public Post getPost() {
+    public int getPost() {
         return post;
     }
 
-    public void setPost(Post post) {
+    public void setPost(int post) {
         this.post = post;
     }
 
@@ -72,7 +72,10 @@ public class Comment {
         Data.dbComment.insert(post,content,userID);
     }
     public static ArrayList<Comment> getCommentsByPost_id(int post_id) {
-        Post post = Post.getPost(post_id);
-        return Data.dbComment.getCommentByPost_id(post);
+        return Data.dbComment.getCommentByPost_id(post_id);
+    }
+
+    public void delete() {
+        Data.dbComment.delete(this._id);
     }
 }

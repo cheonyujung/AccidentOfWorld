@@ -11,6 +11,7 @@ import com.example.cheonyujung.accidentofworld.data.struct.Comment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by ohyongtaek on 16. 5. 16..
@@ -32,15 +33,48 @@ public class Post extends DBQuery {
         writeDB().insert("post", null, values);
     }
     public void update(int id,String title,String content){
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/mm/dd");
         ContentValues values = new ContentValues();
         values.put("title",title);
         values.put("content",content);
+        values.put("post_date",date.format(new Date()));
         writeDB().update("post", values, "_id=?", new String[]{String.valueOf(id)});
     }
+
+    public void update(int id,int like, int dislike) {
+        ContentValues values = new ContentValues();
+        values.put("num_like",like);
+        values.put("num_dislike",dislike);
+        writeDB().update("post", values, "_id=?", new String[]{String.valueOf(id)});
+    }
+
     public void delete(int id){
+        ArrayList<Comment> comments = Comment.getCommentsByPost_id(id);
+        for(Comment comment : comments) {
+            comment.delete();
+        }
         writeDB().delete("post", "_id=?", new String[]{String.valueOf(id)});
     }
 
+    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Post> getPostAllByBoard_id(int board_id) {
+        String[] whereArgs = new String[] {String.valueOf(board_id)};
+        SQLiteDatabase db = readDB();
+        Cursor cursor = db.rawQuery("select * from post where board_id = ?;", whereArgs);
+        ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Post> posts = new ArrayList<>();
+        while(cursor.moveToNext()){
+            com.example.cheonyujung.accidentofworld.data.struct.Post post = new com.example.cheonyujung.accidentofworld.data.struct.Post();
+            post.set_id(cursor.getInt(0));
+            post.setBoard(cursor.getInt(1));
+            post.setTitle(cursor.getString(2));
+            post.setContent(cursor.getString(3));
+            post.setWrite_user(cursor.getString(4));
+            post.setLike_count(cursor.getInt(5));
+            post.setDislike_count(cursor.getInt(6));
+            post.setPost_date(cursor.getString(7));
+            posts.add(post);
+        }
+        return posts;
+    }
     public com.example.cheonyujung.accidentofworld.data.struct.Post getPost(String countryName){
 
         Country country = Country.getCountry(countryName);
