@@ -1,49 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="제목"
-        android:id = "@+id/postTitle_edit"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/mainColor"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
 
     <EditText
+        android:id="@+id/postTitle_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
+        android:layout_margin="10dp"
+        android:background="#ffffff"
+        android:hint="제목" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/postTitle_edit"
+        android:background="@color/mainColor" />
+
+    <EditText
         android:id="@+id/postContents_edit"
-        android:layout_gravity="center_horizontal" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/mainColor"/>
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="취소"
-            android:layout_weight="1"
-            android:id = "@+id/postCancel"
-            android:background="#ffffff"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="확인"
-            android:layout_weight="1"
-            android:id = "@+id/postOK"
-            android:background="#ffffff"/>
-    </LinearLayout>
-    <View
+        android:layout_below="@+id/view1"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="#ffffff"
+        android:ems="10"
+        android:hint="내용"
+        android:inputType="textMultiLine" />
+
+    <LinearLayout
+        android:id="@+id/buttonPostWrite"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/mainColor"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/mainColor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/postCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:text="취소" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/mainColor"/>
+            <Button
+                android:id="@+id/postOK"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:text="확인" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/mainColor" />
+    </LinearLayout>
+</RelativeLayout>

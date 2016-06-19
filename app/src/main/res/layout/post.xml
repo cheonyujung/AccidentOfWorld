@@ -6,7 +6,8 @@
     android:clickable="true"
     android:touchscreenBlocksFocus="false"
     android:id = "@+id/postView"
-    android:fillViewport="false">
+    android:fillViewport="false"
+    android:background="#ffffff">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -48,7 +49,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_alignTop="@+id/writer"
-            android:layout_toEndOf="@+id/postTitle" />
+            android:layout_toRightOf="@+id/writer"
+            android:layout_below="@+id/postTitle" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +74,8 @@
             android:background="@color/lightMainColor"
             android:stateListAnimator="@null"
             android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/postTitle"
+            android:layout_below="@+id/writer"
+            android:layout_toRightOf="@+id/commentCount"
             android:layout_alignBaseline="@+id/commentCount"
             android:id="@+id/postModify" />
         <Button
@@ -85,32 +88,6 @@
             android:stateListAnimator="@null"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/postModify" />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src = "@drawable/sad"
-            android:id = "@+id/dislikeBtn"
-            android:background="@color/lightMainColor"
-            android:layout_below="@+id/writer"
-            android:layout_toEndOf="@+id/likeCount" />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src = "@drawable/happy"
-            android:id = "@+id/likeBtn"
-            android:background="@color/lightMainColor"
-            android:layout_alignTop="@+id/dislikeBtn"
-            android:layout_toEndOf="@+id/postDelete" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id = "@+id/likeCount"
-            android:text = "10"
-            android:layout_toRightOf="@+id/likeBtn"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignTop="@+id/commentCount" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -119,7 +96,34 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_alignTop="@+id/likeCount"
-            android:layout_toEndOf="@+id/dislikeBtn" />
+            android:layout_alignParentEnd="true"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/sad"
+            android:id = "@+id/dislikeBtn"
+            android:background="@color/lightMainColor"
+            android:layout_below="@+id/writer"
+            android:layout_toLeftOf="@+id/disLikeCount" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/likeCount"
+            android:text = "10"
+            android:layout_toLeftOf="@+id/dislikeBtn"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignTop="@+id/commentCount" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/happy"
+            android:id = "@+id/likeBtn"
+            android:background="@color/lightMainColor"
+            android:layout_marginStart="37dp"
+            android:layout_alignTop="@+id/dislikeBtn"
+            android:layout_toLeftOf="@+id/likeCount" />
 
     </RelativeLayout>
     <TextView
@@ -166,6 +170,17 @@
             android:background="@color/lightMainColor"
             android:layout_below="@+id/buttonList"
             android:id = "@+id/divider2"/>
+        <TextView
+            android:background="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "댓글이 없습니다\n제일 먼저 댓글을 남겨주세요"
+            android:id = "@+id/noComment"
+            android:gravity="center"
+            android:layout_margin = "20dp"
+            android:layout_below="@+id/divider2"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
     </RelativeLayout>
     </ScrollView>
 </LinearLayout>

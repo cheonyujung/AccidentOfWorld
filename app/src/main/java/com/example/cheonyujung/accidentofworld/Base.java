@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.cheonyujung.accidentofworld.data.UserAuthority;
 import com.example.cheonyujung.accidentofworld.data.struct.User;
+import com.example.cheonyujung.accidentofworld.fragment.BoardCountryActivity;
 import com.example.cheonyujung.accidentofworld.fragment.ListActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -43,19 +44,18 @@ import com.google.android.gms.common.api.Status;
 public class Base extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     public DrawerLayout drawer;
-    public Button drawerWorldMap_btn;
-    public Button drawerWorldList_btn;
-    public Button drawerBoard_btn;
     public Button drawerBookmark_btn;
     public SignInButton drawerLoginBtn;
     public Button drawerLogoutBtn;
     public LinearLayout logoutLayout;
+    public View drawerWorldMap_btn;
+    public View drawerWorldList_btn;
+    public View drawerBoard_btn;
     public RelativeLayout actionbar;
     public SearchView searchview;
     public GoogleApiClient mGoogleApiClient;
     public Toolbar toolbar;
     private ProgressDialog mProgressDialog;
-
     public static User user = null;
 
     @Override
@@ -76,21 +76,21 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.main_activity);
-        drawerWorldMap_btn = (Button) findViewById(R.id.worldMapButton);
-        drawerWorldList_btn = (Button) findViewById(R.id.CountryListButton);
-        drawerBoard_btn = (Button) findViewById(R.id.BoardButton);
-        drawerBookmark_btn = (Button)findViewById(R.id.BoardButton);
+        drawerWorldMap_btn = findViewById(R.id.worldMapButton);
+        drawerWorldList_btn = findViewById(R.id.CountryListButton);
+        drawerBoard_btn = findViewById(R.id.BoardButton);
         drawerLoginBtn = (SignInButton) findViewById(R.id.loginBtn);
         drawerLogoutBtn = (Button) findViewById(R.id.sign_out_button);
+
         BtnListener listener = new BtnListener();
         logoutLayout = (LinearLayout) findViewById(R.id.out);
 
         drawerWorldMap_btn.setOnClickListener(listener);
         drawerWorldList_btn.setOnClickListener(listener);
-        drawerBoard_btn.setOnClickListener(listener);
         drawerBookmark_btn.setOnClickListener(listener);
         drawerLoginBtn.setOnClickListener(listener);
         drawerLogoutBtn.setOnClickListener(listener);
+
     }
 
     private void signIn(GoogleApiClient mGoogleApiClient) {
@@ -238,11 +238,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
                     finish();
                     break;
                 case R.id.BoardButton:
-                    startActivity(new Intent(Base.this, Board.class));
-                    finish();
-                    break;
-                case R.id.BookmarkButton:
-                    startActivity(new Intent(Base.this, BookMark.class));
+                    startActivity(new Intent(Base.this, BoardCountryActivity.class));
                     finish();
                     break;
             }

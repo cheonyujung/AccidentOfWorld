@@ -1,5 +1,9 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
+import com.example.cheonyujung.accidentofworld.data.Data;
+
+import java.util.ArrayList;
+
 /**
  * Created by ohyongtaek on 16. 6. 19..
  */
@@ -9,6 +13,7 @@ public class PostItem {
     private String title;
     private int commentCount;
     private String date;
+    private int post_id;
 
     public int getCommentCount() {
         return commentCount;
@@ -40,5 +45,17 @@ public class PostItem {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public int getPost_id() {
+        return post_id;
+    }
+
+    public void setPost_id(int post_id) {
+        this.post_id = post_id;
+    }
+
+    public static ArrayList<PostItem> getPostItems(String countryName) {
+        return Data.dbPost.getPostItemByCountryName(countryName);
     }
 }

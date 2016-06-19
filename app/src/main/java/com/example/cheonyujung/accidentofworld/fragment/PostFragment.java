@@ -3,6 +3,8 @@ package com.example.cheonyujung.accidentofworld.fragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.CommentAdapter;
 import com.example.cheonyujung.accidentofworld.R;
+import com.example.cheonyujung.accidentofworld.data.struct.Post;
 
 /**
  * Created by cheonyujung on 2016. 6. 19..
@@ -21,13 +25,21 @@ public class PostFragment extends Fragment{
 
     CommentAdapter commentAdapter = new CommentAdapter();
     ListView commentList;
-    TextView country_post;
+    TextView postCountry;
+    TextView postTitle;
+    TextView postWriter;
+    TextView postTime;
+    TextView postContent;
+    TextView commentCount;
+    TextView likeCount;
+    TextView dislikeCount;
     Button commentWrite;
     Button postModify;
     Button postDelete;
     ImageButton like_btn;
     ImageButton dislike_btn;
-
+    Post post;
+    int post_id;
     public static PostFragment getInstence(){
         return new PostFragment();
     }
@@ -37,22 +49,56 @@ public class PostFragment extends Fragment{
 
         View view = inflater.inflate(R.layout.comment_list, container, false);
 
+        Bundle bundle = getArguments();
+        post_id = bundle.getInt("post_id");
+        post = Post.getPost(post_id);
+        final String country_name = bundle.getString("country_name");
+
         commentList = (ListView) view.findViewById(R.id.commentList);
+        commentAdapter.setCommentList(post.getComments());
         commentList.setAdapter(commentAdapter);
+        Log.d("test", commentAdapter.getCount()+"");
         View Headerview = inflater.inflate(R.layout.post, container, false);
         commentList.addHeaderView(Headerview);
 
-        commentAdapter.addComment("천유정1", "으아아아아아아");
-        commentAdapter.addComment("천유정2", "으아아아아아아");
-        commentAdapter.addComment("천유정3", "으아아아아아아");
-        commentAdapter.addComment("천유정4", "으아아아아아아");
-        commentAdapter.addComment("천유정5", "으아아아아아아");
+        postCountry = (TextView) Headerview.findViewById(R.id.country_post);
+        postTitle = (TextView) Headerview.findViewById(R.id.postTitle);
+        postWriter = (TextView) Headerview.findViewById(R.id.writer);
+        postTime = (TextView) Headerview.findViewById(R.id.postTime);
+        commentCount = (TextView) Headerview.findViewById(R.id.commentCount);
+        likeCount = (TextView) Headerview.findViewById(R.id.likeCount);
+        dislikeCount = (TextView) Headerview.findViewById(R.id.disLikeCount);
+        postContent = (TextView) Headerview.findViewById(R.id.content);
+
+        Toast.makeText(getActivity(), post.getWrite_user(), Toast.LENGTH_SHORT).show();
+
+        postCountry.setText(country_name);
+        postTitle.setText(post.getTitle());
+        postWriter.setText(post.getWrite_user());
+        postTime.setText(post.getPost_date());
+        commentCount.setText(post.getComments().size()+"");
+        likeCount.setText(post.getLike_count()+"");
+        dislikeCount.setText(post.getDislike_count()+"");
+        postContent.setText(post.getContent());
+
+        if(commentAdapter.getCount() == 0){
+            TextView textView = (TextView) view.findViewById(R.id.noComment);
+            textView.setVisibility(View.VISIBLE);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
 
         commentWrite = (Button) Headerview.findViewById(R.id.commentWriteBtn);
         commentWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CommentWriteActivity.class));
+                Intent intent = new Intent(getActivity(), CommentWriteActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("postTitle", post.getTitle());
+                bundle.putString("postWriter", post.getWrite_user());
+                bundle.putString("postDate", post.getPost_date());
+                bundle.putInt("post_id", post_id);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -87,6 +133,7 @@ public class PostFragment extends Fragment{
 
             }
         });
+
         return view;
     }
 }

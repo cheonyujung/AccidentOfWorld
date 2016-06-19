@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.cheonyujung.accidentofworld.data.struct.Post;
+import com.example.cheonyujung.accidentofworld.data.struct.PostItem;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,15 @@ public class PostAdapter extends BaseAdapter{
     TextView commentCount;
 
     Board board = new Board();
-    ArrayList<Post> postList = new ArrayList<Post>();
+    ArrayList<PostItem> postList;
+
+    public void setPostItems(String countryName){
+        postList = PostItem.getPostItems(countryName);
+    }
+
+    public PostAdapter() {
+        postList = new ArrayList<>();
+    }
 
     @Override
     public int getCount() {
@@ -39,6 +47,8 @@ public class PostAdapter extends BaseAdapter{
         return 0;
     }
 
+    public int getPost_id(int i){ return postList.get(i).getPost_id();}
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
@@ -52,15 +62,15 @@ public class PostAdapter extends BaseAdapter{
         postDate = (TextView) view.findViewById(R.id.postDate);
         commentCount = (TextView) view.findViewById(R.id.LargecommentCount);
 
-        writeUser.setText(postList.get(i).getWrite_user());
+        writeUser.setText(postList.get(i).getUserName());
         postTitle.setText(postList.get(i).getTitle());
-        postDate.setText(postList.get(i).getPost_date());
-        commentCount.setText(postList.get(i).getCommentCount());
+        postDate.setText(postList.get(i).getDate());
+        commentCount.setText(postList.get(i).getCommentCount()+"");
 
-        return null;
+        return view;
     }
 
-    public void addItem(String writeUser, String title, String date, int commentCount){
+    public void addItem(){
         //Post post = new Post(postList.size(), title, null, null, 0, 0, date, writeUser, );
     }
 }
