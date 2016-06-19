@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -56,8 +59,14 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
 
         for(int i=0;i<countries.size();i++){
             com.example.cheonyujung.accidentofworld.data.struct.Country country = countries.get(i);
-            DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
+            com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new Danger(this).getDanger(country.getName_ko());
             LatLng position = new LatLng(country.getLatitude(),country.getLongitude());
+            if(danger == null){
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker((float)270.0)));
+                continue;
+            }
+            DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
             if(dangerType == DangerType.high){
                 map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
