@@ -36,7 +36,7 @@ public class Post extends DBQuery {
         writeDB().insert("post", null, values);
     }
     public void update(int id,String title,String content){
-        SimpleDateFormat date = new SimpleDateFormat("yyyy/mm/dd");
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         ContentValues values = new ContentValues();
         values.put("title",title);
         values.put("content",content);

@@ -2,6 +2,7 @@ package com.example.cheonyujung.accidentofworld.data.downloadInfo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -33,6 +34,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -66,7 +69,7 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
         Intent intent = new Intent(context, CountryInfo.class);
 
         intent.putExtras(bundle);
-        Log.d("test","complete");
+        Log.d("test", "complete");
         context.startActivity(intent);
         super.onPostExecute(aVoid);
     }
