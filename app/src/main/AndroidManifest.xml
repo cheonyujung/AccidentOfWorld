@@ -24,7 +24,6 @@
         <activity android:name=".fragment.PostActivity">
 
         </activity>
-        <activity android:name=".WorldMap" />
         <activity android:name=".fragment.ListActivity" />
         <activity android:name=".fragment.CountryInfo" />
 
