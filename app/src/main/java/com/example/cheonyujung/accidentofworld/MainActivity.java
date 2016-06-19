@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.Data;
@@ -21,14 +22,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends Base implements OnMapReadyCallback {
 
+public class MainActivity extends Base implements OnMapReadyCallback {
     MapFragment mapfm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        Data.dbcountry = new Country(MainActivity.this);
+        Data.dbdanger = new Danger(MainActivity.this);
+        Data.dbCountryDangerMap = new CountryDangerMap(MainActivity.this);
+        Data.dbDanger_area = new Danger_area(MainActivity.this);
         setTitle("World Map");
         mapfm = MapFragment.newInstance();
         DBHelper dbHelper = new DBHelper(getApplicationContext());
@@ -46,6 +50,7 @@ public class MainActivity extends Base implements OnMapReadyCallback {
         addMarker(googleMap);
     }
     public void addMarker(GoogleMap map){
+
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select name_ko,longitude,latitude from country;", null);
