@@ -202,6 +202,7 @@ public class Intro extends Activity{
             SharedPreferences preferences = getSharedPreferences("pref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("app_version",1);
+            editor.commit();
             Log.d("test",count+"");
             endReady();
             super.onPostExecute(null);

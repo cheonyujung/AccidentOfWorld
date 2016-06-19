@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +24,13 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
 
 /**
  * Created by cheonyujung on 2016. 5. 19..
@@ -43,7 +47,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
     public RelativeLayout actionbar;
 
     public SearchView searchview;
-    public Button loginBtn;
+    public SignInButton loginBtn;
     public GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -52,7 +56,13 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
-
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(Base.this /* FragmentActivity */, Base.this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -70,30 +80,24 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         drawerBoard_btn.setOnClickListener(listener);
         drawerBookmark_btn.setOnClickListener(listener);
 
-        loginBtn = (Button) findViewById(R.id.loginBtn);
-        loginBtn.setText("로그인 해주세요");
+        loginBtn = (SignInButton) findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(loginBtn.getText().equals("로그인 해주세요")){
-                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestEmail()
-                            .build();
-                    mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                            .enableAutoManage(Base.this /* FragmentActivity */, Base.this /* OnConnectionFailedListener */)
-                            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                            .build();
-                    signIn(mGoogleApiClient);
-                }else{
-                    signOut();
-                }
+                signIn(mGoogleApiClient);
+            }
+        });
+        ((Button)findViewById(R.id.sign_out_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
             }
         });
     }
 
     private void signIn(GoogleApiClient mGoogleApiClient) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, 1);
+        startActivityForResult(signInIntent, 9001);
         System.out.println("!");
     }
 
@@ -102,27 +106,27 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == 1) {
+        if (requestCode == 9001) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            System.out.println(resultCode);
+            System.out.println(resultCode +"!!");
             handleSignInResult(result);
         }
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
 //        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        System.out.println("@");
+        Log.d("isSuccess", "handleSignInResult:" + result.isSuccess());
 
         if (result.isSuccess()) {
             System.out.println("#");
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            loginBtn.setText( acct.getDisplayName());
             Toast.makeText(getApplicationContext(), "login 성공", Toast.LENGTH_SHORT);
+            ((LinearLayout) findViewById(R.id.out)).setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.GONE);
             //updateUI(true);
         } else {
-            System.out.println("$");
-            Toast.makeText(getApplicationContext(), "login 실패", Toast.LENGTH_SHORT);
+
             signOut();
             // Signed out, show unauthenticated UI.
             //updateUI(false);
@@ -134,7 +138,8 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        // ...
+                        ((LinearLayout) findViewById(R.id.out)).setVisibility(View.GONE);
+                        loginBtn.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -157,7 +162,6 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d("onConnecttionFailed", "onConnectionFailed:" + connectionResult);
-
     }
 
     private class BtnListener implements View.OnClickListener {

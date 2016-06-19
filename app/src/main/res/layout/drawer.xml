@@ -12,13 +12,26 @@
         android:orientation="vertical"
         android:paddingRight="2dp">
 
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="#2F8F8C"
             android:id = "@+id/loginBtn"
             android:textColor="#ffffff"
             android:text = "로그인 해주세요"/>
+        <LinearLayout
+            android:id="@+id/out"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:visibility="gone"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#2F8F8C"
+                android:id="@+id/sign_out_button"
+                android:text="로그아웃"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/worldMapButton"
