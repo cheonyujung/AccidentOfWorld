@@ -32,7 +32,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import java.lang.reflect.Field;
 
 /**
  * Created by cheonyujung on 2016. 5. 19..

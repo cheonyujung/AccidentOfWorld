@@ -20,7 +20,6 @@
             android:name=".CountryNameProvider"
             android:enabled="true"
             android:exported="true"/>
-
         <activity android:name=".fragment.PostActivity">
 
         </activity>
@@ -41,14 +40,16 @@
             </intent-filter>
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
-
         </activity>
 
         <activity android:name=".fragment.CommentWriteActivity" />
 
+
+        <activity android:name=".fragment.ListActivity"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAsxByWSpI8bwTR6xP2Lq9G5LdiKBkTWR8" />
+            android:value="AIzaSyAsxByWSpI8bwTR6xP2Lq9G5LdiKBkTWR8"/>
+
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
