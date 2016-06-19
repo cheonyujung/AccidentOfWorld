@@ -1,10 +1,8 @@
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
-
     defaultConfig {
         applicationId "com.example.cheonyujung.accidentofworld"
         minSdkVersion 22
@@ -29,7 +27,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:8.4.0'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'org.jsoup:jsoup:1.7.3'
-
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.google.android.gms:play-services-auth:8.4.0'
