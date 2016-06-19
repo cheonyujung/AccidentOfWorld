@@ -78,7 +78,7 @@ public class CommentAdapter extends BaseAdapter {
         SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         Date today = new Date();
 //post
-        Comment comment = new Comment(commentList.size(), content, 0, 0, date.format(today), ID, null);
-        commentList.add(comment);
+
+        //commentList.add(comment);
     }
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.cheonyujung.accidentofworld.PostAdapter;
 import com.example.cheonyujung.accidentofworld.R;
 
 /**
@@ -15,6 +16,7 @@ import com.example.cheonyujung.accidentofworld.R;
 public class BoardFragment extends Fragment{
 
     ListView postList;
+    PostAdapter commentAdapter = new PostAdapter();
     public static PostFragment getInstence(){
         return new PostFragment();
     }
@@ -24,6 +26,8 @@ public class BoardFragment extends Fragment{
 
         View view = inflater.inflate(R.layout.post_list, container, false);
         postList = (ListView) view.findViewById(R.id.postList);
+
+        postList.setAdapter(commentAdapter);
 
 
         return view;

@@ -25,6 +25,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 /**
  * Created by cheonyujung on 2016. 5. 19..
@@ -42,6 +44,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
 
     public SearchView searchview;
     public Button loginBtn;
+    public GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +75,18 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
-                GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                        .enableAutoManage(Base.this /* FragmentActivity */, Base.this /* OnConnectionFailedListener */)
-                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                        .build();
-                signIn(mGoogleApiClient);
+                if(loginBtn.getText().equals("로그인 해주세요")){
+                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestEmail()
+                            .build();
+                    mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                            .enableAutoManage(Base.this /* FragmentActivity */, Base.this /* OnConnectionFailedListener */)
+                            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                            .build();
+                    signIn(mGoogleApiClient);
+                }else{
+                    signOut();
+                }
             }
         });
     }
@@ -116,9 +123,20 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         } else {
             System.out.println("$");
             Toast.makeText(getApplicationContext(), "login 실패", Toast.LENGTH_SHORT);
+            signOut();
             // Signed out, show unauthenticated UI.
             //updateUI(false);
         }
+    }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // ...
+                    }
+                });
     }
 
     @Override

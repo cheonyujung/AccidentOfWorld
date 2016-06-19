@@ -33,7 +33,7 @@ public class MainActivity extends Base implements OnMapReadyCallback {
         mapfm = MapFragment.newInstance();
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         //dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
-        setTitle("World Map");
+
 
         mapfm = MapFragment.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();

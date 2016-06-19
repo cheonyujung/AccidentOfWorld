@@ -36,7 +36,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="데이터가 없습니다"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:layout_margin="10dp"
+                android:gravity="center"/>
         </LinearLayout>
 
 

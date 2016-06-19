@@ -31,6 +31,11 @@
         </activity>
         <activity android:name=".fragment.CommentWriteActivity" />
 
+
+        <!--<activity android:name=".MainActivity">-->
+        <!--<activity android:name=".Intro">-->
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAsxByWSpI8bwTR6xP2Lq9G5LdiKBkTWR8" />
