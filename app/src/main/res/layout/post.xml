@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
-    android:touchscreenBlocksFocus="false">
+    android:touchscreenBlocksFocus="false"
+    android:id = "@+id/postView"
+    android:fillViewport="false">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="170dp"
         android:background="@color/lightMainColor"
         android:id = "@+id/topBoard"
         android:padding="15dp">
@@ -18,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id = "@+id/country_post"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:text = "나라"/>
         <TextView
             android:id="@+id/postTitle"
@@ -27,14 +32,14 @@
             android:text="제목"
             android:textSize="25dp"
             android:layout_below="@+id/country_post"
-            android:layout_margin="10dp"/>
+            android:layout_margin="5dp"/>
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id = "@+id/writer"
             android:text = "글쓴이"
             android:layout_below="@+id/postTitle"
-            android:layout_margin="10dp"/>
+            android:layout_margin="5dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,10 +52,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:id = "@+id/commentText"
-            android:layout_below="@+id/writer"
-            android:text = "댓글"/>
+            android:text = "댓글"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignBottom="@+id/likeBtn"
+            android:layout_alignParentStart="true" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +74,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/postTitle"
             android:layout_alignBaseline="@+id/commentCount"
-            android:id="@+id/button" />
+            android:id="@+id/postModify" />
         <Button
             android:layout_height="wrap_content"
             android:layout_width="50dp"
@@ -77,7 +84,7 @@
             android:layout_alignBaseline="@+id/commentCount"
             android:stateListAnimator="@null"
             android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/button" />
+            android:layout_toEndOf="@+id/postModify" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,7 +99,6 @@
             android:src = "@drawable/happy"
             android:id = "@+id/likeBtn"
             android:background="@color/lightMainColor"
-            android:layout_marginStart="49dp"
             android:layout_alignTop="@+id/dislikeBtn"
             android:layout_toEndOf="@+id/postDelete" />
         <TextView
@@ -121,7 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id = "@+id/content"
-        android:text="aaaasbblkajg;awlehf;wlhfsjdhflakfjshdlafkjsdhlfkajshdlfkajsdf"
+        android:text="a\n b\n c\n d\n e\n f\ng\nh\ni\ns\nf\ng\ng\nh\nh\nk\nl\n"
         android:layout_below="@+id/topBoard"/>
     <View
         android:layout_width="match_parent"
@@ -140,13 +146,19 @@
             android:layout_width="match_parent"
             android:text="댓글"
             android:background="#ffffff"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:id = "@+id/showCommentList"/>
+        <View
+            android:layout_height="match_parent"
+            android:layout_width="1dp"
+            android:background="@color/mainColor"/>
         <Button
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text = "댓글쓰기"
             android:background="#ffffff"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:id = "@+id/commentWriteBtn"/>
     </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -154,10 +166,6 @@
             android:background="@color/lightMainColor"
             android:layout_below="@+id/buttonList"
             android:id = "@+id/divider2"/>
-    <ListView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id = "@+id/commentList"
-        android:layout_below="@+id/divider2"/>
     </RelativeLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

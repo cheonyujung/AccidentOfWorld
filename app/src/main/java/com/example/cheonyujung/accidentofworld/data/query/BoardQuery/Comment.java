@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by ohyongtaek on 16. 5. 16..
  */
@@ -14,12 +16,15 @@ public class Comment extends DBQuery {
     }
 
     public void insert(com.example.cheonyujung.accidentofworld.data.struct.Post post, String content, com.example.cheonyujung.accidentofworld.data.struct.User user){
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/mm/dd");
         ContentValues values = new ContentValues();
         values.put("post_id",post.get_id());
         values.put("content",content);
         values.put("user_id",user.get_id());
         values.put("num_like",0);
         values.put("num_dislike",0);
+        values.put("comment_date", date+"");
+        values.put("comment_user", "chyjis");
         writeDB().insert("comment", null, values);
     }
     public void update(int id,String content){
