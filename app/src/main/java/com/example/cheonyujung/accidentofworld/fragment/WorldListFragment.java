@@ -117,54 +117,6 @@ public class WorldListFragment extends Fragment {
         return view;
     }
 
-
-
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.country_list);
-//        adapter = new Adapter();
-//        listView = (ListView) findViewById(R.id.country_list);
-//        listView.setAdapter(adapter);
-//
-//        adapter.addCountry("test");
-//        adapter.notifyDataSetChanged();
-//        setCustomActionbar();
-//        Button insertAll = (Button) findViewById(R.id.insert);
-//        insertAll.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                BackgroundTask task = new BackgroundTask();
-//                task.execute();
-//            }
-//        });
-//        Button reset = (Button) findViewById(R.id.reset);
-//        reset.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DBHelper dbHelper = new DBHelper(WorldListFragment.this);
-//                dbHelper.onUpgrade(dbHelper.getReadableDatabase(), 0, 1);
-//                getCountryList();
-//            }
-//        });
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //GetDangerAboutCountry task = new GetDangerAboutCountry();
-//                //task.execute();
-//                Toast.makeText(getApplicationContext(), adapter.getItem(position), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(WorldListFragment.this, Country_info.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("countryName", adapter.getItem(position));
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//            }
-//        });
-//        getCountryList();
-//    }
-
     public void getCountryList() {
         adapter.removeAll();
         DBHelper dbHelper = new DBHelper(getActivity());
