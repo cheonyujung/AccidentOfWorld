@@ -18,7 +18,7 @@ public class Post {
     private String write_user;
     private ArrayList<Comment> comments;
 
-    public Post(int _id, String title, String content, int boardID, int like_count, int dislike_count, String post_date, String write_user, ArrayList<Comment> comments){
+    public Post(int _id, String title, String content, int boardID, int like_count, int dislike_count, String post_date, String write_user, ArrayList<Comment> comments) {
         this._id = _id;
         this.title = title;
         this.content = content;
@@ -94,19 +94,32 @@ public class Post {
         this.title = title;
     }
 
-    public String getPost_date(){ return post_date;}
+    public String getPost_date() {
+        return post_date;
+    }
 
-    public void setPost_date(String date){ this.post_date = date;}
+    public void setPost_date(String date) {
+        this.post_date = date;
+    }
 
-    public String getWrite_user(){ return write_user;}
+    public String getWrite_user() {
+        return write_user;
+    }
 
-    public void setWrite_user(String write_user){ this.write_user = write_user;}
+    public void setWrite_user(String write_user) {
+        this.write_user = write_user;
+    }
 
     public void save() {
-        Data.dbPost.insert(board,title,content,write_user);
+        Data.dbPost.insert(board, title, content, write_user);
     }
-    public static Post getPost(String countryName){
+
+    public static Post getPost(String countryName) {
         return Data.dbPost.getPost(countryName);
+    }
+
+    public int getCommentCount() {
+        return comments.size();
     }
 
     public static Post getPost(int post_id) {

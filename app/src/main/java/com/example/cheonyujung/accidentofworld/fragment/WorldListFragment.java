@@ -151,7 +151,7 @@ public class WorldListFragment extends Fragment {
                 boolean check = false;
                 for (String countryCode : locales) {
                     obj = new Locale("", countryCode);
-                    if (obj.getDisplayCountry().equals(name)) {
+                    if (obj.getDisplayName(Locale.KOREA).equals(name)) {
                         Log.d("testest",obj.getDisplayCountry());
                         country.setIso_code(obj.getCountry());
                         check = true;
