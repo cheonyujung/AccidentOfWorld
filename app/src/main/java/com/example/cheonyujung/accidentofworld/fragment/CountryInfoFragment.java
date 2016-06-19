@@ -135,6 +135,7 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
 
 
 
+
     private static class ViewPagerAdapter extends CustomFragmentPagerAdapter {
 
         Bundle bundle;

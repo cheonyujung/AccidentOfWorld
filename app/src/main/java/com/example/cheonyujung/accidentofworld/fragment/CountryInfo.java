@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 
@@ -21,12 +22,20 @@ public class CountryInfo extends Base implements ScrollTabHolder {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = getIntent().getExtras();
         FragmentManager fm = getSupportFragmentManager();
         fragment = new CountryInfoFragment();
-        fragment.setArguments(getIntent().getExtras());
+        fragment.setArguments(bundle);
         fm.beginTransaction()
                 .replace(R.id.body, fragment)
                 .commit();
+        super.setTitle(bundle.getString("CountryName"));
+
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.search_item).setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

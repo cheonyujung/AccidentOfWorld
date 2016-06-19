@@ -28,10 +28,4 @@ public class ListActivity extends Base {
 
     }
 
-///////menuitem 숨기기!!!!(여기다가 할 거 아님)//////////
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        menu.findItem(R.id.search_btn).setVisible(false);
-//        return super.onPrepareOptionsMenu(menu);
-//    }
 }

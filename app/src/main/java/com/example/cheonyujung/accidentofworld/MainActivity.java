@@ -1,9 +1,17 @@
 package com.example.cheonyujung.accidentofworld;
 
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 import android.util.Log;
 
@@ -22,17 +30,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 
-public class MainActivity extends Base implements OnMapReadyCallback {
+
+public class MainActivity extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
     MapFragment mapfm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Data.dbcountry = new Country(MainActivity.this);
-        Data.dbdanger = new Danger(MainActivity.this);
-        Data.dbCountryDangerMap = new CountryDangerMap(MainActivity.this);
-        Data.dbDanger_area = new Danger_area(MainActivity.this);
         setTitle("World Map");
         mapfm = MapFragment.newInstance();
         DBHelper dbHelper = new DBHelper(getApplicationContext());
@@ -49,15 +55,22 @@ public class MainActivity extends Base implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         addMarker(googleMap);
     }
+
+
     public void addMarker(GoogleMap map){
 
-        DBHelper dbHelper = new DBHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select name_ko,longitude,latitude from country;", null);
-        while (cursor.moveToNext()) {
-            LatLng position = new LatLng(cursor.getFloat(2),cursor.getFloat(1));
-            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
+
+        ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Country> countries =
+                new Country(this).getCountryAll();
+
+        for(int i=0;i<countries.size();i++){
+//            LatLng position = new LatLng(countries.get(i).getLatitude());
+//            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
         }
+//        while (cursor.moveToNext()) {
+//            LatLng position = new LatLng(cursor.getFloat(2),cursor.getFloat(1));
+//            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
+//        }
 
 //        DBHelper dbHelper = new DBHelper(getApplicationContext());
 //        dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
@@ -75,5 +88,44 @@ public class MainActivity extends Base implements OnMapReadyCallback {
             mapfm.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(position, (float) 2.0));
             System.out.println(cursor.getString(0)+cursor.getFloat(1)+cursor.getFloat(2));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_layout, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint("나라를 입력해주세요...");
+
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,MainActivity.class)));
+        searchView.setIconifiedByDefault(false);
+
+        return true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Toast.makeText(this, "Searching by: "+ query, Toast.LENGTH_SHORT).show();
+
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String uri = intent.getDataString();
+            Toast.makeText(this, "Suggestion: "+ uri, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }
