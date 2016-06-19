@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.DangerType;
-
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,11 +36,6 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("World Map");
-        mapfm = MapFragment.newInstance();
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
-        //dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
-
-
         mapfm = MapFragment.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.body,mapfm).commit();
