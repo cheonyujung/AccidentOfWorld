@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ScrollView;
 
 
@@ -15,7 +16,7 @@ public class ScrollHolderViewFragment extends Fragment implements ScrollTabHolde
 
     protected static final String ARG_POSITION = "position";
     protected ScrollTabHolder mScrollTabHolder;
-    protected CustomScrollView mScrollView;
+
     protected int mPosition;
 
     public static final String TAG = ScrollHolderViewFragment.class.getSimpleName();
@@ -39,32 +40,18 @@ public class ScrollHolderViewFragment extends Fragment implements ScrollTabHolde
         super.onDetach();
     }
 
-    protected void setScrollViewOnScrollListener() {
-        mScrollView.setOnScrollChangedListener(new CustomScrollView.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged(ScrollView view, int l, int t, int oldl, int oldt) {
-
-                if (mScrollTabHolder != null) {
-                    mScrollTabHolder.onScrollViewScroll(view, l, t, oldl, oldt, mPosition);
-                }
-            }
-        });
-    }
-
     @Override
     public void adjustScroll(int scrollHeight, int headerHeight) {
-        if (mScrollView == null) return;
-
-        mScrollView.scrollTo(NO_SCROLL_X, headerHeight - scrollHeight);
-
-        if (mScrollTabHolder != null) {
-            mScrollTabHolder.onScrollViewScroll(mScrollView, 0, 0, 0, 0, mPosition);
-        }
-
     }
 
     @Override
     public void onScrollViewScroll(ScrollView view, int x, int y, int oldX, int oldY, int pagePosition) {
 
     }
+
+    @Override
+    public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition) {
+
+    }
+
 }

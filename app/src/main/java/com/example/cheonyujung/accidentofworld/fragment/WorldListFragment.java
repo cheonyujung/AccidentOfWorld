@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.CountryListAdapter;
 import com.example.cheonyujung.accidentofworld.R;
@@ -70,7 +71,7 @@ public class WorldListFragment extends Fragment {
         insertAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(getActivity(),"다운로드를 시작합니다",Toast.LENGTH_SHORT).show();
                 BackgroundTask task = new BackgroundTask();
                 task.execute();
             }
@@ -150,7 +151,8 @@ public class WorldListFragment extends Fragment {
                 boolean check = false;
                 for (String countryCode : locales) {
                     obj = new Locale("", countryCode);
-                    if (obj.getDisplayCountry().equals(tag)) {
+                    if (obj.getDisplayCountry().equals(name)) {
+                        Log.d("testest",obj.getDisplayCountry());
                         country.setIso_code(obj.getCountry());
                         check = true;
                         break;
@@ -165,6 +167,8 @@ public class WorldListFragment extends Fragment {
                             document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + "중화인민공화국").get();
                         } else if (name.equals("조지아")) {
                             document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + "조지아_(국가)").get();
+                        } else if (name.equals("콩고")) {
+                            document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + "콩고 민주 공화국").get();
                         } else {
                             document = Jsoup.connect("http://ko.wikipedia.org/wiki/" + name).get();
                         }
@@ -181,7 +185,6 @@ public class WorldListFragment extends Fragment {
                             org.jsoup.nodes.Element a = tags.get(j);
                             if (a.child(0).text().equals("수도")) {
                                 country.setCapital(a.child(1).text().split(" ")[0]);
-                                Log.d("test", a.child(1).text().split(" ")[0]);
                             } else if (a.child(0).text().equals("공용어")) {
                                 country.setLanguage(a.child(1).text());
                             } else if (a.child(0).text().equals("통화")) {
@@ -192,6 +195,7 @@ public class WorldListFragment extends Fragment {
                             countryList.add(tag);
                         }
                         country.save();
+                        Log.d("test", country.getName_ko());
                         count++;
 
 
@@ -217,6 +221,20 @@ public class WorldListFragment extends Fragment {
             getCountryList();
             Log.d("count", count + "");
             super.onPostExecute(null);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected void onCancelled(Void aVoid) {
+            Toast.makeText(getActivity(),"실패하였습니다", Toast.LENGTH_SHORT).show();
+            Log.d("fail","fail");
+            super.onCancelled(aVoid);
         }
     }
 

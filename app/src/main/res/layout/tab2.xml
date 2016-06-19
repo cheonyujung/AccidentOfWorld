@@ -8,7 +8,6 @@
     android:fillViewport="true"
     android:scrollbars="none"
     tools:context="com.example.cheonyujung.accidentofworld.Tab2">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,17 +20,13 @@
 
         <include layout="@layout/header_placeholder" />
 
-        <!--<WebView-->
-            <!--android:id="@+id/accident_web"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-
-        <!--</WebView>-->
-
-        <TextView
+        <WebView
+            android:id="@+id/accident_web"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="asdfafdadfsasdfasdfafafefjal;ekjfalksejflak;sjeklfjasklfjakle;fa\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\n\n\n\n\n\n\ndsafgaeagdsgaaefa\n\n\nasdfaewfds"/>
+            android:layout_height="wrap_content">
+
+        </WebView>
+
     </LinearLayout>
 
 </com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView>

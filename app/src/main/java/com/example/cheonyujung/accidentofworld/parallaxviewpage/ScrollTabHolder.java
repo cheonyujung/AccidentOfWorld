@@ -14,4 +14,6 @@ public interface ScrollTabHolder {
     void onScrollViewScroll(ScrollView view, int x, int y,
                             int oldX, int oldY, int pagePosition);
 
+    void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                          int totalItemCount, int pagePosition);
 }
