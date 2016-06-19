@@ -29,7 +29,7 @@ public class Contact {
         Data.dbContact.insert(this.country,tel);
     }
 
-    public Contact getContact(String countryName) {
+    public static Contact getContact(String countryName) {
         return Data.dbContact.getContact(countryName);
     }
 

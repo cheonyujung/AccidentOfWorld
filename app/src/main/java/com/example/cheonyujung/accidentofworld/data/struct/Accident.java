@@ -28,4 +28,8 @@ public class Accident {
     public void save() {
         Data.dbAccident.insert(this.country, this.disater);
     }
+
+    public static Accident getAccident(String countryName) {
+        return Data.dbAccident.getAccident(countryName);
+    }
 }

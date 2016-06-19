@@ -3,23 +3,25 @@ package com.example.cheonyujung.accidentofworld;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.example.cheonyujung.accidentofworld.data.struct.Accident;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderViewFragment;
+import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollViewFragment;
+
+import javax.xml.transform.Source;
 
 /**
  * Created by cheonyujung on 2016. 5. 21..
  */
-public class Tab2 extends ScrollHolderViewFragment {
-
-    TextView natural_disaster;
-    TextView man_disater;
-    Accident accident = new Accident();
+public class Tab2 extends ScrollViewFragment {
 
     public static final String TAG = Tab2.class.getSimpleName();
 
@@ -32,13 +34,21 @@ public class Tab2 extends ScrollHolderViewFragment {
     }
 
     public Tab2() {}
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mPosition = getArguments().getInt(ARG_POSITION);
 
         View view = inflater.inflate(R.layout.tab2, container, false);
+        WebView webView = (WebView) view.findViewById(R.id.accident_web);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setVerticalScrollBarEnabled(false);
+        Accident accident = Accident.getAccident(getArguments().getString("CountryName"));
+        String source = accident.getDisater();
+        webView.loadData(source, "text/html; charset=UTF-8", null);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setBackgroundColor(0);
         mScrollView = (CustomScrollView) view.findViewById(R.id.scrollview);
         setScrollViewOnScrollListener();
         return view;

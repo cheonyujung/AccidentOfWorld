@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -64,7 +65,7 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
         View view =inflater.inflate(R.layout.country_info,container,false);
         initValues();
         bundle = getArguments();
-        mTopView = (View) view.findViewById(R.id.upView);
+        mTopView = view.findViewById(R.id.upView);
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
         mNavigBar = (SlidingTabLayout) view.findViewById(R.id.navig_tab);
         mHeader = view.findViewById(R.id.Country_info_basic);
@@ -91,8 +92,8 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
     @Override
     protected void initValues() {
         int tabHeight = 50;
-        mMinHeaderHeight = 650;  // header의 크기
-        mHeaderHeight = 250;
+        mMinHeaderHeight = 750;  // header의 크기
+        mHeaderHeight = 300;
         mMinHeaderTranslation = -mMinHeaderHeight + tabHeight;
 
         mNumFragments = 3;
@@ -120,7 +121,6 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
 
         String country_name = bundle.getString("CountryName");
         Country country = Country.getCountry(country_name);
-        Log.d("id",country.getCountry_id() + "");
         imageView.setImageBitmap(CountryDangerMap.getDangerMap(country).getImage());
         engName.setText(country.getName_en());
         language_text.setText(country.getLanguage());
@@ -132,6 +132,8 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
     public Bundle getBundle(){
         return bundle;
     }
+
+
 
     private static class ViewPagerAdapter extends CustomFragmentPagerAdapter {
 
@@ -160,7 +162,7 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
                 default:
                     throw new IllegalArgumentException("Wrong page given " + position);
             }
-            fragment.setArguments(bundle);
+            fragment.getArguments().putString("CountryName",bundle.getString("CountryName"));
             return fragment;
         }
 

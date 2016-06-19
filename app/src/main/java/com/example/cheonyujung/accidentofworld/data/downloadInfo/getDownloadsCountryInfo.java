@@ -86,7 +86,7 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
         if(Data.dbContact.getContact(params[0])==null) {
             getContactInfo(params[0]);
         }
-        if(Data.dbDanger_area.getDanger_areaByCountryName(params[0]) == null) {
+        if(Data.dbDanger_area.getDanger_areaByCountryName(params[0]).size() == 0) {
             getDangerInfo(params[0]);
         }
         if(Data.dbAccident.getAccident(params[0]) == null) {

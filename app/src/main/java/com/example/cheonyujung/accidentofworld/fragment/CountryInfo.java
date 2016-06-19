@@ -3,20 +3,20 @@ package com.example.cheonyujung.accidentofworld.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ScrollView;
 
 import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.R;
-import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomViewPagerBase;
-import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomViewPagerBaseFragment;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollTabHolder;
 
 /**
  * Created by ohyongtaek on 16. 5. 31..
  */
-public class CountryInfo extends Base implements ScrollTabHolder{
+public class CountryInfo extends Base implements ScrollTabHolder {
 
-    CountryInfoFragment fragment = null;
+    CountryInfoFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +39,10 @@ public class CountryInfo extends Base implements ScrollTabHolder{
         if(fragment.mViewPager.getCurrentItem() == pagePosition) {
             fragment.scrollHeader(view.getScrollY());
         }
+    }
+
+    @Override
+    public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition) {
     }
 
 

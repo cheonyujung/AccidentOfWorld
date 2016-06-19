@@ -16,11 +16,12 @@ import com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap;
 import com.example.cheonyujung.accidentofworld.data.struct.Danger;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomScrollView;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollHolderViewFragment;
+import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollViewFragment;
 
 /**
  * Created by cheonyujung on 2016. 5. 21..
  */
-public class Tab1 extends ScrollHolderViewFragment {
+public class Tab1 extends ScrollViewFragment {
 
     public static final String TAG = Tab1.class.getSimpleName();
     DangerInfoAdapter adapter;
@@ -46,11 +47,18 @@ public class Tab1 extends ScrollHolderViewFragment {
         adapter.setDataSet(Data.dbDanger_area.getDanger_areaByCountryName(countryName));
 
         Bitmap dangerMap = CountryDangerMap.getDangerMap(countryName).getImage();
-        ImageView imageView = (ImageView) view.findViewById(R.id.danger_image);
+        ImageView imageView = new ImageView(getContext());
         imageView.setImageBitmap(dangerMap);
 
         ListView listView = (ListView) view.findViewById(R.id.listview);
         listView.setAdapter(adapter);
+        listView.addHeaderView(imageView);
+
+        if(adapter.getCount() == 0) {
+            view.findViewById(R.id.empty).setVisibility(View.VISIBLE);
+        }else {
+            view.findViewById(R.id.empty).setVisibility(View.GONE);
+        }
         adapter.notifyDataSetChanged();
         setScrollViewOnScrollListener();
         return view;
