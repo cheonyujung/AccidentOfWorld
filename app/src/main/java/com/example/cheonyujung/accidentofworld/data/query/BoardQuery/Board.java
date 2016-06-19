@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
-import com.example.cheonyujung.accidentofworld.data.struct.Country;
+import com.example.cheonyujung.accidentofworld.data.struct.*;
+import com.example.cheonyujung.accidentofworld.data.struct.Post;
+
+import java.util.ArrayList;
 
 /**
  * Created by ohyongtaek on 16. 5. 16..
@@ -21,6 +24,15 @@ public class Board extends DBQuery{
         writeDB().insert("board", null, values);
     }
 
+    public void delete(int board_id) {
+        ArrayList<Post> posts = Post.getPostAllByBoard_id(board_id);
+        for(Post post : posts) {
+            post.delete();
+        }
+        ContentValues values = new ContentValues();
+        values.put("_id",board_id);
+        writeDB().delete("board", "country_id=?", new String[]{String.valueOf(board_id)});
+    }
     public com.example.cheonyujung.accidentofworld.data.struct.Board getBoard(String countryName) {
         Country country = Country.getCountry(countryName);
 

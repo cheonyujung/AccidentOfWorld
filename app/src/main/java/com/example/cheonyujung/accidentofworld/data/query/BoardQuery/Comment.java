@@ -19,10 +19,10 @@ public class Comment extends DBQuery {
         super(context);
     }
 
-    public void insert(com.example.cheonyujung.accidentofworld.data.struct.Post post, String content, String user){
+    public void insert(int post, String content, String user){
         SimpleDateFormat date = new SimpleDateFormat("yyyy/mm/dd");
         ContentValues values = new ContentValues();
-        values.put("post_id",post.get_id());
+        values.put("post_id",post);
         values.put("content",content);
         values.put("user_id",user);
         values.put("comment_date", date+"");
@@ -37,9 +37,8 @@ public class Comment extends DBQuery {
         writeDB().delete("comment", "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Comment> getCommentByPost_id(com.example.cheonyujung.accidentofworld.data.struct.Post post) {
-        if(post != null) {
-            String[] whereArgs = new String[]{post.get_id() + ""};
+    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Comment> getCommentByPost_id(int post) {
+            String[] whereArgs = new String[]{post + ""};
             SQLiteDatabase db = readDB();
             Cursor cursor = db.rawQuery("select * from comment where post_id = ?;", whereArgs);
             ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Comment> comments = new ArrayList<>();
@@ -54,7 +53,6 @@ public class Comment extends DBQuery {
                 comments.add(comment);
             }
             return comments;
-        }
-        return null;
+
     }
 }

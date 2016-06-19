@@ -27,4 +27,7 @@ public class Board {
         Data.dbBoard.insert(this._id);
     }
 
+    public void delete() {
+        Data.dbBoard.delete(this._id);
+    }
 }

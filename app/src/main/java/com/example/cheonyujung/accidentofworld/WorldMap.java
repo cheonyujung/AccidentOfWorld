@@ -13,27 +13,19 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
-import com.example.cheonyujung.accidentofworld.data.Data;
-import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Accident;
-import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Contact;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
-import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.CountryDangerMap;
-import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
-import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger_area;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
+public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
     MapFragment mapfm;
 
     @Override
@@ -100,7 +92,7 @@ public class MainActivity extends Base implements SearchView.OnQueryTextListener
         searchView.setQueryHint("나라를 입력해주세요...");
 
         SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,MainActivity.class)));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,WorldMap.class)));
         searchView.setIconifiedByDefault(false);
 
         return true;

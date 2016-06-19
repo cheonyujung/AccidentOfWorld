@@ -1,12 +1,9 @@
 package com.example.cheonyujung.accidentofworld;
 
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -21,22 +18,20 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.cheonyujung.accidentofworld.data.UserAuthority;
+import com.example.cheonyujung.accidentofworld.data.struct.User;
 import com.example.cheonyujung.accidentofworld.fragment.ListActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.plus.Plus;
-
-import java.lang.reflect.Field;
 
 
 /**
@@ -52,11 +47,16 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
     public Button drawerWorldList_btn;
     public Button drawerBoard_btn;
     public Button drawerBookmark_btn;
+    public SignInButton drawerLoginBtn;
+    public Button drawerLogoutBtn;
+    public LinearLayout logoutLayout;
     public RelativeLayout actionbar;
     public SearchView searchview;
-    public SignInButton loginBtn;
     public GoogleApiClient mGoogleApiClient;
     public Toolbar toolbar;
+    private ProgressDialog mProgressDialog;
+
+    public static User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,6 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
                 .enableAutoManage(Base.this /* FragmentActivity */, Base.this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -81,33 +80,43 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         drawerWorldList_btn = (Button) findViewById(R.id.CountryListButton);
         drawerBoard_btn = (Button) findViewById(R.id.BoardButton);
         drawerBookmark_btn = (Button)findViewById(R.id.BoardButton);
-
+        drawerLoginBtn = (SignInButton) findViewById(R.id.loginBtn);
+        drawerLogoutBtn = (Button) findViewById(R.id.sign_out_button);
         BtnListener listener = new BtnListener();
+        logoutLayout = (LinearLayout) findViewById(R.id.out);
 
         drawerWorldMap_btn.setOnClickListener(listener);
         drawerWorldList_btn.setOnClickListener(listener);
         drawerBoard_btn.setOnClickListener(listener);
         drawerBookmark_btn.setOnClickListener(listener);
-
-        loginBtn = (SignInButton) findViewById(R.id.loginBtn);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn(mGoogleApiClient);
-            }
-        });
-        ((Button)findViewById(R.id.sign_out_button)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });
+        drawerLoginBtn.setOnClickListener(listener);
+        drawerLogoutBtn.setOnClickListener(listener);
     }
 
     private void signIn(GoogleApiClient mGoogleApiClient) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, 9001);
         System.out.println("!");
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            Log.d("test", "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
     }
 
     @Override
@@ -117,25 +126,30 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == 9001) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            System.out.println(resultCode +"!!");
+            System.out.println(resultCode + "!!");
             handleSignInResult(result);
         }
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-//        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        Log.d("isSuccess", "handleSignInResult:" + result.isSuccess());
+        Log.d("test", "handleSignInResult:" + result.isSuccess());
 
         if (result.isSuccess()) {
-            System.out.println("#");
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(getApplicationContext(), "login 성공", Toast.LENGTH_SHORT);
-            ((LinearLayout) findViewById(R.id.out)).setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.GONE);
+            logoutLayout.setVisibility(View.VISIBLE);
+            drawerLoginBtn.setVisibility(View.GONE);
+            String email = acct.getEmail();
+            String name = acct.getDisplayName();
+            user = new User();
+            user.setId(name);
+            user.setEmail(email);
+            user.setAuthority(UserAuthority.USER);
+
+            Log.d("test",((LinearLayout)findViewById(R.id.out)).getVisibility()+"");
             //updateUI(true);
         } else {
-
+            Log.d("test","logout");
             signOut();
             // Signed out, show unauthenticated UI.
             //updateUI(false);
@@ -147,10 +161,27 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        ((LinearLayout) findViewById(R.id.out)).setVisibility(View.GONE);
-                        loginBtn.setVisibility(View.VISIBLE);
+                        user = null;
+                        Log.d("test","logout");
+                        logoutLayout.setVisibility(View.GONE);
+                        drawerLoginBtn.setVisibility(View.VISIBLE);
                     }
                 });
+    }
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("loading");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
     }
 
     @Override
@@ -190,22 +221,32 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
 
         @Override
         public void onClick(View view) {
-            finish();
             drawer.closeDrawer(Gravity.RIGHT);
             switch(view.getId()) {
+                case R.id.loginBtn:
+                    signIn(mGoogleApiClient);
+                    break;
+                case R.id.sign_out_button:
+                    signOut();
+                    break;
                 case R.id.worldMapButton:
-                    startActivity(new Intent(Base.this, MainActivity.class));
+                    startActivity(new Intent(Base.this, WorldMap.class));
+                    finish();
                     break;
                 case R.id.CountryListButton:
                     startActivity(new Intent(Base.this, ListActivity.class));
+                    finish();
                     break;
                 case R.id.BoardButton:
                     startActivity(new Intent(Base.this, Board.class));
+                    finish();
                     break;
                 case R.id.BookmarkButton:
                     startActivity(new Intent(Base.this, BookMark.class));
+                    finish();
                     break;
             }
+
         }
     }
 

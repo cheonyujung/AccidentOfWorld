@@ -20,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String POST_TABLE_NAME = "post";
     private static final String COMMENT_TABLE_NAME = "comment";
     private static final String COUNTRY_DANGER_MAP_TABLE_NAME = "country_danger_map";
+    private static final String USER_TABLE_NAME = "user";
 
     private static final String CREATE_DANGER_TABLE =
             "CREATE TABLE `" + DANGER_TABLE_NAME + "`(" +
@@ -86,7 +87,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     "num_dislike INTEGER NOT NULL, " +
                     "post_date  TEXT NOT NULL, " +
                     "FOREIGN KEY(board_id) REFERENCES "+
-                    "'"+BOARD_TABLE_NAME+"'(_id)"+
+                    "'"+BOARD_TABLE_NAME+"'(_id), "+
+                    "FOREIGN KEY(user_id) REFERENCES " +
+                    "'" + USER_TABLE_NAME +"'(user_name) " +
                     ");";
 
     private static final String CREATE_COMMENT_TABLE =
@@ -97,7 +100,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     "user_id TEXT NOT NULL, " +
                     "comment_date TEXT NOT NULL, " +
                     "FOREIGN KEY(post_id) REFERENCES "+
-                    "'"+POST_TABLE_NAME+"'(board_id)"+
+                    "'"+POST_TABLE_NAME+"'(board_id), "+
+                    "FOREIGN KEY(user_id) REFERENCES " +
+                    "'" + USER_TABLE_NAME +"'(user_name) " +
                     ");";
 
     private static final String CREATE_COUNTRY_DANGER_MAP_TABLE =
@@ -108,12 +113,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(country_id) REFERENCES " +
                     "'" + COUNTRY_TABLE_NAME + "'(country_id)" + ")";
 
+    private static final String CREATE_USER_TABLE =
+            "CREATE TABLE `" + USER_TABLE_NAME + "` (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "user_name TEXT NOT NULL, " +
+                    "email TEXT NOT NULL, " +
+                    "authority TEXT NOT NULL " + ")";
+
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_DANGER_TABLE);
         db.execSQL(CREATE_COUNTRY_TABLE);
         db.execSQL(CREATE_DANGER_AREA_TABLE);
@@ -123,6 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_POST_TABLE);
         db.execSQL(CREATE_COMMENT_TABLE);
         db.execSQL(CREATE_COUNTRY_DANGER_MAP_TABLE);
+
     }
 
     @Override
@@ -136,6 +150,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("drop table if exists " + POST_TABLE_NAME + ";");
         sqLiteDatabase.execSQL("drop table if exists " + COMMENT_TABLE_NAME + ";");
         sqLiteDatabase.execSQL("drop table if exists " + COUNTRY_DANGER_MAP_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("drop table if exists " + USER_TABLE_NAME + ";");
         onCreate(sqLiteDatabase);
     }
 }

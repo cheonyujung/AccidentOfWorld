@@ -64,6 +64,7 @@ public class Intro extends Activity{
         Data.dbBoard = new Board(Intro.this);
         Data.dbComment = new Comment(Intro.this);
         Data.dbPost = new Post(Intro.this);
+        Data.dbUser = new User(Intro.this);
 
         textView = (TextView) findViewById(R.id.text);
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -71,7 +72,7 @@ public class Intro extends Activity{
             @Override
             public void onClick(View v) {
                 if (textView.getText().equals("    환영합니다\n 탭을 하면 시작됩니다")) {
-                    Intent intent = new Intent(Intro.this, MainActivity.class);
+                    Intent intent = new Intent(Intro.this, WorldMap.class);
                     startActivity(intent);
                     finish();
                 }
@@ -203,7 +204,7 @@ public class Intro extends Activity{
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("app_version",1);
             editor.commit();
-            Log.d("test",count+"");
+            Log.d("test", count + "");
             editor.commit();
             endReady();
             super.onPostExecute(null);
