@@ -4,6 +4,7 @@
     android:layout_height="50sp"
     android:orientation="vertical">
 
+
     <TextView
         android:text="dmdk"
         android:id="@+id/texview"
