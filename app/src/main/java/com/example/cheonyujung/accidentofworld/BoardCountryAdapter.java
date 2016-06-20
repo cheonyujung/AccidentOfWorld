@@ -51,4 +51,10 @@ public class BoardCountryAdapter extends BaseAdapter{
     public void addCountry(String name){
         list.add(name);
     }
+
+    public void setList(ArrayList<String> filteredcountry){
+        list.clear();
+        list = filteredcountry;
+    }
+
 }

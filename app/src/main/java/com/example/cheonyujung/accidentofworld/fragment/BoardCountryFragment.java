@@ -15,6 +15,8 @@ import com.example.cheonyujung.accidentofworld.BoardCountryAdapter;
 import com.example.cheonyujung.accidentofworld.R;
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by cheonyujung on 2016. 6. 19..
  */
@@ -62,4 +64,9 @@ public class BoardCountryFragment extends Fragment {
         boardCountryAdapter.notifyDataSetChanged();
         cursor.close();
     }
+    public void setNewAdapter(ArrayList<String> filteredlist){
+        boardCountryAdapter.setList(filteredlist);
+        boardCountryAdapter.notifyDataSetChanged();
+    }
+
 }
