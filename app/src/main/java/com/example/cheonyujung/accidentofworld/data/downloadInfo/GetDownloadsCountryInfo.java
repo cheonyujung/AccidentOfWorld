@@ -1,15 +1,15 @@
 package com.example.cheonyujung.accidentofworld.data.downloadInfo;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 
-import com.example.cheonyujung.accidentofworld.CountryListAdapter;
 import com.example.cheonyujung.accidentofworld.data.DangerType;
 import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.struct.Accident;
@@ -34,8 +34,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,32 +42,33 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * Created by ohyongtaek on 16. 6. 18..
  */
-public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
+public class GetDownloadsCountryInfo extends AsyncTask<Void, Integer, Void> {
 
     String contactUrl;
     String dangerInfoUrl;
     String accidentUrl;
-    int listview_position = 0;
-    CountryListAdapter adapter;
     Context context;
+    String countryName;
+    ProgressDialog mProgressDialog;
 
-    public GetDownloadsCountryInfo(Context context, int position, CountryListAdapter adapter) {
-        contactUrl = Data.contactUrl;
-        dangerInfoUrl = Data.countryDangerInfoURL;
+    public GetDownloadsCountryInfo(Context context, String countryName) {
+        this.contactUrl = Data.contactUrl;
+        this.dangerInfoUrl = Data.countryDangerInfoURL;
         this.accidentUrl = Data.accidentUrl;
-        this.adapter = adapter;
+        this.countryName = countryName;
         this.context = context;
-        this.listview_position = position;
+
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         Bundle bundle = new Bundle();
-        bundle.putString("CountryName", adapter.getItem(listview_position));
+        bundle.putString("CountryName", countryName);
         Intent intent = new Intent(context, CountryInfo.class);
 
         intent.putExtras(bundle);
         Log.d("test", "complete");
+        hideProgressDialog();
         context.startActivity(intent);
         super.onPostExecute(aVoid);
     }
@@ -77,6 +76,7 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        showProgressDialog();
     }
 
     @Override
@@ -85,19 +85,33 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
-        if(Data.dbContact.getContact(params[0])==null) {
-            getContactInfo(params[0]);
+    protected Void doInBackground(Void... params) {
+        if(Data.dbContact.getContact(countryName)==null) {
+            getContactInfo(countryName);
         }
-        if(Data.dbDanger_area.getDanger_areaByCountryName(params[0]).size() == 0) {
-            getDangerInfo(params[0]);
+        if(Data.dbDanger_area.getDanger_areaByCountryName(countryName).size() == 0) {
+            getDangerInfo(countryName);
         }
-        if(Data.dbAccident.getAccident(params[0]) == null) {
-            getAccidentInfo(params[0]);
+        if(Data.dbAccident.getAccident(countryName) == null) {
+            getAccidentInfo(countryName);
         }
         return null;
     }
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.getWindow().setGravity(Gravity.CENTER);
+            mProgressDialog.setMessage("loading");
+            mProgressDialog.setIndeterminate(true);
+        }
 
+        mProgressDialog.show();
+    }
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
     public void getContactInfo(String countryName) {
 
         Country country = Country.getCountry(countryName);
@@ -130,7 +144,6 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
     public boolean getDangerInfo(String countryName) {
         Country country = Country.getCountry(countryName);
         String reqeust = dangerInfoUrl + "&" + "id=" + country.getCountry_id();
-        Log.d("testRequest",reqeust);
         try {
             URL reqUrl = new URL(reqeust);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -153,7 +166,6 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
                 danger_area.setContents(attentionNote.getTextContent());
                 danger_area.setDegree(attentionPartial.getTextContent());
                 danger_area.save();
-                Log.d(attentionPartial.getTextContent(), attentionNote.getTextContent());
             }
             Node controlPartial = ((Element) dangerNode).getElementsByTagName("controlPartial").item(0);
             if (controlPartial != null) {
@@ -167,7 +179,6 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
                 danger_area.setContents(controlNote.getTextContent());
                 danger_area.setDegree(controlPartial.getTextContent());
                 danger_area.save();
-                Log.d(controlPartial.getTextContent(), controlNote.getTextContent());
             }
             Node limitaPartial = ((Element) dangerNode).getElementsByTagName("limitaPartial").item(0);
             if (limitaPartial != null) {
@@ -181,11 +192,9 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
                 danger_area.setContents(limitaNote.getTextContent());
                 danger_area.setDegree(limitaPartial.getTextContent());
                 danger_area.save();
-                Log.d(limitaPartial.getTextContent(), limitaNote.getTextContent());
             }
             Node danger_image = ((Element) dangerNode).getElementsByTagName("imgUrl2").item(0);
             if (danger_image != null) {
-                Log.d("test",danger_image.getTextContent());
                 CountryDangerMap dangerMap = new CountryDangerMap();
                 dangerMap.setCountry(country);
                 getDangerMapImage(danger_image.getTextContent(), dangerMap);
@@ -223,7 +232,6 @@ public class GetDownloadsCountryInfo extends AsyncTask<String, Integer, Void> {
             }
             fileOutput.close();
             filepath = file.getPath();
-            Log.d("test",filepath);
             dangerMap.setPath(filepath);
             dangerMap.setImage(createBitMap(filepath));
             dangerMap.save();

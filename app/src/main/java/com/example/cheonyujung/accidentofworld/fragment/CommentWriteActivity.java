@@ -4,8 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Menu;
+
 
 import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.R;
@@ -21,7 +22,6 @@ public class CommentWriteActivity extends Base {
         super.setTitle("댓글쓰기");
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        Log.d("test",bundle.getString("postTitle"));
         FragmentManager fm = getFragmentManager();
 
         Fragment fragment = CommentWriteFragment.getInstence();

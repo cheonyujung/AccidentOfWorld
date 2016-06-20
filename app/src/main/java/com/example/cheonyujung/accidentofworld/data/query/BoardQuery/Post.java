@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
 import com.example.cheonyujung.accidentofworld.data.struct.Comment;
@@ -142,7 +141,6 @@ public class Post extends DBQuery {
             postItem.setDate(cursor.getString(2));
             postItem.setCommentCount(Comment.getCommentsByPost_id(cursor.getInt(3)).size());
             postItem.setPost_id(cursor.getInt(3));
-            Log.d("getPostItem",postItem.getPost_id()+"");
             postItems.add(postItem);
         }
         return postItems;

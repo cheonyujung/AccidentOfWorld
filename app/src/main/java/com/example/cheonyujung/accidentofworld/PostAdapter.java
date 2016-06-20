@@ -1,7 +1,6 @@
 package com.example.cheonyujung.accidentofworld;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ public class PostAdapter extends BaseAdapter {
     TextView postDate;
     TextView commentCount;
 
-    Board board = new Board();
     ArrayList<PostItem> postList;
 
     public void setPostItems(String countryName) {
@@ -83,7 +81,6 @@ public class PostAdapter extends BaseAdapter {
         postItem.setUserName(post.getWrite_user());
         postItem.setDate(post.getPost_date());
         postList.add(postItem);
-        commentCount.setText(post.getCommentCount() + "");
         notifyDataSetChanged();
     }
 
@@ -102,9 +99,14 @@ public class PostAdapter extends BaseAdapter {
         postItem.setDate(post.getPost_date());
         notifyDataSetChanged();
     }
-    public void update(int position) {
+    public void addUpdate(int position) {
         PostItem postItem = postList.get(position);
-        postItem.setCommentCount(postItem.getCommentCount()+1);
+        postItem.setCommentCount(postItem.getCommentCount() + 1);
+        notifyDataSetChanged();
+    }
+    public void minusUpdate(int position) {
+        PostItem postItem = postList.get(position);
+        postItem.setCommentCount(postItem.getCommentCount() - 1);
         notifyDataSetChanged();
     }
 }

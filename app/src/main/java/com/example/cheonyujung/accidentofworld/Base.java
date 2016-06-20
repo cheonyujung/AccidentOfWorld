@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,7 +103,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-            Log.d("test", "Got cached sign-in");
+
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
         } else {
@@ -132,7 +131,6 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("test", "handleSignInResult:" + result.isSuccess());
 
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
@@ -146,10 +144,8 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
             user.setEmail(email);
             user.setAuthority(UserAuthority.USER);
             Toast.makeText(getApplicationContext(), "로그인 되었습니다", Toast.LENGTH_SHORT);
-            Log.d("test",((LinearLayout)findViewById(R.id.out)).getVisibility()+"");
             //updateUI(true);
         } else {
-            Log.d("test","logout");
             signOut();
             // Signed out, show unauthenticated UI.
             //updateUI(false);
@@ -162,7 +158,6 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
                     @Override
                     public void onResult(Status status) {
                         user = null;
-                        Log.d("test","logout");
                         logoutLayout.setVisibility(View.GONE);
                         drawerLoginBtn.setVisibility(View.VISIBLE);
                     }
@@ -214,7 +209,6 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d("onConnecttionFailed", "onConnectionFailed:" + connectionResult);
     }
 
     private class BtnListener implements View.OnClickListener {

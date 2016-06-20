@@ -3,12 +3,9 @@ package com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
 import com.example.cheonyujung.accidentofworld.data.DangerType;
-import com.example.cheonyujung.accidentofworld.data.Data;
-import com.example.cheonyujung.accidentofworld.data.struct.*;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
 
 /**
@@ -42,7 +39,6 @@ public class Danger extends DBQuery{
         if(cursor.moveToFirst()) {
             com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new com.example.cheonyujung.accidentofworld.data.struct.Danger(country, cursor.getString(2));
             danger.set_id(cursor.getLong(0));
-            Log.d("test_id",cursor.getString(1));
             cursor.close();
             return danger;
         }

@@ -1,6 +1,11 @@
 package com.example.cheonyujung.accidentofworld.data.struct;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.example.cheonyujung.accidentofworld.data.Data;
+
+import java.io.File;
 
 /**
  * Created by ohyongtaek on 16. 5. 15..
@@ -16,10 +21,14 @@ public class Country {
     private String capital;
     private String currency;
     private String language;
+    private String path;
+    private Bitmap image;
+
+
     public Country() {
     }
 
-    public Country(int country_id,String name_ko,String name_en,String continent,String iso_code,double latitude,double longitude,String capital, String currency, String language ){
+    public Country(int country_id,String name_ko,String name_en,String continent,String iso_code,double latitude,double longitude,String capital, String currency, String language,String path ){
         this.country_id = country_id;
         this.name_ko = name_ko;
         this.name_en = name_en;
@@ -29,11 +38,36 @@ public class Country {
         this.longitude = longitude;
         this.capital = capital;
         this.currency = currency;
+        this.path = path;
         this.language = language;
+    }
+    public Bitmap getImage() {
+        if(image == null) {
+            image = createBitMap(path);
+        }
+        return image;
+    }
+
+    public Bitmap createBitMap(String path) {
+        File file = new File(path);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        return bitmap;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 
     public String getLanguage() {
         return language;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public void setLanguage(String language) {
@@ -112,7 +146,7 @@ public class Country {
         this.longitude = longitude;
     }
     public void save(){
-        Data.dbcountry.insert(this.country_id,this.name_ko,this.name_en,this.continent,this.iso_code,this.latitude,this.longitude,this.capital,this.currency,this.language);
+        Data.dbcountry.insert(this.country_id,this.name_ko,this.name_en,this.continent,this.iso_code,this.latitude,this.longitude,this.capital,this.currency,this.language, this.path);
     }
 
     public static Country getCountry(String name){

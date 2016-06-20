@@ -42,7 +42,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     "longitude NUMBERIC(3,2) NOT NULL," +
                     "capital TEXT NOT NULL," +
                     "currency TEXT NOT NULL," +
-                    "language TEXT NOT NULL" +
+                    "language TEXT NOT NULL, " +
+                    "map_path TEXT NOT NULL " +
                     ");";
 
     private static final String CREATE_DANGER_AREA_TABLE =

@@ -1,9 +1,7 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.ScrollView;

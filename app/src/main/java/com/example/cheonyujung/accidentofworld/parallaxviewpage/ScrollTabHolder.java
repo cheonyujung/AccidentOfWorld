@@ -1,6 +1,5 @@
 package com.example.cheonyujung.accidentofworld.parallaxviewpage;
 
-import android.support.v7.widget.RecyclerView;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 

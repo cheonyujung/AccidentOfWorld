@@ -3,10 +3,7 @@ package com.example.cheonyujung.accidentofworld.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +17,6 @@ import android.widget.Toast;
 import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.CommentAdapter;
 import com.example.cheonyujung.accidentofworld.R;
-import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Comment;
 import com.example.cheonyujung.accidentofworld.data.struct.Post;
 
@@ -48,6 +44,21 @@ public class PostFragment extends Fragment{
     long post_id;
     int list_position;
     TextView textView;
+    static DeleteComment deleteComment;
+    static AddComment addComment;
+    public interface DeleteComment {
+        void onDeleteComment(int position);
+    }
+    public interface AddComment {
+        void onAddComment(int position);
+    }
+
+    public static void setDeleteComment(DeleteComment deleteComment) {
+        PostFragment.deleteComment = deleteComment;
+    }
+    public static void setAddComment(AddComment addComment) {
+        PostFragment.addComment = addComment;
+    }
     public static PostFragment getInstence(){
         return new PostFragment();
     }
@@ -80,8 +91,6 @@ public class PostFragment extends Fragment{
         likeCount = (TextView) Headerview.findViewById(R.id.likeCount);
         dislikeCount = (TextView) Headerview.findViewById(R.id.disLikeCount);
         postContent = (TextView) Headerview.findViewById(R.id.content);
-
-        Toast.makeText(getActivity(), post.getWrite_user(), Toast.LENGTH_SHORT).show();
 
         postCountry.setText(country_name);
         postTitle.setText(post.getTitle());
@@ -159,13 +168,41 @@ public class PostFragment extends Fragment{
             }
         });
 
-        CommentAdapter.deleteComment deleteComment = new CommentAdapter.deleteComment() {
+        final CommentAdapter.DeleteCommentForPost deleteComment = new CommentAdapter.DeleteCommentForPost() {
             @Override
             public void onDeleteComment() {
                 commentCount.setText(post.getComments().size() + "");
             }
         };
-        commentAdapter.setDeleteComment(deleteComment);
+
+
+        CommentAdapter.DeleteCommentForPostList deleteCommentForPostList = new CommentAdapter.DeleteCommentForPostList() {
+
+            @Override
+            public void onDeleteComment() {
+                PostFragment.deleteComment.onDeleteComment(list_position-1);
+                setVisibleEmptyView();
+            }
+        };
+
+        CommentAdapter.AddCommentForPost addCommentForPost = new CommentAdapter.AddCommentForPost() {
+            @Override
+            public void onAddComment() {
+                commentCount.setText(post.getComments().size() + "");
+                setVisibleEmptyView();
+            }
+        };
+        CommentAdapter.AddCommentForPostList addCommentForPostList = new CommentAdapter.AddCommentForPostList() {
+            @Override
+            public void onAddComment() {
+                PostFragment.addComment.onAddComment(list_position-1);
+                setVisibleEmptyView();
+            }
+        };
+        commentAdapter.setAddCommentForPost(addCommentForPost);
+        commentAdapter.setAddCommentForPostList(addCommentForPostList);
+        commentAdapter.setDeleteCommentForPostList(deleteCommentForPostList);
+        commentAdapter.setDeleteCommentForPost(deleteComment);
         setVisibleEmptyView();
         return view;
     }
@@ -174,6 +211,8 @@ public class PostFragment extends Fragment{
         if(commentAdapter.getCount() == 0){
             textView.setVisibility(View.VISIBLE);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }else {
+            textView.setVisibility(View.GONE);
         }
     }
 
@@ -190,11 +229,7 @@ public class PostFragment extends Fragment{
                     comment.setUserID(user_id);
                     comment.setContent(content);
                     comment.setPost(post_id);
-                    commentAdapter.addComment(comment);
-                    commentCount.setText(post.getComments().size() + "");
-                    bundle.putInt("addComment_list_position",list_position-1);
-                    data.putExtras(bundle);
-                    getActivity().setResult(3,data);
+                    commentAdapter.addComment(comment, list_position-1);
                 }
                 break;
             }

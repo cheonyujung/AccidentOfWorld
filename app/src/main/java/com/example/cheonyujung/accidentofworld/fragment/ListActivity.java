@@ -81,7 +81,6 @@ public class ListActivity extends Base implements SearchView.OnQueryTextListener
     @Override
     public boolean onQueryTextSubmit(String query) {
         String q = query;
-        Log.d("submit Text",q);
         if(searchItem != null){
             searchItem.collapseActionView();
         }
@@ -91,7 +90,6 @@ public class ListActivity extends Base implements SearchView.OnQueryTextListener
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Log.d("Chagne","Text가 체인");
         worldListFragment.setNewAdapter(listFilter(newText));
         return false;
     }

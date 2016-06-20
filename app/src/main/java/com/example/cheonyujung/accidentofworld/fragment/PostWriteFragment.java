@@ -1,10 +1,8 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +11,6 @@ import android.widget.EditText;
 
 import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.R;
-import com.example.cheonyujung.accidentofworld.data.struct.Post;
-import com.example.cheonyujung.accidentofworld.data.struct.User;
 
 /**
  * Created by cheonyujung on 2016. 6. 19..
@@ -40,7 +36,6 @@ public class PostWriteFragment extends Fragment {
         if(bundle.getBoolean("edit",false)){
             board_id = bundle.getLong("post_board_id");
             post_id = bundle.getLong("post_id");
-            Log.d("test", post_id + "!!!");
             String content = bundle.getString("post_content");
             String title = bundle.getString("post_title");
             postTitle.setText(title);

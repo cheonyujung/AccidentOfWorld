@@ -1,11 +1,9 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,10 +71,26 @@ public class BoardFragment extends Fragment {
                 bundle1.putString("country_name", bundle.getString("CountryName"));
                 bundle1.putInt("list_position", i);
                 intent.putExtras(bundle1);
+
                 startActivityForResult(intent, 1);
             }
         });
+        PostFragment.DeleteComment deleteComment = new PostFragment.DeleteComment() {
 
+            @Override
+            public void onDeleteComment(int position) {
+                postAdapter.minusUpdate(position);
+            }
+        };
+        PostFragment.setDeleteComment(deleteComment);
+
+        PostFragment.AddComment addComment = new PostFragment.AddComment() {
+            @Override
+            public void onAddComment(int position) {
+                postAdapter.addUpdate(position);
+            }
+        };
+        PostFragment.setAddComment(addComment);
         setVisibleEmptyView();
         return view;
     }
@@ -111,11 +125,6 @@ public class BoardFragment extends Fragment {
                     post.setTitle(title);
                     post.setBoard(board_id);
                     postAdapter.editPost(post, bundle.getInt("list_position"));
-                } else if(resultCode == 3) {
-                    Bundle bundle = data.getExtras();
-                    int position = bundle.getInt("addComment_list_position");
-                    Log.d("test",position+"!!@$");
-                    postAdapter.update(position);
                 } else if (resultCode == 99) {
                     Bundle bundle = data.getExtras();
                     int list_position = bundle.getInt("list_position");

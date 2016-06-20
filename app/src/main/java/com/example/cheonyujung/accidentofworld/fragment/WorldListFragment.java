@@ -1,12 +1,9 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +17,7 @@ import com.example.cheonyujung.accidentofworld.data.downloadInfo.GetDownloadsCou
 
 import org.w3c.dom.Document;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by cheonyujung on 2016. 5. 19..
@@ -54,8 +47,8 @@ public class WorldListFragment extends Fragment {
             @Override
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(getActivity(), position, countryListAdapter);
-                countryInfoTask.execute(countryListAdapter.getItem(position));
+                GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(getActivity(), countryListAdapter.getItem(position));
+                countryInfoTask.execute();
             }
         });
         getCountryList();
