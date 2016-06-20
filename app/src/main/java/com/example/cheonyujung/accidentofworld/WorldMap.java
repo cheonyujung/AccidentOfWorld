@@ -1,24 +1,16 @@
 package com.example.cheonyujung.accidentofworld;
 
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.CursorAdapter;
 import android.widget.Toast;
@@ -31,7 +23,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -74,20 +65,20 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             LatLng position = new LatLng(country.getLatitude(), country.getLongitude());
             if (danger == null) {
                 map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker((float) 260.0)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_green)));
                 continue;
             }
             DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
             if (dangerType == DangerType.high) {
                 map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_red)));
 
             } else if (dangerType == DangerType.middle) {
                 map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_orange)));
             } else {
                 map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_yellow)));
             }
         }
     }

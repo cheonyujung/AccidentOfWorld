@@ -73,11 +73,10 @@
             android:text = "수정"
             android:background="@color/lightMainColor"
             android:stateListAnimator="@null"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/writer"
-            android:layout_toRightOf="@+id/commentCount"
+            android:id="@+id/postModify"
             android:layout_alignBaseline="@+id/commentCount"
-            android:id="@+id/postModify" />
+            android:layout_alignBottom="@+id/commentCount"
+            android:layout_toEndOf="@+id/commentCount" />
         <Button
             android:layout_height="wrap_content"
             android:layout_width="50dp"

@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.UserAuthority;
 import com.example.cheonyujung.accidentofworld.data.struct.User;
@@ -144,7 +145,7 @@ public class Base extends AppCompatActivity implements GoogleApiClient.OnConnect
             user.setId(name);
             user.setEmail(email);
             user.setAuthority(UserAuthority.USER);
-
+            Toast.makeText(getApplicationContext(), "로그인 되었습니다", Toast.LENGTH_SHORT);
             Log.d("test",((LinearLayout)findViewById(R.id.out)).getVisibility()+"");
             //updateUI(true);
         } else {

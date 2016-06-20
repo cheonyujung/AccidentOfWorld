@@ -30,6 +30,7 @@
                 android:layout_height="match_parent"
                 android:background="#2F8F8C"
                 android:id="@+id/sign_out_button"
+                android:textColor="#ffffff"
                 android:text="로그아웃"/>
         </LinearLayout>
 
