@@ -45,7 +45,7 @@ public class BoardFragment extends Fragment {
         button.setText("+");
         button.setTextSize(20);
         button.setGravity(Gravity.CENTER);
-        button.setBackgroundColor(Color.LTGRAY);
+        button.setBackgroundColor(Color.parseColor("#D3D3D3"));
         postList.addHeaderView(button);
         textView = (TextView) view.findViewById(R.id.noPost);
 

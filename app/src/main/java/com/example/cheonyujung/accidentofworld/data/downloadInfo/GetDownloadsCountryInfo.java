@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 
+
 import com.example.cheonyujung.accidentofworld.data.DangerType;
 import com.example.cheonyujung.accidentofworld.data.Data;
 import com.example.cheonyujung.accidentofworld.data.struct.Accident;
@@ -51,6 +52,7 @@ public class GetDownloadsCountryInfo extends AsyncTask<Void, Integer, Void> {
     String countryName;
     ProgressDialog mProgressDialog;
 
+
     public GetDownloadsCountryInfo(Context context, String countryName) {
         this.contactUrl = Data.contactUrl;
         this.dangerInfoUrl = Data.countryDangerInfoURL;
@@ -71,17 +73,20 @@ public class GetDownloadsCountryInfo extends AsyncTask<Void, Integer, Void> {
         hideProgressDialog();
         context.startActivity(intent);
         super.onPostExecute(aVoid);
+        mProgressDialog.dismiss();
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         showProgressDialog();
+
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
+
     }
 
     @Override
