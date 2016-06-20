@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import org.w3c.dom.Document;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -75,6 +77,11 @@ public class WorldListFragment extends Fragment {
         }
         countryListAdapter.notifyDataSetChanged();
         cursor.close();
+    }
+
+    public void setNewAdapter(ArrayList<String> filteredlist){
+        countryListAdapter.setList(filteredlist);
+        countryListAdapter.notifyDataSetChanged();
     }
 
 }

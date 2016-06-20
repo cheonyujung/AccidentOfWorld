@@ -117,8 +117,7 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_layout, menu);
+    public boolean onPrepareOptionsMenu(Menu menu) {
 
         searchItem = menu.findItem(R.id.search_item);
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -133,8 +132,36 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         searchAutoCompleteTextView.setThreshold(1);
 
         searchView.setSuggestionsAdapter(simpleCursorAdapter);
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                Cursor cursor = simpleCursorAdapter.getCursor();
+                if(cursor.moveToPosition(position)){
+                    String selectedItem = cursor.getString(1);
+                    moveCamera(selectedItem);
+                    if(searchItem != null){
+                        searchItem.collapseActionView();
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Cursor cursor = simpleCursorAdapter.getCursor();
+                if(cursor.moveToPosition(position)){
+                    String selectedItem = cursor.getString(1);
+                    moveCamera(selectedItem);
+                    if(searchItem != null){
+                        searchItem.collapseActionView();
+                    }
+                }
+                return false;
+            }
+        });
         return true;
     }
+
 
 
     @Override
@@ -177,4 +204,5 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         }
         return cursor;
     }
+
 }
