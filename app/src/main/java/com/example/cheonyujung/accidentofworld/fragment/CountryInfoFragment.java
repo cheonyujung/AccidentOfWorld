@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.cheonyujung.accidentofworld.R;
@@ -23,7 +21,6 @@ import com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomFragmentPagerAdapter;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomViewPagerBaseFragment;
 import com.example.cheonyujung.accidentofworld.parallaxviewpage.CustomViewPagerChangeListener;
-import com.example.cheonyujung.accidentofworld.parallaxviewpage.ScrollTabHolder;
 import com.example.cheonyujung.accidentofworld.slidingTab.SlidingTabLayout;
 
 /**
@@ -120,6 +117,7 @@ public class CountryInfoFragment extends CustomViewPagerBaseFragment {
     public void setText(){
 
         String country_name = bundle.getString("CountryName");
+        Log.d("test", country_name);
         Country country = Country.getCountry(country_name);
         imageView.setImageBitmap(CountryDangerMap.getDangerMap(country).getImage());
         engName.setText(country.getName_en());

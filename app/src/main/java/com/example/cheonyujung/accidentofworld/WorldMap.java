@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.DangerType;
+import com.example.cheonyujung.accidentofworld.data.downloadInfo.GetDownloadsCountryInfo;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,9 +26,11 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
@@ -36,7 +39,8 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
     public MenuItem searchItem;
     public SimpleCursorAdapter simpleCursorAdapter;
     public SearchView searchView;
-
+    com.example.cheonyujung.accidentofworld.data.struct.Country country;
+    HashMap<String, Marker> markerHashMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,27 +64,38 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
                 new Country(this).getCountryAll();
 
         for(int i=0;i<countries.size();i++) {
-            com.example.cheonyujung.accidentofworld.data.struct.Country country = countries.get(i);
+            country = countries.get(i);
             com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new Danger(this).getDanger(country.getName_ko());
             LatLng position = new LatLng(country.getLatitude(), country.getLongitude());
             if (danger == null) {
-                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_green)));
+                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_green))));
                 continue;
             }
             DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
             if (dangerType == DangerType.high) {
-                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_red)));
+                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_red))));
 
             } else if (dangerType == DangerType.middle) {
-                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_orange)));
+                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_orange))));
             } else {
-                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_yellow)));
+                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_yellow))));
             }
         }
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+
+                Toast.makeText(getApplicationContext(), marker.getTitle(),Toast.LENGTH_SHORT).show();
+                GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(getApplicationContext(), Integer.valueOf(null), null);
+                countryInfoTask.execute(marker.getTitle());
+
+            }
+        });
     }
 
     public void moveCamera(String country_name){
@@ -97,26 +112,7 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
 
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, (float) 5.0));
             Toast.makeText(getApplicationContext(), "move camera", Toast.LENGTH_SHORT).show();
-            System.out.println(cursor.getString(0) + cursor.getFloat(1) + cursor.getFloat(2));
-
-            com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new Danger(this).getDanger(name);
-            if (danger == null) {
-                map.addMarker(new MarkerOptions().title(name).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker((float) 260.0))).showInfoWindow();
-                continue;
-            }
-            DangerType dangerType = new Danger(this).getDanger(name).getDanger_type();
-            if (dangerType == DangerType.high) {
-                map.addMarker(new MarkerOptions().title(name).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))).showInfoWindow();
-
-            } else if (dangerType == DangerType.middle) {
-                map.addMarker(new MarkerOptions().title(name).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-            } else {
-                map.addMarker(new MarkerOptions().title(name).position(position)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
-            }
+            markerHashMap.get(name).showInfoWindow();
         }
     }
 
@@ -129,20 +125,14 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("나라를 입력해주세요...");
 
-
-
         Cursor cursor = getCountryNames("");
         simpleCursorAdapter = new SimpleCursorAdapter(this,R.layout.search_view,cursor,new String[]{"CountryName"},
                 new int[]{R.id.texview},CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
-
-
         AutoCompleteTextView searchAutoCompleteTextView = (AutoCompleteTextView) searchView.findViewById(R.id.search_src_text);
         searchAutoCompleteTextView.setThreshold(1);
 
-
         searchView.setSuggestionsAdapter(simpleCursorAdapter);
-
         return true;
     }
 
