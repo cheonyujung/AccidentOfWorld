@@ -52,6 +52,7 @@ public class PostFragment extends Fragment{
         return new PostFragment();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -63,6 +64,7 @@ public class PostFragment extends Fragment{
         post = Post.getPost(post_id);
         final String country_name = bundle.getString("country_name");
         commentAdapter = new CommentAdapter(post);
+
         commentList = (ListView) view.findViewById(R.id.commentList);
         commentAdapter.setCommentList(post.getComments());
         commentList.setAdapter(commentAdapter);
@@ -144,7 +146,7 @@ public class PostFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 post.updateLikeCount();
-                likeCount.setText(post.getLike_count()+"");
+                likeCount.setText(post.getLike_count() + "");
             }
         });
 
@@ -156,12 +158,14 @@ public class PostFragment extends Fragment{
                 dislikeCount.setText(post.getDislike_count() + "");
             }
         });
-        DBHelper dbHelper = new DBHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select post_id from comment where post_id=?",new String[] {String.valueOf(post.get_id())});
-        while(cursor.moveToNext()){
-            Log.d("testCount",cursor.getInt(0)+"");
-        }
+
+        CommentAdapter.deleteComment deleteComment = new CommentAdapter.deleteComment() {
+            @Override
+            public void onDeleteComment() {
+                commentCount.setText(post.getComments().size() + "");
+            }
+        };
+        commentAdapter.setDeleteComment(deleteComment);
         setVisibleEmptyView();
         return view;
     }
@@ -197,9 +201,9 @@ public class PostFragment extends Fragment{
             case 2:{
                 if (resultCode == 2) {
                     Bundle bundle = data.getExtras();
-                    bundle.putInt("list_position",list_position-1);
+                    bundle.putInt("list_position", list_position - 1);
                     data.putExtras(bundle);
-                    getActivity().setResult(2,data);
+                    getActivity().setResult(2, data);
                     getActivity().finish();
                 }
                 break;

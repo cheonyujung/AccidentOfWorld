@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Comment;
 import com.example.cheonyujung.accidentofworld.data.struct.Post;
+import com.example.cheonyujung.accidentofworld.fragment.PostFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Date;
 /**
  * Created by cheonyujung on 2016. 6. 19..
  */
-public class CommentAdapter extends BaseAdapter {
+public class CommentAdapter extends BaseAdapter{
 
     ArrayList<Comment> commentList ;
     TextView userIdView;
@@ -27,10 +28,20 @@ public class CommentAdapter extends BaseAdapter {
     TextView contentView;
     Button deleteButton;
     Post post;
+    deleteComment deleteComment;
+    public interface deleteComment {
+        void onDeleteComment();
+    }
+
     public CommentAdapter(Post post) {
         this.commentList = post.getComments();
         this.post = post;
     }
+
+    public void setDeleteComment(deleteComment deleteComment) {
+        this.deleteComment = deleteComment;
+    }
+
     public void setCommentList(ArrayList<Comment> commentList){ this.commentList = commentList;}
     @Override
     public int getCount() {
@@ -82,6 +93,7 @@ public class CommentAdapter extends BaseAdapter {
     public void deleteComment(Comment comment) {
         comment.delete();
         post.getComments().remove(comment);
+        deleteComment.onDeleteComment();
         notifyDataSetChanged();
     }
     public void addComment(Comment comment){
@@ -89,4 +101,5 @@ public class CommentAdapter extends BaseAdapter {
         post.getComments().add(comment);
         notifyDataSetChanged();
     }
+
 }
