@@ -42,6 +42,7 @@ public class PostFragment extends Fragment{
     ImageButton dislike_btn;
     Post post;
     int post_id, list_position;
+    TextView textView;
     public static PostFragment getInstence(){
         return new PostFragment();
     }
@@ -62,6 +63,7 @@ public class PostFragment extends Fragment{
         commentList.setAdapter(commentAdapter);
         View Headerview = inflater.inflate(R.layout.post, container, false);
         commentList.addHeaderView(Headerview);
+        textView = (TextView) view.findViewById(R.id.noComment);
 
         postCountry = (TextView) Headerview.findViewById(R.id.country_post);
         postTitle = (TextView) Headerview.findViewById(R.id.postTitle);
@@ -83,11 +85,7 @@ public class PostFragment extends Fragment{
         dislikeCount.setText(post.getDislike_count()+"");
         postContent.setText(post.getContent());
 
-        if(commentAdapter.getCount() == 0){
-            TextView textView = (TextView) view.findViewById(R.id.noComment);
-            textView.setVisibility(View.VISIBLE);
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
+
 
         commentWrite = (Button) Headerview.findViewById(R.id.commentWriteBtn);
         commentWrite.setOnClickListener(new View.OnClickListener() {
@@ -141,8 +139,15 @@ public class PostFragment extends Fragment{
                 post.updateLikeCount();
             }
         });
-
+        setVisibleEmptyView();
         return view;
+    }
+
+    public void setVisibleEmptyView() {
+        if(commentAdapter.getCount() == 0){
+            textView.setVisibility(View.VISIBLE);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
     }
 
     @Override
@@ -162,6 +167,5 @@ public class PostFragment extends Fragment{
                 }
             }
         }
-
     }
 }

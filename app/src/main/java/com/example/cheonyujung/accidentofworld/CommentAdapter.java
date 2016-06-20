@@ -78,6 +78,7 @@ public class CommentAdapter extends BaseAdapter {
     public void deleteComment(Comment comment) {
         comment.delete();
         commentList.remove(comment);
+        notifyDataSetChanged();
     }
     public void addComment(Comment comment){
         comment.save();

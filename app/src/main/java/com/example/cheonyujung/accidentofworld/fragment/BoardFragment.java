@@ -27,7 +27,7 @@ public class BoardFragment extends Fragment{
     ListView postList;
     PostAdapter postAdapter = new PostAdapter();
     Bundle bundle;
-
+    TextView textView;
     public static BoardFragment getInstence(){
         return new BoardFragment();
     }
@@ -48,12 +48,8 @@ public class BoardFragment extends Fragment{
         button.setGravity(Gravity.CENTER);
         button.setBackgroundColor(Color.LTGRAY);
         postList.addHeaderView(button);
+        textView = (TextView) view.findViewById(R.id.noPost);
 
-        if(postAdapter.getCount() == 0){
-            TextView textView = (TextView) view.findViewById(R.id.noPost);
-            textView.setVisibility(View.VISIBLE);
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,9 +72,11 @@ public class BoardFragment extends Fragment{
                 bundle1.putString("country_name", bundle.getString("CountryName"));
                 bundle1.putInt("list_position",i-1);
                 intent.putExtras(bundle1);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
+
+        setVisibleEmptyView();
         return view;
     }
 
@@ -101,10 +99,19 @@ public class BoardFragment extends Fragment{
                 }else if(resultCode == 99) {
                     Bundle bundle = data.getExtras();
                     int list_position = bundle.getInt("list_position");
+                    Log.d("test",list_position+"!");
                     postAdapter.delete(list_position);
-
+                    setVisibleEmptyView();
                 }
             }
         }
+    }
+
+    public void setVisibleEmptyView() {
+        if(postAdapter.getCount() == 0){
+            textView.setVisibility(View.VISIBLE);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+
     }
 }
