@@ -26,10 +26,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view1"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
         android:background="#ffffff"
         android:hint="내용"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_above="@+id/buttonPostWrite"
+        android:gravity="top"/>
 
     <LinearLayout
         android:id="@+id/buttonPostWrite"
