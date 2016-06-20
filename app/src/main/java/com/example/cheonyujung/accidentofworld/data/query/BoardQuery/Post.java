@@ -43,12 +43,12 @@ public class Post extends DBQuery {
         SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         ContentValues values = new ContentValues();
         values.put("title",title);
-        values.put("content",content);
+        values.put("contents",content);
         values.put("post_date",date.format(new Date()));
         writeDB().update("post", values, "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public void update(long id,int like, int dislike) {
+    public void update(long id,int like,int dislike) {
         ContentValues values = new ContentValues();
         values.put("num_like",like);
         values.put("num_dislike",dislike);
@@ -63,14 +63,14 @@ public class Post extends DBQuery {
         writeDB().delete("post", "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Post> getPostAllByBoard_id(int board_id) {
+    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Post> getPostAllByBoard_id(long board_id) {
         String[] whereArgs = new String[] {String.valueOf(board_id)};
         SQLiteDatabase db = readDB();
         Cursor cursor = db.rawQuery("select * from post where board_id = ?;", whereArgs);
         ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Post> posts = new ArrayList<>();
         while(cursor.moveToNext()){
             com.example.cheonyujung.accidentofworld.data.struct.Post post = new com.example.cheonyujung.accidentofworld.data.struct.Post();
-            post.set_id(cursor.getInt(0));
+            post.set_id(cursor.getLong(0));
             post.setBoard(cursor.getInt(1));
             post.setTitle(cursor.getString(2));
             post.setContent(cursor.getString(3));
@@ -91,7 +91,7 @@ public class Post extends DBQuery {
 
         if(cursor.moveToFirst()){
             com.example.cheonyujung.accidentofworld.data.struct.Post post = new com.example.cheonyujung.accidentofworld.data.struct.Post();
-            post.set_id(cursor.getInt(0));
+            post.set_id(cursor.getLong(0));
             post.setBoard(cursor.getInt(1));
             post.setTitle(cursor.getString(2));
             post.setContent(cursor.getString(3));
@@ -106,14 +106,14 @@ public class Post extends DBQuery {
         return null;
     }
 
-    public com.example.cheonyujung.accidentofworld.data.struct.Post getPost(int post_id) {
+    public com.example.cheonyujung.accidentofworld.data.struct.Post getPost(long post_id) {
         String[] whereArgs = new String[] {String.valueOf(post_id)};
         SQLiteDatabase db = readDB();
         Cursor cursor =db.rawQuery("select * from post where _id = ?;", whereArgs);
 
         if(cursor.moveToFirst()){
             com.example.cheonyujung.accidentofworld.data.struct.Post post = new com.example.cheonyujung.accidentofworld.data.struct.Post();
-            post.set_id(cursor.getInt(0));
+            post.set_id(cursor.getLong(0));
             post.setBoard(cursor.getInt(1));
             post.setTitle(cursor.getString(2));
             post.setContent(cursor.getString(3));
@@ -121,7 +121,7 @@ public class Post extends DBQuery {
             post.setLike_count(cursor.getInt(5));
             post.setDislike_count(cursor.getInt(6));
             post.setPost_date(cursor.getString(7));
-            post.setComments(Comment.getCommentsByPost_id(cursor.getInt(0)));
+            post.setComments(Comment.getCommentsByPost_id(cursor.getLong(0)));
             cursor.close();
             db.close();
             return post;

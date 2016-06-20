@@ -22,13 +22,14 @@ import com.example.cheonyujung.accidentofworld.data.struct.Post;
 /**
  * Created by cheonyujung on 2016. 6. 19..
  */
-public class BoardFragment extends Fragment{
+public class BoardFragment extends Fragment {
 
     ListView postList;
     PostAdapter postAdapter = new PostAdapter();
     Bundle bundle;
     TextView textView;
-    public static BoardFragment getInstence(){
+
+    public static BoardFragment getInstence() {
         return new BoardFragment();
     }
 
@@ -68,11 +69,11 @@ public class BoardFragment extends Fragment{
 
                 Intent intent = new Intent(getActivity(), PostActivity.class);
                 Bundle bundle1 = new Bundle();
-                bundle1.putInt("post_id", postAdapter.getPost_id(i - 1));
+                bundle1.putLong("post_id", postAdapter.getPost_id(i - 1));
                 bundle1.putString("country_name", bundle.getString("CountryName"));
-                bundle1.putInt("list_position",i-1);
+                bundle1.putInt("list_position", i);
                 intent.putExtras(bundle1);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -83,11 +84,11 @@ public class BoardFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case 1:{
-                if(resultCode == Activity.RESULT_OK) {
+            case 1: {
+                if (resultCode == 1) {
                     Bundle bundle = data.getExtras();
                     String content = bundle.getString("post_content");
-                    int board_id = bundle.getInt("post_board_id");
+                    long board_id = bundle.getLong("post_board_id");
                     String title = bundle.getString("post_title");
                     String user_id = bundle.getString("post_user_id");
                     Post post = new Post();
@@ -96,19 +97,39 @@ public class BoardFragment extends Fragment{
                     post.setTitle(title);
                     post.setBoard(board_id);
                     postAdapter.addPost(post);
-                }else if(resultCode == 99) {
+                } else if (resultCode == 2) {
+                    Bundle bundle = data.getExtras();
+                    String content = bundle.getString("post_content");
+                    long board_id = bundle.getLong("post_board_id");
+                    String title = bundle.getString("post_title");
+                    String user_id = bundle.getString("post_user_id");
+                    long post_id = bundle.getLong("post_id");
+                    Post post = new Post();
+                    post.set_id(post_id);
+                    post.setWrite_user(user_id);
+                    post.setContent(content);
+                    post.setTitle(title);
+                    post.setBoard(board_id);
+                    postAdapter.editPost(post, bundle.getInt("list_position"));
+                } else if(resultCode == 3) {
+                    Bundle bundle = data.getExtras();
+                    int position = bundle.getInt("addComment_list_position");
+                    Log.d("test",position+"!!@$");
+                    postAdapter.update(position);
+                } else if (resultCode == 99) {
                     Bundle bundle = data.getExtras();
                     int list_position = bundle.getInt("list_position");
-                    Log.d("test",list_position+"!");
                     postAdapter.delete(list_position);
                     setVisibleEmptyView();
                 }
+                break;
             }
         }
     }
 
+
     public void setVisibleEmptyView() {
-        if(postAdapter.getCount() == 0){
+        if (postAdapter.getCount() == 0) {
             textView.setVisibility(View.VISIBLE);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
         }

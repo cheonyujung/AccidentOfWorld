@@ -54,11 +54,8 @@ public class WorldListFragment extends Fragment {
             @Override
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
                 GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(getActivity(), position, countryListAdapter);
                 countryInfoTask.execute(countryListAdapter.getItem(position));
-
             }
         });
         getCountryList();

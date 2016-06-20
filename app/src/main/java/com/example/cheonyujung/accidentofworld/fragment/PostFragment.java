@@ -3,6 +3,8 @@ package com.example.cheonyujung.accidentofworld.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,8 +17,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.CommentAdapter;
 import com.example.cheonyujung.accidentofworld.R;
+import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Comment;
 import com.example.cheonyujung.accidentofworld.data.struct.Post;
 
@@ -41,11 +45,13 @@ public class PostFragment extends Fragment{
     ImageButton like_btn;
     ImageButton dislike_btn;
     Post post;
-    int post_id, list_position;
+    long post_id;
+    int list_position;
     TextView textView;
     public static PostFragment getInstence(){
         return new PostFragment();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,11 +59,12 @@ public class PostFragment extends Fragment{
         View view = inflater.inflate(R.layout.comment_list, container, false);
 
         Bundle bundle = getArguments();
-        post_id = bundle.getInt("post_id");
+        post_id = bundle.getLong("post_id");
         list_position = bundle.getInt("list_position");
         post = Post.getPost(post_id);
         final String country_name = bundle.getString("country_name");
-        commentAdapter = new CommentAdapter();
+        commentAdapter = new CommentAdapter(post);
+
         commentList = (ListView) view.findViewById(R.id.commentList);
         commentAdapter.setCommentList(post.getComments());
         commentList.setAdapter(commentAdapter);
@@ -96,7 +103,7 @@ public class PostFragment extends Fragment{
                 bundle.putString("postTitle", post.getTitle());
                 bundle.putString("postWriter", post.getWrite_user());
                 bundle.putString("postDate", post.getPost_date());
-                bundle.putInt("post_id", post_id);
+                bundle.putLong("post_id", post.get_id());
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 1);
             }
@@ -106,7 +113,17 @@ public class PostFragment extends Fragment{
         postModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PostWriteActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("edit", true);
+                bundle.putLong("post_id", post.get_id());
+                bundle.putLong("post_board_id", post.getBoard());
+                bundle.putString("post_content", post.getContent());
+                bundle.putString("post_title", post.getTitle());
+                bundle.putString("post_user_id", Base.user.getId());
 
+                intent.putExtras(bundle);
+                startActivityForResult(intent, 2);
             }
         });
 
@@ -116,8 +133,8 @@ public class PostFragment extends Fragment{
             public void onClick(View view) {
                 Intent intent = getActivity().getIntent();
                 Bundle bundle1 = intent.getExtras();
-                bundle1.putInt("delete_post_id",post_id);
-                bundle1.putInt("list_position",list_position);
+                bundle1.putLong("delete_post_id", post_id);
+                bundle1.putInt("list_position",list_position-1);
                 intent.putExtras(bundle1);
                 getActivity().setResult(99,intent);
                 getActivity().finish();
@@ -129,6 +146,7 @@ public class PostFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 post.updateLikeCount();
+                likeCount.setText(post.getLike_count() + "");
             }
         });
 
@@ -136,9 +154,18 @@ public class PostFragment extends Fragment{
         dislike_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                post.updateLikeCount();
+                post.updateDisLikeCount();
+                dislikeCount.setText(post.getDislike_count() + "");
             }
         });
+
+        CommentAdapter.deleteComment deleteComment = new CommentAdapter.deleteComment() {
+            @Override
+            public void onDeleteComment() {
+                commentCount.setText(post.getComments().size() + "");
+            }
+        };
+        commentAdapter.setDeleteComment(deleteComment);
         setVisibleEmptyView();
         return view;
     }
@@ -157,14 +184,29 @@ public class PostFragment extends Fragment{
                 if(resultCode == Activity.RESULT_OK) {
                     Bundle bundle = data.getExtras();
                     String content = bundle.getString("comment_content");
-                    int post_id = bundle.getInt("comment_post_id");
-                    String user_id = bundle.getString("comment_user_id");
+                    long post_id = bundle.getLong("comment_post_id");
+                    String user_id = Base.user.getId();
                     Comment comment = new Comment();
                     comment.setUserID(user_id);
                     comment.setContent(content);
                     comment.setPost(post_id);
                     commentAdapter.addComment(comment);
+                    commentCount.setText(post.getComments().size() + "");
+                    bundle.putInt("addComment_list_position",list_position-1);
+                    data.putExtras(bundle);
+                    getActivity().setResult(3,data);
                 }
+                break;
+            }
+            case 2:{
+                if (resultCode == 2) {
+                    Bundle bundle = data.getExtras();
+                    bundle.putInt("list_position", list_position - 1);
+                    data.putExtras(bundle);
+                    getActivity().setResult(2, data);
+                    getActivity().finish();
+                }
+                break;
             }
         }
     }

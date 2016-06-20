@@ -11,7 +11,7 @@ public class Post {
     private long _id;
     private String title;
     private String content;
-    private int board;
+    private long board;
     private int like_count;
     private int dislike_count;
     private String post_date;
@@ -33,6 +33,7 @@ public class Post {
     public Post() {
         this.dislike_count = 0;
         this.like_count = 0;
+        this.comments = new ArrayList<>();
     }
 
     public ArrayList<Comment> getComments() {
@@ -47,11 +48,11 @@ public class Post {
         }
     }
 
-    public int getBoard() {
+    public long getBoard() {
         return board;
     }
 
-    public void setBoard(int board) {
+    public void setBoard(long board) {
         this.board = board;
     }
 
@@ -123,15 +124,20 @@ public class Post {
         return comments.size();
     }
 
-    public static Post getPost(int post_id) {
+    public static Post getPost(long post_id) {
         return Data.dbPost.getPost(post_id);
     }
 
     public void updateLikeCount() {
+        this.like_count++;
+        Data.dbPost.update(this._id,this.like_count,this.dislike_count);
+    }
+    public void updateDisLikeCount() {
+        this.dislike_count++;
         Data.dbPost.update(this._id,this.like_count,this.dislike_count);
     }
 
-    public static ArrayList<Post> getPostAllByBoard_id(int board_id) {
+    public static ArrayList<Post> getPostAllByBoard_id(long board_id) {
         return Data.dbPost.getPostAllByBoard_id(board_id);
     }
 

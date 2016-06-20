@@ -9,13 +9,13 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    private int _id;
+    private long _id;
 
-    public int get_id() {
+    public long get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(long _id) {
         this._id = _id;
     }
 

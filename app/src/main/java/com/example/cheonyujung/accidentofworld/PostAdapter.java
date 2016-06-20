@@ -1,6 +1,7 @@
 package com.example.cheonyujung.accidentofworld;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class PostAdapter extends BaseAdapter {
         return 0;
     }
 
-    public int getPost_id(int i) {
+    public long getPost_id(int i) {
         return postList.get(i).getPost_id();
     }
 
@@ -76,11 +77,13 @@ public class PostAdapter extends BaseAdapter {
     public void addPost(Post post) {
         post.save();
         PostItem postItem = new PostItem();
+        postItem.setPost_id(post.get_id());
         postItem.setTitle(post.getTitle());
         postItem.setCommentCount(0);
         postItem.setUserName(post.getWrite_user());
         postItem.setDate(post.getPost_date());
         postList.add(postItem);
+        commentCount.setText(post.getCommentCount() + "");
         notifyDataSetChanged();
     }
 
@@ -89,6 +92,19 @@ public class PostAdapter extends BaseAdapter {
         Post post = Post.getPost(postItem.getPost_id());
         post.delete();
         postList.remove(postItem);
+        notifyDataSetChanged();
+    }
+
+    public void editPost(Post post,int position) {
+        post.update();
+        PostItem postItem = postList.get(position);
+        postItem.setTitle(post.getTitle());
+        postItem.setDate(post.getPost_date());
+        notifyDataSetChanged();
+    }
+    public void update(int position) {
+        PostItem postItem = postList.get(position);
+        postItem.setCommentCount(postItem.getCommentCount()+1);
         notifyDataSetChanged();
     }
 }
