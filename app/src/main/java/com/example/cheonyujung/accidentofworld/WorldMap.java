@@ -42,6 +42,7 @@ import java.util.ArrayList;
 public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
 
     MapFragment mapfm;
+    public MenuItem searchItem;
     public SimpleCursorAdapter simpleCursorAdapter;
     public SearchView searchView;
 
@@ -89,19 +90,42 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             }
         }
-        moveCamera("일본");
-
     }
 
     public void moveCamera(String country_name){
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Toast.makeText(getApplicationContext(), "move camera", Toast.LENGTH_SHORT).show();
-        Cursor cursor = db.rawQuery("select name_ko,longitude,latitude from country where name_ko=?",new String[]{country_name});
+        Cursor cursor = db.rawQuery("select name_ko,longitude,latitude from country where name_ko=?", new String[]{country_name});
+        if(cursor.getCount() ==  0 ){
+            Toast.makeText(getApplicationContext(), "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
+        }
         while (cursor.moveToNext()){
             LatLng position = new LatLng(cursor.getFloat(2),cursor.getFloat(1));
-            mapfm.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(position, (float) 2.0));
-            System.out.println(cursor.getString(0)+cursor.getFloat(1)+cursor.getFloat(2));
+            GoogleMap map = mapfm.getMap();
+            String name = cursor.getString(0);
+
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, (float) 5.0));
+            Toast.makeText(getApplicationContext(), "move camera", Toast.LENGTH_SHORT).show();
+            System.out.println(cursor.getString(0) + cursor.getFloat(1) + cursor.getFloat(2));
+
+            com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new Danger(this).getDanger(name);
+            if (danger == null) {
+                map.addMarker(new MarkerOptions().title(name).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker((float) 260.0))).showInfoWindow();
+                continue;
+            }
+            DangerType dangerType = new Danger(this).getDanger(name).getDanger_type();
+            if (dangerType == DangerType.high) {
+                map.addMarker(new MarkerOptions().title(name).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))).showInfoWindow();
+
+            } else if (dangerType == DangerType.middle) {
+                map.addMarker(new MarkerOptions().title(name).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+            } else {
+                map.addMarker(new MarkerOptions().title(name).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
+            }
         }
     }
 
@@ -109,7 +133,7 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_layout, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.search_item);
+        searchItem = menu.findItem(R.id.search_item);
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("나라를 입력해주세요...");
@@ -134,6 +158,10 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        if(searchItem != null){
+            searchItem.collapseActionView();
+        }
+        moveCamera(query);
         return false;
     }
 
@@ -162,7 +190,6 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         while(cur.moveToNext() && (cursor.getCount()<limit)){
             String name = cur.getString(0);
             if(name.toUpperCase().startsWith(query)) {
-                Log.d("Query",query+"    "+name);
                 cursor.addRow(new Object[]{i, name});
             }
             i++;
