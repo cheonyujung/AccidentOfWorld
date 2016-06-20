@@ -13,7 +13,7 @@ public class PostItem {
     private String title;
     private int commentCount;
     private String date;
-    private int post_id;
+    private long post_id;
 
     public int getCommentCount() {
         return commentCount;
@@ -47,11 +47,11 @@ public class PostItem {
         this.userName = userName;
     }
 
-    public int getPost_id() {
+    public long getPost_id() {
         return post_id;
     }
 
-    public void setPost_id(int post_id) {
+    public void setPost_id(long post_id) {
         this.post_id = post_id;
     }
 

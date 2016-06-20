@@ -8,7 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.struct.Comment;
+import com.example.cheonyujung.accidentofworld.data.struct.Post;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,11 +21,16 @@ import java.util.Date;
  */
 public class CommentAdapter extends BaseAdapter {
 
-    ArrayList<Comment> commentList = new ArrayList<Comment>();
+    ArrayList<Comment> commentList ;
     TextView userIdView;
     TextView timeView;
     TextView contentView;
     Button deleteButton;
+    Post post;
+    public CommentAdapter(Post post) {
+        this.commentList = post.getComments();
+        this.post = post;
+    }
     public void setCommentList(ArrayList<Comment> commentList){ this.commentList = commentList;}
     @Override
     public int getCount() {
@@ -69,20 +76,17 @@ public class CommentAdapter extends BaseAdapter {
         timeView.setText(commentList.get(position).getComment_date());
         contentView.setText(commentList.get(position).getContent());
 
-
-
-
         return view;
     }
 
     public void deleteComment(Comment comment) {
         comment.delete();
-        commentList.remove(comment);
+        post.getComments().remove(comment);
         notifyDataSetChanged();
     }
     public void addComment(Comment comment){
         comment.save();
-        commentList.add(comment);
+        post.getComments().add(comment);
         notifyDataSetChanged();
     }
 }

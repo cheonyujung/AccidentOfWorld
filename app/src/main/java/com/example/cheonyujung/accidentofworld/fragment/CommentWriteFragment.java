@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,12 +53,11 @@ public class CommentWriteFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String content = String.valueOf(commentWrite.getText());
-                int post_id = bundle.getInt("post_id");
+                long post_id = bundle.getLong("post_id");
                 Intent intent = getActivity().getIntent();
                 Bundle bundle = intent.getExtras();
                 bundle.putString("comment_content",content);
-                bundle.putInt("comment_post_id", post_id);
-                bundle.putString("comment_user_id", Base.user.getId());
+                bundle.putLong("comment_post_id", post_id);
                 intent.putExtras(bundle);
                 getActivity().setResult(Activity.RESULT_OK,intent);
                 getActivity().finish();

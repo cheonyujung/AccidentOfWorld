@@ -18,13 +18,13 @@ public class Board extends DBQuery{
         super(context);
     }
 
-    public void insert(int country_id){
+    public void insert(long country_id){
         ContentValues values = new ContentValues();
         values.put("_id", country_id);
         writeDB().insert("board", null, values);
     }
 
-    public void delete(int board_id) {
+    public void delete(long board_id) {
         ArrayList<Post> posts = Post.getPostAllByBoard_id(board_id);
         for(Post post : posts) {
             post.delete();
@@ -40,7 +40,7 @@ public class Board extends DBQuery{
         Cursor cursor =readDB().rawQuery("select * from board where _id = ?;", whereArgs);
         if(cursor.moveToFirst()) {
             com.example.cheonyujung.accidentofworld.data.struct.Board board = new com.example.cheonyujung.accidentofworld.data.struct.Board();
-            board.set_id(cursor.getInt(0));
+            board.set_id(cursor.getLong(0));
             return board;
         }
         return null;
