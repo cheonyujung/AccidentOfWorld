@@ -6,14 +6,21 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.CursorAdapter;
 import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
@@ -35,6 +42,8 @@ import java.util.ArrayList;
 public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
 
     MapFragment mapfm;
+    public SimpleCursorAdapter simpleCursorAdapter;
+    public SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +90,7 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             }
         }
         moveCamera("일본");
+
     }
 
     public void moveCamera(String country_name){
@@ -100,29 +110,27 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         getMenuInflater().inflate(R.menu.toolbar_layout, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search_item);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("나라를 입력해주세요...");
 
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,WorldMap.class)));
-        searchView.setIconifiedByDefault(false);
+
+
+        Cursor cursor = getCountryNames("");
+        simpleCursorAdapter = new SimpleCursorAdapter(this,R.layout.search_view,cursor,new String[]{"CountryName"},
+                new int[]{R.id.texview},CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+
+
+        AutoCompleteTextView searchAutoCompleteTextView = (AutoCompleteTextView) searchView.findViewById(R.id.search_src_text);
+        searchAutoCompleteTextView.setThreshold(1);
+
+
+        searchView.setSuggestionsAdapter(simpleCursorAdapter);
 
         return true;
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(this, "Searching by: "+ query, Toast.LENGTH_SHORT).show();
-
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            String uri = intent.getDataString();
-            Toast.makeText(this, "Suggestion: "+ uri, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -131,6 +139,34 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        Cursor cursor = getCountryNames(newText);
+        simpleCursorAdapter.changeCursor(cursor);
         return false;
+    }
+
+
+    public Cursor getCountryNames(String query){
+
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cur = db.rawQuery("select name_ko from country", null);
+
+        MatrixCursor cursor = new MatrixCursor(
+                new String[] {
+                        BaseColumns._ID,
+                        "CountryName"
+                }
+        );
+        int limit = 50;
+        int i = 0;
+        while(cur.moveToNext() && (cursor.getCount()<limit)){
+            String name = cur.getString(0);
+            if(name.toUpperCase().startsWith(query)) {
+                Log.d("Query",query+"    "+name);
+                cursor.addRow(new Object[]{i, name});
+            }
+            i++;
+        }
+        return cursor;
     }
 }
