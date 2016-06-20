@@ -1,6 +1,8 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.R;
 import com.example.cheonyujung.accidentofworld.data.struct.Comment;
+import com.example.cheonyujung.accidentofworld.data.struct.User;
 
 /**
  * Created by cheonyujung on 2016. 6. 19..
@@ -23,6 +27,7 @@ public class CommentWriteFragment extends Fragment {
     TextView postWriter;
     TextView postDate;
 
+
     public static CommentWriteFragment getInstence(){ return new CommentWriteFragment();}
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class CommentWriteFragment extends Fragment {
         bundle = getArguments();
 
         Button CommentOk = (Button) view.findViewById(R.id.commentOK);
-        Button commentCancle = (Button) view.findViewById(R.id.commentCancel);
+        Button commentCancel = (Button) view.findViewById(R.id.commentCancel);
 
         postDate = (TextView) view.findViewById(R.id.postDate_write);
         postTitle = (TextView) view.findViewById(R.id.postTitle_write);
@@ -48,16 +53,18 @@ public class CommentWriteFragment extends Fragment {
             public void onClick(View view) {
                 String content = String.valueOf(commentWrite.getText());
                 int post_id = bundle.getInt("post_id");
-                Comment comment = new Comment();
-                comment.setPost(post_id);
-                comment.setContent(content);
-                comment.setUserID("chyjis");
-                comment.save();
+                Intent intent = getActivity().getIntent();
+                Bundle bundle = intent.getExtras();
+                bundle.putString("comment_content",content);
+                bundle.putInt("comment_post_id", post_id);
+                bundle.putString("comment_user_id", Base.user.getId());
+                intent.putExtras(bundle);
+                getActivity().setResult(Activity.RESULT_OK,intent);
                 getActivity().finish();
             }
         });
 
-        commentCancle.setOnClickListener(new View.OnClickListener() {
+        commentCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().finish();

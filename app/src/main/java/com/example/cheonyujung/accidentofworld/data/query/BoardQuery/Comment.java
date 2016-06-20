@@ -20,15 +20,18 @@ public class Comment extends DBQuery {
     }
 
 
-    public void insert(int post, String content, String user) {
+    public void insert(com.example.cheonyujung.accidentofworld.data.struct.Comment comment) {
         SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         ContentValues values = new ContentValues();
-        values.put("post_id", post);
-        values.put("contents", content);
-        values.put("user_id", user);
-
-        values.put("comment_date", date.format(new Date()));
-        writeDB().insert("comment", null, values);
+        values.put("post_id", comment.getPost());
+        values.put("contents", comment.getContent());
+        values.put("user_id", comment.getUser_ID());
+        comment.setComment_date(date.format(new Date()));
+        values.put("comment_date", comment.getComment_date());
+        long id;
+        if((id =writeDB().insert("comment", null, values)) != -1){
+            comment.set_id(id);
+        }
     }
 
     public void update(int id, String content) {
@@ -37,11 +40,11 @@ public class Comment extends DBQuery {
         writeDB().update("comment", values, "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public void delete(int id) {
+    public void delete(long id) {
         writeDB().delete("comment", "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Comment> getCommentByPost_id(int post_id) {
+    public ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Comment> getCommentByPost_id(long post_id) {
         String[] whereArgs = new String[]{post_id + ""};
         SQLiteDatabase db = readDB();
         Cursor cursor = db.rawQuery("select * from comment where post_id = ?;", whereArgs);

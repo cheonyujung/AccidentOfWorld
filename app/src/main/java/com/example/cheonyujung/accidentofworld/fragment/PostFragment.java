@@ -1,5 +1,6 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.CommentAdapter;
 import com.example.cheonyujung.accidentofworld.R;
+import com.example.cheonyujung.accidentofworld.data.struct.Comment;
 import com.example.cheonyujung.accidentofworld.data.struct.Post;
 
 /**
@@ -23,7 +25,7 @@ import com.example.cheonyujung.accidentofworld.data.struct.Post;
  */
 public class PostFragment extends Fragment{
 
-    CommentAdapter commentAdapter = new CommentAdapter();
+    CommentAdapter commentAdapter;
     ListView commentList;
     TextView postCountry;
     TextView postTitle;
@@ -39,7 +41,8 @@ public class PostFragment extends Fragment{
     ImageButton like_btn;
     ImageButton dislike_btn;
     Post post;
-    int post_id;
+    int post_id, list_position;
+    TextView textView;
     public static PostFragment getInstence(){
         return new PostFragment();
     }
@@ -51,15 +54,16 @@ public class PostFragment extends Fragment{
 
         Bundle bundle = getArguments();
         post_id = bundle.getInt("post_id");
+        list_position = bundle.getInt("list_position");
         post = Post.getPost(post_id);
         final String country_name = bundle.getString("country_name");
-
+        commentAdapter = new CommentAdapter();
         commentList = (ListView) view.findViewById(R.id.commentList);
         commentAdapter.setCommentList(post.getComments());
         commentList.setAdapter(commentAdapter);
-        Log.d("test", commentAdapter.getCount()+"");
         View Headerview = inflater.inflate(R.layout.post, container, false);
         commentList.addHeaderView(Headerview);
+        textView = (TextView) view.findViewById(R.id.noComment);
 
         postCountry = (TextView) Headerview.findViewById(R.id.country_post);
         postTitle = (TextView) Headerview.findViewById(R.id.postTitle);
@@ -81,11 +85,7 @@ public class PostFragment extends Fragment{
         dislikeCount.setText(post.getDislike_count()+"");
         postContent.setText(post.getContent());
 
-        if(commentAdapter.getCount() == 0){
-            TextView textView = (TextView) view.findViewById(R.id.noComment);
-            textView.setVisibility(View.VISIBLE);
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
+
 
         commentWrite = (Button) Headerview.findViewById(R.id.commentWriteBtn);
         commentWrite.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +98,7 @@ public class PostFragment extends Fragment{
                 bundle.putString("postDate", post.getPost_date());
                 bundle.putInt("post_id", post_id);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -114,7 +114,13 @@ public class PostFragment extends Fragment{
         postDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = getActivity().getIntent();
+                Bundle bundle1 = intent.getExtras();
+                bundle1.putInt("delete_post_id",post_id);
+                bundle1.putInt("list_position",list_position);
+                intent.putExtras(bundle1);
+                getActivity().setResult(99,intent);
+                getActivity().finish();
             }
         });
 
@@ -122,7 +128,7 @@ public class PostFragment extends Fragment{
         like_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                post.updateLikeCount();
             }
         });
 
@@ -130,10 +136,36 @@ public class PostFragment extends Fragment{
         dislike_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                post.updateLikeCount();
             }
         });
-
+        setVisibleEmptyView();
         return view;
+    }
+
+    public void setVisibleEmptyView() {
+        if(commentAdapter.getCount() == 0){
+            textView.setVisibility(View.VISIBLE);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:{
+                if(resultCode == Activity.RESULT_OK) {
+                    Bundle bundle = data.getExtras();
+                    String content = bundle.getString("comment_content");
+                    int post_id = bundle.getInt("comment_post_id");
+                    String user_id = bundle.getString("comment_user_id");
+                    Comment comment = new Comment();
+                    comment.setUserID(user_id);
+                    comment.setContent(content);
+                    comment.setPost(post_id);
+                    commentAdapter.addComment(comment);
+                }
+            }
+        }
     }
 }

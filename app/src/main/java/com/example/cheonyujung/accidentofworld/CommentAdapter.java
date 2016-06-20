@@ -23,7 +23,7 @@ public class CommentAdapter extends BaseAdapter {
     TextView userIdView;
     TextView timeView;
     TextView contentView;
-
+    Button deleteButton;
     public void setCommentList(ArrayList<Comment> commentList){ this.commentList = commentList;}
     @Override
     public int getCount() {
@@ -37,12 +37,13 @@ public class CommentAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return commentList.get(i).get_id();
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
+        final int position = i;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) viewGroup.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.comment_item, viewGroup, false);
@@ -51,29 +52,37 @@ public class CommentAdapter extends BaseAdapter {
         userIdView = (TextView) view.findViewById(R.id.userID);
         timeView = (TextView) view.findViewById(R.id.commentTime);
         contentView = (TextView) view.findViewById(R.id.commentContent);
-
-        Button deleteComment = (Button) view.findViewById(R.id.commentDelete);
-
-        userIdView.setText(commentList.get(i).getUser_ID());
-        timeView.setText(commentList.get(i).getComment_date());
-        contentView.setText(commentList.get(i).getContent());
-
-
-
-        deleteComment.setOnClickListener(new View.OnClickListener() {
+        deleteButton = (Button) view.findViewById(R.id.commentDelete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Comment comment = commentList.get(position);
+                deleteComment(comment);
             }
         });
+        if(Base.user.getId().equals(commentList.get(position).getUser_ID())){
+            deleteButton.setVisibility(View.VISIBLE);
+        }else{
+            deleteButton.setVisibility(View.GONE);
+        }
+        userIdView.setText(commentList.get(position).getUser_ID());
+        timeView.setText(commentList.get(position).getComment_date());
+        contentView.setText(commentList.get(position).getContent());
+
+
+
+
         return view;
     }
 
-    public void addComment(String ID, String content){
-        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
-        Date today = new Date();
-//post
-
-        //commentList.add(comment);
+    public void deleteComment(Comment comment) {
+        comment.delete();
+        commentList.remove(comment);
+        notifyDataSetChanged();
+    }
+    public void addComment(Comment comment){
+        comment.save();
+        commentList.add(comment);
+        notifyDataSetChanged();
     }
 }

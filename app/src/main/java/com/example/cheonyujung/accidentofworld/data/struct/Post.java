@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by ohyongtaek on 16. 5. 16..
  */
 public class Post {
-    private int _id;
+    private long _id;
     private String title;
     private String content;
     private int board;
@@ -31,7 +31,8 @@ public class Post {
     }
 
     public Post() {
-
+        this.dislike_count = 0;
+        this.like_count = 0;
     }
 
     public ArrayList<Comment> getComments() {
@@ -54,11 +55,11 @@ public class Post {
         this.board = board;
     }
 
-    public int get_id() {
+    public long get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(long _id) {
         this._id = _id;
     }
 
@@ -111,7 +112,7 @@ public class Post {
     }
 
     public void save() {
-        Data.dbPost.insert(board, title, content, write_user);
+        Data.dbPost.insert(this);
     }
 
     public static Post getPost(String countryName) {
