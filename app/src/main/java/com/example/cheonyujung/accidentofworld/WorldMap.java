@@ -89,10 +89,8 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-
                 GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(WorldMap.this, marker.getTitle());
                 countryInfoTask.execute();
-
             }
         });
     }

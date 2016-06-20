@@ -30,5 +30,6 @@
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:layout_below="@+id/progressBar"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"/>
 </RelativeLayout>

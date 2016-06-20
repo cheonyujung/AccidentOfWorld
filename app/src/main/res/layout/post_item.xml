@@ -9,7 +9,8 @@
         android:layout_width="wrap_content"
         android:id = "@+id/postName"
         android:text = "ㅁㄴㅇㄹ"
-        android:textSize="18dp"/>
+        android:textSize="18dp"
+        android:textStyle="bold"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

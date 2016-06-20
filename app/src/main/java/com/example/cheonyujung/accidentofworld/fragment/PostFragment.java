@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.CommentAdapter;
@@ -100,8 +99,6 @@ public class PostFragment extends Fragment{
         likeCount.setText(post.getLike_count()+"");
         dislikeCount.setText(post.getDislike_count()+"");
         postContent.setText(post.getContent());
-
-
 
         commentWrite = (Button) Headerview.findViewById(R.id.commentWriteBtn);
         commentWrite.setOnClickListener(new View.OnClickListener() {
