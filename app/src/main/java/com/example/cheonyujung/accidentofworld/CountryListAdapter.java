@@ -53,4 +53,9 @@ public class CountryListAdapter extends BaseAdapter {
         list.add(name);
     }
 
+    public void setList(ArrayList<String> filteredcountry){
+        list.clear();
+        list = filteredcountry;
+    }
+
 }

@@ -21,6 +21,7 @@ import org.w3c.dom.Document;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -75,6 +76,11 @@ public class WorldListFragment extends Fragment {
         }
         countryListAdapter.notifyDataSetChanged();
         cursor.close();
+    }
+
+    public void setNewAdapter(ArrayList<String> filteredlist){
+        countryListAdapter.setList(filteredlist);
+        countryListAdapter.notifyDataSetChanged();
     }
 
 }
