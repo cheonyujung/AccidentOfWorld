@@ -15,12 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <provider
-            android:name=".CountryNameProvider"
-            android:authorities="com.example.cheonyujung.accidentofworld"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity android:name=".fragment.PostActivity">
 
         </activity>
@@ -31,11 +25,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
         </activity>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
 
 
         <activity android:name=".fragment.CommentWriteActivity" />
@@ -43,17 +34,8 @@
         <activity android:name=".fragment.BoardCountryActivity"/>
         <activity android:name=".fragment.PostWriteActivity"/>
 
-        <activity android:name=".WorldMap"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+        <activity android:name=".WorldMap">
         </activity>
-
-        <activity android:name=".fragment.CommentWriteActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

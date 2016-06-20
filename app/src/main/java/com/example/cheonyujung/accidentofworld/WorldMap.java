@@ -6,37 +6,49 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.CursorAdapter;
 import android.widget.Toast;
 
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
+import com.example.cheonyujung.accidentofworld.data.DangerType;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Country;
+import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Danger;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 
 public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnMapReadyCallback {
+
     MapFragment mapfm;
+    public SimpleCursorAdapter simpleCursorAdapter;
+    public SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("World Map");
-        mapfm = MapFragment.newInstance();
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
-        //dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
-
-
         mapfm = MapFragment.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.body,mapfm).commit();
@@ -55,19 +67,30 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         ArrayList<com.example.cheonyujung.accidentofworld.data.struct.Country> countries =
                 new Country(this).getCountryAll();
 
-        for(int i=0;i<countries.size();i++){
-//            LatLng position = new LatLng(countries.get(i).getLatitude());
-//            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
-        }
-//        while (cursor.moveToNext()) {
-//            LatLng position = new LatLng(cursor.getFloat(2),cursor.getFloat(1));
-//            map.addMarker(new MarkerOptions().title(cursor.getString(0)).position(position));
-//        }
+        for(int i=0;i<countries.size();i++) {
+            com.example.cheonyujung.accidentofworld.data.struct.Country country = countries.get(i);
+            com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new Danger(this).getDanger(country.getName_ko());
+            LatLng position = new LatLng(country.getLatitude(), country.getLongitude());
+            if (danger == null) {
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker((float) 260.0)));
+                continue;
+            }
+            DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
+            if (dangerType == DangerType.high) {
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-//        DBHelper dbHelper = new DBHelper(getApplicationContext());
-//        dbHelper.onUpgrade(dbHelper.getWritableDatabase(),0,1);
-//        setCustomActionbar();
+            } else if (dangerType == DangerType.middle) {
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+            } else {
+                map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            }
+        }
         moveCamera("일본");
+
     }
 
     public void moveCamera(String country_name){
@@ -87,29 +110,27 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
         getMenuInflater().inflate(R.menu.toolbar_layout, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search_item);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("나라를 입력해주세요...");
 
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,WorldMap.class)));
-        searchView.setIconifiedByDefault(false);
+
+
+        Cursor cursor = getCountryNames("");
+        simpleCursorAdapter = new SimpleCursorAdapter(this,R.layout.search_view,cursor,new String[]{"CountryName"},
+                new int[]{R.id.texview},CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+
+
+        AutoCompleteTextView searchAutoCompleteTextView = (AutoCompleteTextView) searchView.findViewById(R.id.search_src_text);
+        searchAutoCompleteTextView.setThreshold(1);
+
+
+        searchView.setSuggestionsAdapter(simpleCursorAdapter);
 
         return true;
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(this, "Searching by: "+ query, Toast.LENGTH_SHORT).show();
-
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            String uri = intent.getDataString();
-            Toast.makeText(this, "Suggestion: "+ uri, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -118,6 +139,34 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        Cursor cursor = getCountryNames(newText);
+        simpleCursorAdapter.changeCursor(cursor);
         return false;
+    }
+
+
+    public Cursor getCountryNames(String query){
+
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cur = db.rawQuery("select name_ko from country", null);
+
+        MatrixCursor cursor = new MatrixCursor(
+                new String[] {
+                        BaseColumns._ID,
+                        "CountryName"
+                }
+        );
+        int limit = 50;
+        int i = 0;
+        while(cur.moveToNext() && (cursor.getCount()<limit)){
+            String name = cur.getString(0);
+            if(name.toUpperCase().startsWith(query)) {
+                Log.d("Query",query+"    "+name);
+                cursor.addRow(new Object[]{i, name});
+            }
+            i++;
+        }
+        return cursor;
     }
 }
