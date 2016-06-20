@@ -8,6 +8,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
@@ -24,15 +25,16 @@ import java.util.ArrayList;
  * Created by vmffkxlgnqh1 on 2016. 5. 28..
  */
 public class ListActivity extends Base implements SearchView.OnQueryTextListener {
+
     com.example.cheonyujung.accidentofworld.fragment.WorldListFragment worldListFragment;
     Cursor cur;
+    MenuItem searchItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         super.setTitle("Country List");
-
+        
         worldListFragment = com.example.cheonyujung.accidentofworld.fragment.WorldListFragment.getInstence();
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction()
@@ -45,7 +47,7 @@ public class ListActivity extends Base implements SearchView.OnQueryTextListener
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        MenuItem searchItem = menu.findItem(R.id.search_item);
+        searchItem = menu.findItem(R.id.search_item);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("나라를 입력해주세요...");
@@ -54,20 +56,19 @@ public class ListActivity extends Base implements SearchView.OnQueryTextListener
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        cur.moveToFirst();
-        while (cur.moveToNext()){
-            if(query.matches(cur.getString(0))){
-
-            }
+        String q = query;
+        Log.d("submit Text",q);
+        if(searchItem != null){
+            searchItem.collapseActionView();
         }
-
+        worldListFragment.setNewAdapter(listFilter(q));
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        Log.d("Chagne","Text가 체인");
         worldListFragment.setNewAdapter(listFilter(newText));
-
         return false;
     }
 

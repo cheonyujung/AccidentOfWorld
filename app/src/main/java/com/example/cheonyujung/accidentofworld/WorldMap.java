@@ -161,7 +161,6 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
                 return false;
             }
 
-
             @Override
             public boolean onSuggestionClick(int position) {
                 Cursor cursor = simpleCursorAdapter.getCursor();
