@@ -1,5 +1,6 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.cheonyujung.accidentofworld.PostAdapter;
 import com.example.cheonyujung.accidentofworld.R;
+import com.example.cheonyujung.accidentofworld.data.struct.Post;
 
 /**
  * Created by cheonyujung on 2016. 6. 19..
@@ -60,7 +62,7 @@ public class BoardFragment extends Fragment{
                 Bundle bundle = new Bundle();
                 bundle.putInt("country_id", country_id);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -70,13 +72,39 @@ public class BoardFragment extends Fragment{
 
                 Intent intent = new Intent(getActivity(), PostActivity.class);
                 Bundle bundle1 = new Bundle();
-                bundle1.putInt("post_id", postAdapter.getPost_id(i-1));
-                Log.d("test",postAdapter.getPost_id(i-1) +"");
+                bundle1.putInt("post_id", postAdapter.getPost_id(i - 1));
                 bundle1.putString("country_name", bundle.getString("CountryName"));
+                bundle1.putInt("list_position",i-1);
                 intent.putExtras(bundle1);
                 startActivity(intent);
             }
         });
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:{
+                if(resultCode == Activity.RESULT_OK) {
+                    Bundle bundle = data.getExtras();
+                    String content = bundle.getString("post_content");
+                    int board_id = bundle.getInt("post_board_id");
+                    String title = bundle.getString("post_title");
+                    String user_id = bundle.getString("post_user_id");
+                    Post post = new Post();
+                    post.setWrite_user(user_id);
+                    post.setContent(content);
+                    post.setTitle(title);
+                    post.setBoard(board_id);
+                    postAdapter.addPost(post);
+                }else if(resultCode == 99) {
+                    Bundle bundle = data.getExtras();
+                    int list_position = bundle.getInt("list_position");
+                    postAdapter.delete(list_position);
+
+                }
+            }
+        }
     }
 }

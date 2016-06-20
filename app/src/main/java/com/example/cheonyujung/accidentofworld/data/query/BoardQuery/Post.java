@@ -23,19 +23,23 @@ public class Post extends DBQuery {
     public Post(Context context) {
         super(context);
     }
-    public void insert(int board,String title, String content, String user){
+    public void insert(com.example.cheonyujung.accidentofworld.data.struct.Post post){
         SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         ContentValues values = new ContentValues();
-        values.put("board_id",board);
-        values.put("title",title);
-        values.put("contents",content);
-        values.put("user_id",user);
+        values.put("board_id",post.getBoard());
+        values.put("title",post.getTitle());
+        values.put("contents",post.getContent());
+        values.put("user_id",post.getWrite_user());
         values.put("num_like",0);
         values.put("num_dislike",0);
-        values.put("post_date", date.format(new Date())+"");
-        writeDB().insert("post", null, values);
+        post.setPost_date(date.format(new Date()));
+        values.put("post_date", post.getPost_date());
+        long id;
+        if((id=writeDB().insert("post", null, values))!=-1){
+            post.set_id(id);
+        }
     }
-    public void update(int id,String title,String content){
+    public void update(long id,String title,String content){
         SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         ContentValues values = new ContentValues();
         values.put("title",title);
@@ -44,14 +48,14 @@ public class Post extends DBQuery {
         writeDB().update("post", values, "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public void update(int id,int like, int dislike) {
+    public void update(long id,int like, int dislike) {
         ContentValues values = new ContentValues();
         values.put("num_like",like);
         values.put("num_dislike",dislike);
         writeDB().update("post", values, "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public void delete(int id){
+    public void delete(long id){
         ArrayList<Comment> comments = Comment.getCommentsByPost_id(id);
         for(Comment comment : comments) {
             comment.delete();

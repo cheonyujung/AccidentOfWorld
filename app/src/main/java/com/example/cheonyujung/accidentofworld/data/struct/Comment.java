@@ -8,11 +8,11 @@ import java.util.ArrayList;
  * Created by ohyongtaek on 16. 5. 16..
  */
 public class Comment {
-    private int _id;
+    private long _id;
     private String content;
     private String comment_date;
     private String userID;
-    private int post;
+    private long post;
 
     public Comment(int id, String content, String comment_date, String userID, int post) {
         this._id = id;
@@ -34,19 +34,19 @@ public class Comment {
     }
 
 
-    public int getPost() {
+    public long getPost() {
         return post;
     }
 
-    public void setPost(int post) {
+    public void setPost(long post) {
         this.post = post;
     }
 
-    public int get_id() {
+    public long get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(long _id) {
         this._id = _id;
     }
 
@@ -67,9 +67,9 @@ public class Comment {
     }
 
     public void save() {
-        Data.dbComment.insert(post,content,userID);
+        Data.dbComment.insert(this);
     }
-    public static ArrayList<Comment> getCommentsByPost_id(int post_id) {
+    public static ArrayList<Comment> getCommentsByPost_id(long post_id) {
         return Data.dbComment.getCommentByPost_id(post_id);
     }
 

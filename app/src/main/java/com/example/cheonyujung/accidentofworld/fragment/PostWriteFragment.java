@@ -1,6 +1,8 @@
 package com.example.cheonyujung.accidentofworld.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.R;
 import com.example.cheonyujung.accidentofworld.data.struct.Post;
+import com.example.cheonyujung.accidentofworld.data.struct.User;
 
 /**
  * Created by cheonyujung on 2016. 6. 19..
@@ -21,7 +25,7 @@ public class PostWriteFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.post_write, container, false);
 
@@ -43,12 +47,14 @@ public class PostWriteFragment extends Fragment {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Post post = new Post();
-                post.setBoard(country_id);
-                post.setContent(String.valueOf(postContents.getText()));
-                post.setTitle(String.valueOf(postTitle.getText()));
-                post.setWrite_user("천유정");
-                post.save();
+                Intent intent = getActivity().getIntent();
+                Bundle bundle1 = intent.getExtras();
+                bundle1.putInt("post_board_id",country_id);
+                bundle1.putString("post_content", postContents.getText().toString());
+                bundle1.putString("post_title", postTitle.getText().toString());
+                bundle1.putString("post_user_id", Base.user.getId());
+                intent.putExtras(bundle1);
+                getActivity().setResult(Activity.RESULT_OK,intent);
                 getActivity().finish();
 
             }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.cheonyujung.accidentofworld.data.struct.Post;
 import com.example.cheonyujung.accidentofworld.data.struct.PostItem;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by cheonyujung on 2016. 6. 19..
  */
-public class PostAdapter extends BaseAdapter{
+public class PostAdapter extends BaseAdapter {
 
     TextView writeUser;
     TextView postTitle;
@@ -24,7 +25,7 @@ public class PostAdapter extends BaseAdapter{
     Board board = new Board();
     ArrayList<PostItem> postList;
 
-    public void setPostItems(String countryName){
+    public void setPostItems(String countryName) {
         postList = PostItem.getPostItems(countryName);
     }
 
@@ -47,7 +48,9 @@ public class PostAdapter extends BaseAdapter{
         return 0;
     }
 
-    public int getPost_id(int i){ return postList.get(i).getPost_id();}
+    public int getPost_id(int i) {
+        return postList.get(i).getPost_id();
+    }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
@@ -65,12 +68,27 @@ public class PostAdapter extends BaseAdapter{
         writeUser.setText(postList.get(i).getUserName());
         postTitle.setText(postList.get(i).getTitle());
         postDate.setText(postList.get(i).getDate());
-        commentCount.setText(postList.get(i).getCommentCount()+"");
+        commentCount.setText(postList.get(i).getCommentCount() + "");
 
         return view;
     }
 
-    public void addItem(){
-        //Post post = new Post(postList.size(), title, null, null, 0, 0, date, writeUser, );
+    public void addPost(Post post) {
+        post.save();
+        PostItem postItem = new PostItem();
+        postItem.setTitle(post.getTitle());
+        postItem.setCommentCount(0);
+        postItem.setUserName(post.getWrite_user());
+        postItem.setDate(post.getPost_date());
+        postList.add(postItem);
+        notifyDataSetChanged();
+    }
+
+    public void delete(int position) {
+        PostItem postItem = postList.get(position);
+        Post post = Post.getPost(postItem.getPost_id());
+        post.delete();
+        postList.remove(postItem);
+        notifyDataSetChanged();
     }
 }
