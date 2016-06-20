@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
 
@@ -18,7 +17,7 @@ public class Country extends DBQuery {
         super(context);
     }
 
-    public void insert(int country_id,String name_ko,String name_en,String continent,String ISO_code,double latitude, double longitude,String capital,String currency, String language){
+    public void insert(int country_id,String name_ko,String name_en,String continent,String ISO_code,double latitude, double longitude,String capital,String currency, String language,String path){
         ContentValues values = new ContentValues();
         values.put("country_id",country_id);
         values.put("name_ko",name_ko);
@@ -30,6 +29,7 @@ public class Country extends DBQuery {
         values.put("capital", capital);
         values.put("currency",currency);
         values.put("language", language);
+        values.put("map_path",path);
         SQLiteDatabase db = writeDB();
         db.insert("country", null, values);
         db.close();
@@ -58,7 +58,7 @@ public class Country extends DBQuery {
         Cursor cursor =db.rawQuery("select * from country where name_ko = ?;", whereArgs);
         cursor.moveToFirst();
         com.example.cheonyujung.accidentofworld.data.struct.Country country = new com.example.cheonyujung.accidentofworld.data.struct.Country(cursor.getInt(0),cursor.getString(1)
-        ,cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getDouble(5),cursor.getDouble(6),cursor.getString(7),cursor.getString(8),cursor.getString(9));
+        ,cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getDouble(5),cursor.getDouble(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getString(10));
         cursor.close();
         db.close();
         return country;
@@ -82,7 +82,7 @@ public class Country extends DBQuery {
         Cursor cursor = db.rawQuery("select * from country", null);
         while (cursor.moveToNext()) {
             com.example.cheonyujung.accidentofworld.data.struct.Country country = new com.example.cheonyujung.accidentofworld.data.struct.Country(cursor.getInt(0),cursor.getString(1)
-                    ,cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getDouble(5),cursor.getDouble(6),cursor.getString(7),cursor.getString(8),cursor.getString(9));
+                    ,cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getDouble(5),cursor.getDouble(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getString(10));
             countries.add(country);
         }
         cursor.close();

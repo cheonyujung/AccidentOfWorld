@@ -6,11 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
-import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
-import com.example.cheonyujung.accidentofworld.data.struct.*;
 import com.example.cheonyujung.accidentofworld.data.struct.Country;
 
 import java.io.File;
@@ -38,7 +35,6 @@ public class CountryDangerMap extends DBQuery {
         SQLiteDatabase db = readDB();
         Cursor cursor = db.rawQuery("select country_id, path from country_danger_map where country_id = ?", whereArgs);
         if (cursor.moveToFirst()) {
-            Log.d("test", cursor.getString(1));
             com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap dangerMap = new com.example.cheonyujung.accidentofworld.data.struct.CountryDangerMap(country, createBitMap(cursor.getString(1)), cursor.getString(1));
             cursor.close();
             db.close();

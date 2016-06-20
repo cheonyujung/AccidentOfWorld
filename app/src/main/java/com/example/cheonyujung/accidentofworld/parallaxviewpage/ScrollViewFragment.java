@@ -1,6 +1,5 @@
 package com.example.cheonyujung.accidentofworld.parallaxviewpage;
 
-import android.util.Log;
 import android.widget.ScrollView;
 
 /**

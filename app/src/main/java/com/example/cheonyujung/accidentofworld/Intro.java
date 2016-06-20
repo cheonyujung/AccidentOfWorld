@@ -3,11 +3,12 @@ package com.example.cheonyujung.accidentofworld;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -17,8 +18,10 @@ import android.widget.Toast;
 import com.example.cheonyujung.accidentofworld.data.DBHelper;
 import com.example.cheonyujung.accidentofworld.data.DangerType;
 import com.example.cheonyujung.accidentofworld.data.Data;
-import com.example.cheonyujung.accidentofworld.data.query.BoardQuery.*;
 import com.example.cheonyujung.accidentofworld.data.query.BoardQuery.Board;
+import com.example.cheonyujung.accidentofworld.data.query.BoardQuery.Comment;
+import com.example.cheonyujung.accidentofworld.data.query.BoardQuery.Post;
+import com.example.cheonyujung.accidentofworld.data.query.BoardQuery.User;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Accident;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.Contact;
 import com.example.cheonyujung.accidentofworld.data.query.TravelInfoQuery.CountryDangerMap;
@@ -35,8 +38,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -120,6 +126,7 @@ public class Intro extends Activity{
                 Node korName = ((Element) node).getElementsByTagName("countryName").item(0);
                 Node countryId = ((Element) node).getElementsByTagName("id").item(0);
                 Node continent = ((Element) node).getElementsByTagName("continent").item(0);
+                Node countryMapNode = ((Element) node).getElementsByTagName("imgUrl").item(0);
                 String tag = enName.getChildNodes().item(0).getNodeValue();
                 String name = korName.getChildNodes().item(0).getNodeValue();
                 String continentName = continent.getChildNodes().item(0).getNodeValue();
@@ -134,7 +141,6 @@ public class Intro extends Activity{
                 for (String countryCode : locales) {
                     obj = new Locale("", countryCode);
                     if (obj.getDisplayName(Locale.KOREA).equals(name)) {
-                        Log.d("testest", obj.getDisplayCountry());
                         country.setIso_code(obj.getCountry());
                         check = true;
                         break;
@@ -175,9 +181,8 @@ public class Intro extends Activity{
                             countryKorList.add(name);
                             countryList.add(tag);
                         }
-                        country.save();
+                        getCountryMap(countryMapNode.getChildNodes().item(0).getNodeValue(),country);
                         getDangerInfo(country.getName_ko());
-                        Log.d("test", country.getName_ko());
                         count++;
 
 
@@ -220,7 +225,6 @@ public class Intro extends Activity{
         @Override
         protected void onCancelled(Void aVoid) {
             Toast.makeText(Intro.this, "실패하였습니다", Toast.LENGTH_SHORT).show();
-            Log.d("fail","fail");
             super.onCancelled(aVoid);
         }
     }
@@ -248,7 +252,6 @@ public class Intro extends Activity{
     public boolean getDangerInfo(String countryName) {
         Country country = Country.getCountry(countryName);
         String reqeust = Data.countryDangerInfoURL + "&" + "id=" + country.getCountry_id();
-        Log.d("testRequest",reqeust);
         try {
             URL reqUrl = new URL(reqeust);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -286,5 +289,48 @@ public class Intro extends Activity{
         } catch (Exception e) {
             return false;
         }
+    }
+    private void getCountryMap(String url, Country country) {
+        String filepath = "";
+        try {
+            URL reqUrl = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection) reqUrl.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+            String filename = country.getName_ko() + "_country.png";
+            File file = new File(getFilesDir(), filename);
+            if (!file.createNewFile()) {
+                file.delete();
+                file.createNewFile();
+            }
+            FileOutputStream fileOutput = new FileOutputStream(file);
+            InputStream inputStream = urlConnection.getInputStream();
+            int totalSize = urlConnection.getContentLength();
+            int downloadedSize = 0;
+            byte[] buffer = new byte[1024];
+            int bufferLength = 0;
+            while ((bufferLength = inputStream.read(buffer)) > 0) {
+                fileOutput.write(buffer, 0, bufferLength);
+                downloadedSize += bufferLength;
+            }
+            fileOutput.close();
+            filepath = file.getPath();
+
+            country.setPath(filepath);
+            country.setImage(createBitMap(filepath));
+            country.save();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public Bitmap createBitMap(String path) {
+        File file = new File(path);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        return bitmap;
     }
 }

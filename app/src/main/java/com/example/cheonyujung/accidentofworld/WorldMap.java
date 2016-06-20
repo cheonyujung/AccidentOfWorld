@@ -68,20 +68,20 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             com.example.cheonyujung.accidentofworld.data.struct.Danger danger = new Danger(this).getDanger(country.getName_ko());
             LatLng position = new LatLng(country.getLatitude(), country.getLongitude());
             if (danger == null) {
-                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                markerHashMap.put(country.getName_ko(), map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_green))));
                 continue;
             }
             DangerType dangerType = new Danger(this).getDanger(country).getDanger_type();
             if (dangerType == DangerType.high) {
-                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                markerHashMap.put(country.getName_ko(), map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_red))));
 
             } else if (dangerType == DangerType.middle) {
-                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                markerHashMap.put(country.getName_ko(), map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_orange))));
             } else {
-                markerHashMap.put(country.getName_ko(),map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
+                markerHashMap.put(country.getName_ko(), map.addMarker(new MarkerOptions().title(country.getName_ko()).position(position)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_yellow))));
             }
         }
@@ -90,9 +90,8 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             @Override
             public void onInfoWindowClick(Marker marker) {
 
-                Toast.makeText(getApplicationContext(), marker.getTitle(),Toast.LENGTH_SHORT).show();
-                GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(getApplicationContext(), Integer.valueOf(null), null);
-                countryInfoTask.execute(marker.getTitle());
+                GetDownloadsCountryInfo countryInfoTask = new GetDownloadsCountryInfo(WorldMap.this, marker.getTitle());
+                countryInfoTask.execute();
 
             }
         });
@@ -111,7 +110,6 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             String name = cursor.getString(0);
 
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, (float) 5.0));
-            Toast.makeText(getApplicationContext(), "move camera", Toast.LENGTH_SHORT).show();
             markerHashMap.get(name).showInfoWindow();
         }
     }
@@ -136,10 +134,10 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             @Override
             public boolean onSuggestionSelect(int position) {
                 Cursor cursor = simpleCursorAdapter.getCursor();
-                if(cursor.moveToPosition(position)){
+                if (cursor.moveToPosition(position)) {
                     String selectedItem = cursor.getString(1);
                     moveCamera(selectedItem);
-                    if(searchItem != null){
+                    if (searchItem != null) {
                         searchItem.collapseActionView();
                     }
                 }
@@ -149,10 +147,10 @@ public class WorldMap extends Base implements SearchView.OnQueryTextListener,OnM
             @Override
             public boolean onSuggestionClick(int position) {
                 Cursor cursor = simpleCursorAdapter.getCursor();
-                if(cursor.moveToPosition(position)){
+                if (cursor.moveToPosition(position)) {
                     String selectedItem = cursor.getString(1);
                     moveCamera(selectedItem);
-                    if(searchItem != null){
+                    if (searchItem != null) {
                         searchItem.collapseActionView();
                     }
                 }

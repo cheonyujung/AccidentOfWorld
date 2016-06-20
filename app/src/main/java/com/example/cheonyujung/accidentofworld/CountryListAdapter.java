@@ -1,7 +1,6 @@
 package com.example.cheonyujung.accidentofworld;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ public class CountryListAdapter extends BaseAdapter {
 
     @Override
     public String getItem(int position) {
-        Log.d("testest", list.get(position));
         return list.get(position);
     }
 

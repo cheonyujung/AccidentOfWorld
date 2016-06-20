@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
 
 import com.example.cheonyujung.accidentofworld.data.DBQuery;
 
@@ -54,7 +54,6 @@ public class Comment extends DBQuery {
         while (cursor.moveToNext()) {
             com.example.cheonyujung.accidentofworld.data.struct.Comment comment = new com.example.cheonyujung.accidentofworld.data.struct.Comment();
             comment.set_id(cursor.getLong(0));
-            Log.d("testcomment",cursor.getLong(0)+"");
             comment.setPost(post_id);
             comment.setContent(cursor.getString(2));
             comment.setUserID(cursor.getString(3));
