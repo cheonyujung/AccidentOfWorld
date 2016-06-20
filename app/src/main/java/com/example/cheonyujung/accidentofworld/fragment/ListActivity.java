@@ -3,16 +3,24 @@ package com.example.cheonyujung.accidentofworld.fragment;
 import android.app.FragmentManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.MenuCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SearchEvent;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 
 import com.example.cheonyujung.accidentofworld.Base;
 import com.example.cheonyujung.accidentofworld.R;
@@ -29,6 +37,7 @@ public class ListActivity extends Base implements SearchView.OnQueryTextListener
     com.example.cheonyujung.accidentofworld.fragment.WorldListFragment worldListFragment;
     Cursor cur;
     MenuItem searchItem;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +50,31 @@ public class ListActivity extends Base implements SearchView.OnQueryTextListener
                 .replace(R.id.body, worldListFragment)
                 .commit();
 
-
     }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         searchItem = menu.findItem(R.id.search_item);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("나라를 입력해주세요...");
+        MenuItemCompat.setOnActionExpandListener(searchItem,new MenuItemCompat.OnActionExpandListener(){
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                worldListFragment.setNewAdapter(listFilter(""));
+                return true;
+            }
+        });
+
+
+
         return true;
     }
 
